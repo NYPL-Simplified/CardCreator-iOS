@@ -22,6 +22,12 @@ final class LabelledTextViewCell: UITableViewCell
     self.textField.autoCenterInSuperview()
   }
   
+  convenience init(title: String?, placeholder: String?) {
+    self.init(style: .Default, reuseIdentifier: nil)
+    self.label.text = title
+    self.textField.placeholder = placeholder
+  }
+  
   @available(*, unavailable)
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")

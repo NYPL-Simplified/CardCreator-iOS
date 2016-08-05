@@ -3,52 +3,76 @@ import UIKit
 
 class CardCreatorViewController: UITableViewController, UITextFieldDelegate
 {
-  private enum Section {
-    case NameAndEmail
-    case UsernameAndPIN
-    case Address
-  }
+  private let fullNameCell: LabelledTextViewCell
+  private let emailCell: LabelledTextViewCell
+  private let usernameCell: LabelledTextViewCell
+  private let pinCell: LabelledTextViewCell
+  private let street1Cell: LabelledTextViewCell
+  private let street2Cell: LabelledTextViewCell
+  private let cityCell: LabelledTextViewCell
+  private let stateCell: LabelledTextViewCell
+  private let zipCell: LabelledTextViewCell
+  private let submitCell: UITableViewCell
   
-  private let labelledTextViewCellReuseIdentifier = "LabelledTextViewCell"
-  private let labelledStatePickerCellReuseIdentifier = "LabelledStatePickerCell"
+  typealias HeaderTitle = String
+  private let tableViewData: [(HeaderTitle?, [UITableViewCell])]
+  private let orderedTableViewCells: [UITableViewCell]
   
   private let statePickerView = UIPickerView()
-  private let statePickerViewDataSourceAndDelegate = StatePickerViewDataSourceAndDelegate()
-  private let toolbarStateTextFieldInputAccessoryView = UIToolbar()
-  private let zipTextFieldInputAccessoryView = UIToolbar()
+  private let statePickerViewDataSourceAndDelegate: StatePickerViewDataSourceAndDelegate
   
   init() {
-    super.init(style: UITableViewStyle.Grouped)
+    self.fullNameCell = LabelledTextViewCell(
+      title: NSLocalizedString("Full Name", comment: "The full name (typically first and last) of a user"),
+      placeholder: NSLocalizedString("Jane Doe", comment: "An example of a common name"))
+    self.emailCell = LabelledTextViewCell(
+      title: NSLocalizedString("Email", comment: "A short name for a user's email address"),
+      placeholder: NSLocalizedString("jane@example.com", comment: "An example of a typical email address"))
+    self.usernameCell = LabelledTextViewCell(
+      title: NSLocalizedString("Username", comment: "A username used to log into a service"),
+      placeholder: NSLocalizedString("janedoe123", comment: "An example of a possible username"))
+    self.pinCell = LabelledTextViewCell(
+      title: NSLocalizedString("PIN", comment: "An abbreviation for personal identification number"),
+      placeholder: "0987")
+    self.street1Cell = LabelledTextViewCell(
+      title: NSLocalizedString("Street 1", comment: "The first line of a US street address"),
+      placeholder: "123 Main St")
+    self.street2Cell = LabelledTextViewCell(
+      title: NSLocalizedString("Street 2", comment: "The second line of a US street address"),
+      placeholder: "Apt 2B")
+    self.cityCell = LabelledTextViewCell(
+      title: NSLocalizedString("City", comment: "The city portion of a US postal address"),
+      placeholder: "Springfield")
+    self.stateCell = LabelledTextViewCell(
+      title: NSLocalizedString("State", comment: "The name for one of the 50 states in the US"),
+      placeholder: NSLocalizedString("Select a state…", comment: "An instruction to select a state with ellipsis"))
+    self.zipCell = LabelledTextViewCell(
+      title: NSLocalizedString("ZIP", comment: "The common name for a US ZIP code"),
+      placeholder: "20540")
+    self.submitCell = UITableViewCell(style: .Default, reuseIdentifier: nil)
     
-    self.tableView.registerClass(LabelledTextViewCell.self,
-                                 forCellReuseIdentifier: labelledTextViewCellReuseIdentifier)
+    self.tableViewData = [
+      (NSLocalizedString("Name & Email", comment: "The user's name and email address"),
+        [self.fullNameCell, self.emailCell]),
+      (NSLocalizedString("Username & PIN", comment: "The user's username and PIN"),
+        [self.usernameCell, self.pinCell]),
+      (NSLocalizedString("Address", comment: "The user's full address"),
+        [self.street1Cell, self.street2Cell, self.cityCell, self.stateCell, self.zipCell]),
+      (nil,
+        [self.submitCell])
+    ]
+    
+    self.orderedTableViewCells = self.tableViewData.flatMap {(_, tableViewCells) in tableViewCells}
+    
+    self.statePickerViewDataSourceAndDelegate =
+      StatePickerViewDataSourceAndDelegate(textField: self.stateCell.textField)
+    
+    super.init(style: UITableViewStyle.Grouped)
     
     self.statePickerView.dataSource = self.statePickerViewDataSourceAndDelegate
     self.statePickerView.delegate = self.statePickerViewDataSourceAndDelegate
     
-    do {
-      let nextBarButtonItem = UIBarButtonItem(title: "Next",
-        style: .Plain,
-        target: self,
-        action: #selector(didSelectNextAfterState))
-      let flexibleSpaceBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-      let doneBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done,
-        target: self,
-        action: #selector(didSelectDone))
-      self.toolbarStateTextFieldInputAccessoryView.setItems(
-        [nextBarButtonItem, flexibleSpaceBarButtonItem, doneBarButtonItem],
-        animated: false)
-      self.toolbarStateTextFieldInputAccessoryView.sizeToFit()
-    }
-    
-    do {
-      let doneBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done,
-                                               target: self,
-                                               action: #selector(didSelectDone))
-      let flexibleSpaceBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-      self.zipTextFieldInputAccessoryView.setItems([flexibleSpaceBarButtonItem, doneBarButtonItem], animated: false)
-      self.zipTextFieldInputAccessoryView.sizeToFit()
-    }
+    self.prepareTableViewCells()
   }
   
   @available(*, unavailable)
@@ -56,137 +80,121 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
     fatalError("init(coder:) has not been implemented")
   }
   
-  override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    switch section {
-    case 0:
-      return 2
-    case 1:
-      return 2
-    case 2:
-      return 5
-    case 3:
-      return 1
-    default:
-      fatalError()
+  private func nextToolbar() -> UIToolbar {
+    let flexibleSpaceBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+    let nextBarButtonItem = UIBarButtonItem(title: "Next",
+                                            style: .Plain,
+                                            target: self,
+                                            action: #selector(advanceToNextTextField))
+    
+    let toolbar = UIToolbar()
+    toolbar.setItems([flexibleSpaceBarButtonItem, nextBarButtonItem], animated: false)
+    toolbar.sizeToFit()
+    
+    return toolbar
+  }
+  
+  private func doneToolbar() -> UIToolbar {
+    let flexibleSpaceBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+    let doneBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done,
+                                            target: self,
+                                            action: #selector(didSelectDone))
+    
+    let toolbar = UIToolbar()
+    toolbar.setItems([flexibleSpaceBarButtonItem, doneBarButtonItem], animated: false)
+    toolbar.sizeToFit()
+    
+    return toolbar
+  }
+  
+  private func prepareTableViewCells() {
+    for cell in self.orderedTableViewCells {
+      if let labelledTextViewCell = cell as? LabelledTextViewCell {
+        labelledTextViewCell.textField.delegate = self
+        labelledTextViewCell.textField.returnKeyType = .Next
+      }
     }
-  }
-  
-  override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-    return 4
-  }
-  
-  private func dequeueLabelledTextViewCell(title: String, _ placeholder: String?) -> LabelledTextViewCell {
-    let cell = self.tableView.dequeueReusableCellWithIdentifier(labelledTextViewCellReuseIdentifier)
-      as! LabelledTextViewCell
-    cell.label.text = title
-    cell.textField.delegate = self
-    cell.textField.placeholder = placeholder
-    cell.textField.inputView = nil
-    cell.textField.inputAccessoryView = nil
-    return cell
-  }
-  
-  override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    switch (indexPath.section, indexPath.row) {
-    case (0, 0):
-      let cell = dequeueLabelledTextViewCell("Full Name", "Jane Doe")
-      cell.textField.tag = 0
-      cell.textField.keyboardType = .Alphabet
-      cell.textField.autocapitalizationType = .Words
-      cell.textField.returnKeyType = .Next
-      return cell
-    case (0, 1):
-      let cell = dequeueLabelledTextViewCell("Email", "jane@example.com")
-      cell.textField.tag = 1
-      cell.textField.keyboardType = .EmailAddress
-      cell.textField.autocapitalizationType = .None
-      cell.textField.autocorrectionType = .No
-      cell.textField.returnKeyType = .Next
-      return cell
-    case (1, 0):
-      let cell = dequeueLabelledTextViewCell("Username", "janedoe123")
-      cell.textField.tag = 2
-      cell.textField.keyboardType = .Alphabet
-      cell.textField.autocapitalizationType = .None
-      cell.textField.autocorrectionType = .No
-      cell.textField.returnKeyType = .Next
-      return cell
-    case (1, 1):
-      let cell = dequeueLabelledTextViewCell("PIN", "Required (e.g. 0987)")
-      cell.textField.tag = 3
-      cell.textField.keyboardType = .NumberPad
-      return cell
-    case (2, 0):
-      let cell = dequeueLabelledTextViewCell("Street 1", "123 Main St")
-      cell.textField.tag = 4
-      cell.textField.keyboardType = .Alphabet
-      cell.textField.autocapitalizationType = .Words
-      cell.textField.returnKeyType = .Next
-      return cell
-    case (2, 1):
-      let cell = dequeueLabelledTextViewCell("Street 2", "Apt 2B")
-      cell.textField.tag = 5
-      cell.textField.keyboardType = .Alphabet
-      cell.textField.autocapitalizationType = .Words
-      cell.textField.returnKeyType = .Next
-      return cell
-    case (2, 2):
-      let cell = dequeueLabelledTextViewCell("City", "Springfield")
-      cell.textField.tag = 6
-      cell.textField.keyboardType = .Alphabet
-      cell.textField.autocapitalizationType = .Words
-      cell.textField.returnKeyType = .Next
-      return cell
-    case (2, 3):
-      let cell = dequeueLabelledTextViewCell("State", "Select a state…")
-      cell.textField.tag = 7
-      cell.textField.inputView = self.statePickerView
-      cell.textField.inputAccessoryView = self.toolbarStateTextFieldInputAccessoryView
-      self.statePickerViewDataSourceAndDelegate.textField = cell.textField
-      return cell
-    case (2, 4):
-      let cell = dequeueLabelledTextViewCell("ZIP", "20540")
-      cell.textField.tag = 8
-      cell.textField.keyboardType = .NumberPad
-      cell.textField.inputAccessoryView = zipTextFieldInputAccessoryView
-      return cell
-    case (3, 0):
-      let cell = UITableViewCell(style: .Default, reuseIdentifier: nil)
+    
+    self.fullNameCell.textField.keyboardType = .Alphabet
+    self.fullNameCell.textField.autocapitalizationType = .Words
+      
+    self.emailCell.textField.keyboardType = .EmailAddress
+    self.emailCell.textField.autocapitalizationType = .None
+    self.emailCell.textField.autocorrectionType = .No
+    
+    self.usernameCell.textField.keyboardType = .Alphabet
+    self.usernameCell.textField.autocapitalizationType = .None
+    self.usernameCell.textField.autocorrectionType = .No
+    
+    self.pinCell.textField.keyboardType = .NumberPad
+    self.pinCell.textField.inputAccessoryView = self.nextToolbar()
+    
+    self.street1Cell.textField.keyboardType = .Alphabet
+    self.street1Cell.textField.autocapitalizationType = .Words
+    
+    self.street2Cell.textField.keyboardType = .Alphabet
+    self.street2Cell.textField.autocapitalizationType = .Words
+    
+    self.cityCell.textField.keyboardType = .Alphabet
+    self.cityCell.textField.autocapitalizationType = .Words
+    
+    self.stateCell.textField.inputView = self.statePickerView
+    self.stateCell.textField.inputAccessoryView = self.nextToolbar()
+    
+    self.zipCell.textField.keyboardType = .NumberPad
+    self.zipCell.textField.inputAccessoryView = self.doneToolbar()
+    
+    do {
       let button = UIButton(type: .System)
-      cell.addSubview(button)
+      self.submitCell.addSubview(button)
       button.setTitle("Submit", forState: .Normal)
       button.autoCenterInSuperview()
       button.addTarget(self, action: #selector(didSelectSubmit), forControlEvents: .TouchUpInside)
       button.userInteractionEnabled = false
-      return cell
-    default:
-      fatalError()
     }
+  }
+  
+  @objc private func advanceToNextTextField() {
+    var foundFirstResponder = false
+    for cell in self.orderedTableViewCells {
+      if let labelledTextViewCell = cell as? LabelledTextViewCell {
+        if foundFirstResponder {
+          labelledTextViewCell.textField.becomeFirstResponder()
+          return
+        }
+        if labelledTextViewCell.textField.isFirstResponder() {
+          labelledTextViewCell.textField.resignFirstResponder()
+          foundFirstResponder = true
+        }
+      }
+    }
+  }
+  
+  // MARK: UITableViewDataSource
+  
+  override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    let (_, tableViewCells) = self.tableViewData[section]
+    return tableViewCells.count
+  }
+  
+  override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    return self.tableViewData.count
+  }
+  
+  override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    let (_, tableViewCells) = self.tableViewData[indexPath.section]
+    return tableViewCells[indexPath.row]
   }
   
   override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    switch section {
-    case 0:
-      return "Name & Email"
-    case 1:
-      return "Username & PIN"
-    case 2:
-      return "Address"
-    case 3:
-      return nil
-    default:
-      fatalError()
-    }
+    let (headerTitle, _) = self.tableViewData[section]
+    return headerTitle
   }
-  
   
   // MARK: UITextFieldDelegate
   
   @objc func textFieldShouldReturn(textField: UITextField) -> Bool {
-    if textField.tag < 8 {
-      self.tableView.viewWithTag(textField.tag + 1)?.becomeFirstResponder()
-    }
-    
+    self.advanceToNextTextField()
     return true
   }
   
@@ -194,27 +202,25 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
                        shouldChangeCharactersInRange range: NSRange,
                                                      replacementString string: String) -> Bool
   {
-    return textField.tag != 7
+    return textField != self.stateCell.textField
   }
   
   // Mark: UITableViewDelegate
   
   @objc override func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    return indexPath == NSIndexPath(forRow: 0, inSection: 3)
+    let (_, tableViewCells) = self.tableViewData[indexPath.section]
+    return tableViewCells[indexPath.row] == self.submitCell
   }
   
   @objc override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
-    if indexPath == NSIndexPath(forRow: 0, inSection: 3) {
+    let (_, tableViewCells) = self.tableViewData[indexPath.section]
+    if tableViewCells[indexPath.row] == self.submitCell {
       didSelectSubmit()
     }
   }
   
   // MARK: -
-  
-  func didSelectNextAfterState() {
-    self.tableView.viewWithTag(8)?.becomeFirstResponder()
-  }
   
   func didSelectDone() {
     self.view.endEditing(false)
@@ -225,8 +231,11 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
   }
   
   private class StatePickerViewDataSourceAndDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
+    let textField: UITextField
     
-    weak var textField: UITextField?
+    init(textField: UITextField) {
+      self.textField = textField
+    }
     
     @objc func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
       return 1
@@ -241,7 +250,7 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
     }
     
     @objc func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-      self.textField?.text = "New York"
+      self.textField.text = "New York"
     }
   }
 }
