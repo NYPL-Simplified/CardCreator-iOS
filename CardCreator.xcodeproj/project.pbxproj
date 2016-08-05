@@ -75,8 +75,8 @@
 				2DB436551D4D632700F8E69D /* Assets.xcassets */,
 				2DB436501D4D632700F8E69D /* CardCreatorViewController.swift */,
 				2DB4365A1D4D632700F8E69D /* Info.plist */,
-				2DB436571D4D632700F8E69D /* LaunchScreen.storyboard */,
 				2D63B3621D51351A0022E960 /* LabelledTextViewCell.swift */,
+				2DB436571D4D632700F8E69D /* LaunchScreen.storyboard */,
 			);
 			path = CardCreator;
 			sourceTree = "<group>";
