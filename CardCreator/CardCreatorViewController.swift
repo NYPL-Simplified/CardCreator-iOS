@@ -3,6 +3,15 @@ import UIKit
 
 class CardCreatorViewController: UITableViewController, UITextFieldDelegate
 {
+  static let regions: [String] = {
+    let stream = NSInputStream.init(URL: NSBundle.mainBundle().URLForResource("regions", withExtension: "json")!)!
+    stream.open()
+    defer {
+      stream.close()
+    }
+    return try! NSJSONSerialization.JSONObjectWithStream(stream, options: [.AllowFragments]) as! [String]
+  }()
+  
   private let fullNameCell: LabelledTextViewCell
   private let emailCell: LabelledTextViewCell
   private let usernameCell: LabelledTextViewCell
@@ -44,8 +53,8 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
       title: NSLocalizedString("City", comment: "The city portion of a US postal address"),
       placeholder: "Springfield")
     self.stateCell = LabelledTextViewCell(
-      title: NSLocalizedString("State", comment: "The name for one of the 50 states in the US"),
-      placeholder: NSLocalizedString("Select a state…", comment: "An instruction to select a state with ellipsis"))
+      title: NSLocalizedString("Region", comment: "The name for one of the 50+ states and regions in the US"),
+      placeholder: NSLocalizedString("Select a region…", comment: "An instruction to select a region with ellipsis"))
     self.zipCell = LabelledTextViewCell(
       title: NSLocalizedString("ZIP", comment: "The common name for a US ZIP code"),
       placeholder: "20540")
@@ -314,15 +323,15 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
     }
     
     @objc func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-      return 50
+      return CardCreatorViewController.regions.count
     }
     
     @objc func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-      return "New York"
+      return CardCreatorViewController.regions[row]
     }
     
     @objc func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-      self.textField.text = "New York"
+      self.textField.text = CardCreatorViewController.regions[row]
     }
   }
 }

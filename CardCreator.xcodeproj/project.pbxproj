@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D39E7FA1D55704400477886 /* regions.json in Resources */ = {isa = PBXBuildFile; fileRef = 2D39E7F91D55704400477886 /* regions.json */; };
 		2D63B3631D51351A0022E960 /* LabelledTextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D63B3621D51351A0022E960 /* LabelledTextViewCell.swift */; };
 		2DB4364F1D4D632700F8E69D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB4364E1D4D632700F8E69D /* AppDelegate.swift */; };
 		2DB436511D4D632700F8E69D /* CardCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB436501D4D632700F8E69D /* CardCreatorViewController.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2D39E7F91D55704400477886 /* regions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = regions.json; sourceTree = "<group>"; };
 		2D63B3601D512FB20022E960 /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = "Pods/../build/Debug-iphoneos/PureLayout/PureLayout.framework"; sourceTree = "<group>"; };
 		2D63B3621D51351A0022E960 /* LabelledTextViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelledTextViewCell.swift; sourceTree = "<group>"; };
 		2DB4364B1D4D632700F8E69D /* CardCreator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CardCreator.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +79,7 @@
 				2DB4365A1D4D632700F8E69D /* Info.plist */,
 				2D63B3621D51351A0022E960 /* LabelledTextViewCell.swift */,
 				2DB436571D4D632700F8E69D /* LaunchScreen.storyboard */,
+				2D39E7F91D55704400477886 /* regions.json */,
 			);
 			path = CardCreator;
 			sourceTree = "<group>";
@@ -153,6 +156,7 @@
 			files = (
 				2DB436591D4D632700F8E69D /* LaunchScreen.storyboard in Resources */,
 				2DB436561D4D632700F8E69D /* Assets.xcassets in Resources */,
+				2D39E7FA1D55704400477886 /* regions.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
