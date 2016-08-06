@@ -166,7 +166,6 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
           return
         }
         if labelledTextViewCell.textField.isFirstResponder() {
-          labelledTextViewCell.textField.resignFirstResponder()
           foundFirstResponder = true
         }
       }
