@@ -38,8 +38,8 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
       title: NSLocalizedString("Street 1", comment: "The first line of a US street address"),
       placeholder: "123 Main St")
     self.street2Cell = LabelledTextViewCell(
-      title: NSLocalizedString("Street 2", comment: "The second line of a US street address"),
-      placeholder: "Apt 2B")
+      title: NSLocalizedString("Street 2", comment: "The second line of a US street address (optional)"),
+      placeholder: "Apt 2B (Optional)")
     self.cityCell = LabelledTextViewCell(
       title: NSLocalizedString("City", comment: "The city portion of a US postal address"),
       placeholder: "Springfield")
@@ -143,6 +143,9 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
     
     self.zipCell.textField.keyboardType = .NumberPad
     self.zipCell.textField.inputAccessoryView = self.doneToolbar()
+    self.zipCell.textField.addTarget(self,
+                                     action: #selector(zipTextFieldDidChange),
+                                     forControlEvents: .AllEditingEvents)
     
     do {
       let button = UIButton(type: .System)
@@ -202,7 +205,40 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
                        shouldChangeCharactersInRange range: NSRange,
                                                      replacementString string: String) -> Bool
   {
-    return textField != self.stateCell.textField
+    if textField == self.pinCell.textField {
+      if let _ = string.rangeOfCharacterFromSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet) {
+        return false
+      } else if let text = textField.text {
+        return text.characters.count - range.length + string.characters.count <= 4
+      } else {
+        return string.characters.count <= 4
+      }
+    }
+    
+    if textField == self.usernameCell.textField {
+      if let _ = string.rangeOfCharacterFromSet(NSCharacterSet.alphanumericCharacterSet().invertedSet) {
+        return false
+      } else if let text = textField.text {
+        return text.characters.count - range.length + string.characters.count <= 25
+      } else {
+        return string.characters.count <= 25
+      }
+    }
+    
+    if textField == self.stateCell.textField {
+      return false
+    }
+    
+    if textField == self.zipCell.textField {
+      if let text = textField.text {
+        return self.isPossibleStartOfValidZIPCode(
+          (text as NSString).stringByReplacingCharactersInRange(range, withString: string))
+      } else {
+        return self.isPossibleStartOfValidZIPCode(string)
+      }
+    }
+    
+    return true
   }
   
   // Mark: UITableViewDelegate
@@ -222,12 +258,49 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
   
   // MARK: -
   
-  func didSelectDone() {
+  @objc private func didSelectDone() {
     self.view.endEditing(false)
   }
   
-  func didSelectSubmit() {
+  @objc private func didSelectSubmit() {
     
+  }
+  
+  private func isPossibleStartOfValidZIPCode(string: String) -> Bool {
+    if string.containsString("-") {
+      if string.characters.count > 10 {
+        return false
+      }
+    } else {
+      if string.characters.count > 9 {
+        return false
+      }
+    }
+    
+    for (i, c) in zip(0..<10, string.characters) {
+      if !(c >= "0" && c <= "9") {
+        if i == 5 {
+          if c != "-" {
+            return false
+          }
+        } else {
+          return false
+        }
+      }
+    }
+    
+    return true
+  }
+  
+  @objc private func zipTextFieldDidChange() {
+    if let text = self.zipCell.textField.text {
+      if text.characters.count > 5 && !text.containsString("-") {
+        let index = text.startIndex.advancedBy(5)
+        self.zipCell.textField.text = text.substringToIndex(index) + "-" + text.substringFromIndex(index)
+      } else if text.characters.count == 6 && text.containsString("-") {
+        self.zipCell.textField.text = text.stringByReplacingOccurrencesOfString("-", withString: "")
+      }
+    }
   }
   
   private class StatePickerViewDataSourceAndDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
