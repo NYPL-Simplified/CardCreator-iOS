@@ -3,7 +3,7 @@ import UIKit
 
 class CardCreatorViewController: UITableViewController, UITextFieldDelegate
 {
-  static let regions: [String] = {
+  private static let regions: [String] = {
     let stream = NSInputStream.init(URL: NSBundle.mainBundle().URLForResource("regions", withExtension: "json")!)!
     stream.open()
     defer {
@@ -23,8 +23,18 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
   private let zipCell: LabelledTextViewCell
   private let submitCell: UITableViewCell
   
-  typealias HeaderTitle = String
-  private let tableViewData: [(HeaderTitle?, [UITableViewCell])]
+  private struct Section {
+    let headerTitle: String?
+    let cells: [UITableViewCell]
+    let footerTitle: String?
+  }
+  
+  private typealias HeaderTitle = String
+  private let fullNameAndEmailSection: Section
+  private let usernameAndPinSection: Section
+  private let addressSection: Section
+  private let submitSection: Section
+  private let sections: [Section]
   private let orderedTableViewCells: [UITableViewCell]
   
   private let statePickerView = UIPickerView()
@@ -60,18 +70,30 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
       placeholder: "20540")
     self.submitCell = UITableViewCell(style: .Default, reuseIdentifier: nil)
     
-    self.tableViewData = [
-      (NSLocalizedString("Name & Email", comment: "The user's name and email address"),
-        [self.fullNameCell, self.emailCell]),
-      (NSLocalizedString("Username & PIN", comment: "The user's username and PIN"),
-        [self.usernameCell, self.pinCell]),
-      (NSLocalizedString("Address", comment: "The user's full address"),
-        [self.street1Cell, self.street2Cell, self.cityCell, self.stateCell, self.zipCell]),
-      (nil,
-        [self.submitCell])
+    self.fullNameAndEmailSection = Section(
+      headerTitle: NSLocalizedString("Name & Email", comment: "The user's name and email address"),
+      cells: [self.fullNameCell, self.emailCell],
+      footerTitle: nil)
+    self.usernameAndPinSection = Section(
+      headerTitle: NSLocalizedString("Username & PIN", comment: "The user's username and PIN"),
+      cells: [self.usernameCell, self.pinCell],
+      footerTitle: "Usernames must be 5–25 alphanumeric characters. PINs must be four digits.")
+    self.addressSection = Section(
+      headerTitle: NSLocalizedString("Address", comment: "The user's full address"),
+      cells: [self.street1Cell, self.street2Cell, self.cityCell, self.stateCell, self.zipCell],
+      footerTitle: nil)
+    self.submitSection = Section(
+      headerTitle: nil,
+      cells: [self.submitCell],
+      footerTitle: nil)
+    
+    self.sections = [
+      self.fullNameAndEmailSection,
+      self.usernameAndPinSection,
+      self.addressSection
     ]
     
-    self.orderedTableViewCells = self.tableViewData.flatMap {(_, tableViewCells) in tableViewCells}
+    self.orderedTableViewCells = self.sections.flatMap {section in section.cells}
     
     self.statePickerViewDataSourceAndDelegate =
       StatePickerViewDataSourceAndDelegate(textField: self.stateCell.textField)
@@ -184,22 +206,23 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
   // MARK: UITableViewDataSource
   
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    let (_, tableViewCells) = self.tableViewData[section]
-    return tableViewCells.count
+    return self.sections[section].cells.count
   }
   
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-    return self.tableViewData.count
+    return self.sections.count
   }
   
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let (_, tableViewCells) = self.tableViewData[indexPath.section]
-    return tableViewCells[indexPath.row]
+    return self.sections[indexPath.section].cells[indexPath.row]
   }
   
   override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    let (headerTitle, _) = self.tableViewData[section]
-    return headerTitle
+    return self.sections[section].headerTitle
+  }
+  
+  override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    return self.sections[section].footerTitle
   }
   
   // MARK: UITextFieldDelegate
@@ -252,14 +275,12 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
   // Mark: UITableViewDelegate
   
   @objc override func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    let (_, tableViewCells) = self.tableViewData[indexPath.section]
-    return tableViewCells[indexPath.row] == self.submitCell
+    return self.sections[indexPath.section].cells[indexPath.row] == self.submitCell
   }
   
   @objc override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
-    let (_, tableViewCells) = self.tableViewData[indexPath.section]
-    if tableViewCells[indexPath.row] == self.submitCell {
+    if self.sections[indexPath.section].cells[indexPath.row] == self.submitCell {
       didSelectSubmit()
     }
   }
@@ -335,4 +356,3 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
     }
   }
 }
-
