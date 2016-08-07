@@ -19,7 +19,7 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
   private let street1Cell: LabelledTextViewCell
   private let street2Cell: LabelledTextViewCell
   private let cityCell: LabelledTextViewCell
-  private let stateCell: LabelledTextViewCell
+  private let regionCell: LabelledTextViewCell
   private let zipCell: LabelledTextViewCell
   private let submitCell: UITableViewCell
   
@@ -37,8 +37,13 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
   private let sections: [Section]
   private let orderedTableViewCells: [UITableViewCell]
   
-  private let statePickerView = UIPickerView()
-  private let statePickerViewDataSourceAndDelegate: StatePickerViewDataSourceAndDelegate
+  private let regionPickerView = UIPickerView()
+  private let regionPickerViewDataSourceAndDelegate: RegionPickerViewDataSourceAndDelegate
+  
+  enum Validity {
+    case Valid
+    case Invalid
+  }
   
   init() {
     self.fullNameCell = LabelledTextViewCell(
@@ -62,7 +67,7 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
     self.cityCell = LabelledTextViewCell(
       title: NSLocalizedString("City", comment: "The city portion of a US postal address"),
       placeholder: "Springfield")
-    self.stateCell = LabelledTextViewCell(
+    self.regionCell = LabelledTextViewCell(
       title: NSLocalizedString("Region", comment: "The name for one of the 50+ states and regions in the US"),
       placeholder: NSLocalizedString("Select a region…", comment: "An instruction to select a region with ellipsis"))
     self.zipCell = LabelledTextViewCell(
@@ -80,7 +85,7 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
       footerTitle: "Usernames must be 5–25 alphanumeric characters. PINs must be four digits.")
     self.addressSection = Section(
       headerTitle: NSLocalizedString("Address", comment: "The user's full address"),
-      cells: [self.street1Cell, self.street2Cell, self.cityCell, self.stateCell, self.zipCell],
+      cells: [self.street1Cell, self.street2Cell, self.cityCell, self.regionCell, self.zipCell],
       footerTitle: nil)
     self.submitSection = Section(
       headerTitle: nil,
@@ -90,18 +95,19 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
     self.sections = [
       self.fullNameAndEmailSection,
       self.usernameAndPinSection,
-      self.addressSection
+      self.addressSection,
+      self.submitSection
     ]
     
     self.orderedTableViewCells = self.sections.flatMap {section in section.cells}
     
-    self.statePickerViewDataSourceAndDelegate =
-      StatePickerViewDataSourceAndDelegate(textField: self.stateCell.textField)
+    self.regionPickerViewDataSourceAndDelegate =
+      RegionPickerViewDataSourceAndDelegate(textField: self.regionCell.textField)
     
     super.init(style: UITableViewStyle.Grouped)
     
-    self.statePickerView.dataSource = self.statePickerViewDataSourceAndDelegate
-    self.statePickerView.delegate = self.statePickerViewDataSourceAndDelegate
+    self.regionPickerView.dataSource = self.regionPickerViewDataSourceAndDelegate
+    self.regionPickerView.delegate = self.regionPickerViewDataSourceAndDelegate
     
     self.prepareTableViewCells()
   }
@@ -169,8 +175,8 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
     self.cityCell.textField.keyboardType = .Alphabet
     self.cityCell.textField.autocapitalizationType = .Words
     
-    self.stateCell.textField.inputView = self.statePickerView
-    self.stateCell.textField.inputAccessoryView = self.nextToolbar()
+    self.regionCell.textField.inputView = self.regionPickerView
+    self.regionCell.textField.inputAccessoryView = self.nextToolbar()
     
     self.zipCell.textField.keyboardType = .NumberPad
     self.zipCell.textField.inputAccessoryView = self.doneToolbar()
@@ -184,7 +190,7 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
       button.setTitle("Submit", forState: .Normal)
       button.autoCenterInSuperview()
       button.addTarget(self, action: #selector(didSelectSubmit), forControlEvents: .TouchUpInside)
-      button.userInteractionEnabled = false
+      // button.userInteractionEnabled = false
     }
   }
   
@@ -256,7 +262,7 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
       }
     }
     
-    if textField == self.stateCell.textField {
+    if textField == self.regionCell.textField {
       return false
     }
     
@@ -292,7 +298,101 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
   }
   
   @objc private func didSelectSubmit() {
+    if self.validateFields() == .Valid {
+      self.view.endEditing(false)
+    }
+  }
+  
+  private func validateFields() -> Validity {
+    func validateLabelledTextViewCellNotEmpty(cell: LabelledTextViewCell) -> Validity {
+      if cell.textField.text == nil || cell.textField.text! == "" {
+        let mustNotBeEmpty = NSLocalizedString("The field %@ must not be left blank.",
+                                               comment: "A specific field that must not be empty")
+        let alertController = UIAlertController(
+          title: NSLocalizedString("Required Field", comment: "A field that cannot be empty"),
+          message: String(format: mustNotBeEmpty, cell.label.text!),
+          preferredStyle: .Alert)
+        alertController.addAction(UIAlertAction(
+          title: NSLocalizedString("OK", comment: ""),
+          style: .Default,
+          handler: nil))
+        self.presentViewController(alertController,
+                                   animated: true,
+                                   completion: {
+                                    self.tableView.scrollRectToVisible(cell.frame, animated: true)
+                                    cell.textField.becomeFirstResponder()})
+        return .Invalid
+      } else {
+        return .Valid
+      }
+    }
     
+    func validateLabelledTextViewCell(cell: LabelledTextViewCell, minimumCharacters: Int) -> Validity {
+      if cell.textField.text == nil || cell.textField.text!.characters.count < minimumCharacters {
+        let mustContainMoreCharacters = NSLocalizedString("The field %@ must contain at least %d characters.",
+                                                          comment: "A specific field that must contain N characters")
+        let alertController = UIAlertController(
+          title: NSLocalizedString(
+            "Not Enough Characters",
+            comment: "The quality of a field not having enough characters entered into it"),
+          message: String(format: mustContainMoreCharacters, cell.label.text!, minimumCharacters),
+          preferredStyle: .Alert)
+        alertController.addAction(UIAlertAction(
+          title: NSLocalizedString("OK", comment: ""),
+          style: .Default,
+          handler: {_ in self.tableView.scrollRectToVisible(cell.frame, animated: true)}))
+        self.presentViewController(alertController,
+                                   animated: true,
+                                   completion: nil)
+        return .Invalid
+      } else {
+        return .Valid
+      }
+    }
+    
+    let requiredCells = [self.fullNameCell,
+                         self.emailCell,
+                         self.usernameCell,
+                         self.pinCell,
+                         self.street1Cell,
+                         self.cityCell,
+                         self.regionCell,
+                         self.zipCell]
+    
+    for cell in requiredCells {
+      if validateLabelledTextViewCellNotEmpty(cell) == .Invalid {
+        return .Invalid
+      }
+    }
+    
+    if validateLabelledTextViewCell(self.usernameCell, minimumCharacters: 5) == .Invalid {
+      return .Invalid
+    }
+    
+    if validateLabelledTextViewCell(self.pinCell, minimumCharacters: 4) == .Invalid {
+      return .Invalid
+    }
+    
+    if !self.isValidZIPCode(self.zipCell.textField.text!) {
+      let alertController = UIAlertController(
+        title: NSLocalizedString(
+          "Invalid ZIP Code",
+          comment: "The quality of a ZIP code not being valid"),
+        message: NSLocalizedString(
+          "The ZIP code you entered is not valid.",
+          comment: "A message to the user explaining that their zip code is not valid"),
+        preferredStyle: .Alert)
+      alertController.addAction(UIAlertAction(
+        title: NSLocalizedString("OK", comment: ""),
+        style: .Default,
+        handler: {_ in self.tableView.scrollRectToVisible(self.zipCell.frame, animated: true)}))
+      self.presentViewController(alertController,
+                                 animated: true,
+                                 completion: nil)
+      return .Invalid
+    }
+    
+    return .Valid
   }
   
   private func isPossibleStartOfValidZIPCode(string: String) -> Bool {
@@ -321,6 +421,10 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
     return true
   }
   
+  private func isValidZIPCode(string: String) -> Bool {
+    return isPossibleStartOfValidZIPCode(string) && (string.characters.count == 5 || string.characters.count == 10)
+  }
+  
   @objc private func zipTextFieldDidChange() {
     if let text = self.zipCell.textField.text {
       if text.characters.count > 5 && !text.containsString("-") {
@@ -332,7 +436,7 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
     }
   }
   
-  private class StatePickerViewDataSourceAndDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
+  private class RegionPickerViewDataSourceAndDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
     let textField: UITextField
     
     init(textField: UITextField) {

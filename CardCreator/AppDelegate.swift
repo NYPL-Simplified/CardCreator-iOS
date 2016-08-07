@@ -14,6 +14,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     self.window?.rootViewController = CardCreatorViewController()
     self.window?.makeKeyAndVisible()
     
+    self.window?.tintAdjustmentMode = .Normal;
+    
     return true
   }
 }
