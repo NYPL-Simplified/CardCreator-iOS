@@ -209,6 +209,18 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
     }
   }
   
+  private func indexPathForCell(cell: UITableViewCell) -> NSIndexPath {
+    for (sectionIndex, section) in zip(0..<self.sections.count, self.sections) {
+      for (rowIndex, cellAtCurrentIndexes) in zip(0..<section.cells.count, section.cells) {
+        if cell == cellAtCurrentIndexes {
+          return NSIndexPath(forRow: rowIndex, inSection: sectionIndex)
+        }
+      }
+    }
+    
+    fatalError()
+  }
+  
   // MARK: UITableViewDataSource
   
   override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -298,29 +310,50 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
   }
   
   @objc private func didSelectSubmit() {
+    self.view.endEditing(false)
     if self.validateFields() == .Valid {
-      self.view.endEditing(false)
+      
     }
+  }
+  
+  private func presentError(cell cell: UITableViewCell, title: String, message: String) {
+    func scrollToAndHighlightCell(cell: UITableViewCell) {
+      self.tableView.scrollToRowAtIndexPath(
+        self.indexPathForCell(cell),
+        atScrollPosition: .Middle,
+        animated: true)
+      UIView.animateWithDuration(0.5) {
+        cell.backgroundColor = UIColor.init(colorLiteralRed: 1.0, green: 0.8, blue: 0.8, alpha: 1.0)
+      }
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3 * Int64(NSEC_PER_SEC)), dispatch_get_main_queue()) {
+        UIView.animateWithDuration(0.5) {
+          cell.backgroundColor = UIColor.whiteColor()
+        }
+      }
+    }
+    
+    let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+    
+    alertController.addAction(UIAlertAction(
+      title: NSLocalizedString("OK", comment: ""),
+      style: .Default,
+      handler: {_ in scrollToAndHighlightCell(cell)}))
+    
+    self.presentViewController(alertController,
+                               animated: true,
+                               completion: nil)
   }
   
   private func validateFields() -> Validity {
     func validateLabelledTextViewCellNotEmpty(cell: LabelledTextViewCell) -> Validity {
       if cell.textField.text == nil || cell.textField.text! == "" {
-        let mustNotBeEmpty = NSLocalizedString("The field %@ must not be left blank.",
-                                               comment: "A specific field that must not be empty")
-        let alertController = UIAlertController(
+        let mustNotBeEmpty = NSLocalizedString(
+          "The field %@ must not be left blank.",
+          comment: "A specific field that must not be empty")
+        self.presentError(
+          cell: cell,
           title: NSLocalizedString("Required Field", comment: "A field that cannot be empty"),
-          message: String(format: mustNotBeEmpty, cell.label.text!),
-          preferredStyle: .Alert)
-        alertController.addAction(UIAlertAction(
-          title: NSLocalizedString("OK", comment: ""),
-          style: .Default,
-          handler: nil))
-        self.presentViewController(alertController,
-                                   animated: true,
-                                   completion: {
-                                    self.tableView.scrollRectToVisible(cell.frame, animated: true)
-                                    cell.textField.becomeFirstResponder()})
+          message: String(format: mustNotBeEmpty, cell.label.text!))
         return .Invalid
       } else {
         return .Valid
@@ -329,21 +362,15 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
     
     func validateLabelledTextViewCell(cell: LabelledTextViewCell, minimumCharacters: Int) -> Validity {
       if cell.textField.text == nil || cell.textField.text!.characters.count < minimumCharacters {
-        let mustContainMoreCharacters = NSLocalizedString("The field %@ must contain at least %d characters.",
-                                                          comment: "A specific field that must contain N characters")
-        let alertController = UIAlertController(
+        let mustContainMoreCharacters = NSLocalizedString(
+          "The field %@ must contain at least %d characters.",
+          comment: "A specific field that must contain N characters")
+        self.presentError(
+          cell: cell,
           title: NSLocalizedString(
             "Not Enough Characters",
             comment: "The quality of a field not having enough characters entered into it"),
-          message: String(format: mustContainMoreCharacters, cell.label.text!, minimumCharacters),
-          preferredStyle: .Alert)
-        alertController.addAction(UIAlertAction(
-          title: NSLocalizedString("OK", comment: ""),
-          style: .Default,
-          handler: {_ in self.tableView.scrollRectToVisible(cell.frame, animated: true)}))
-        self.presentViewController(alertController,
-                                   animated: true,
-                                   completion: nil)
+          message: String(format: mustContainMoreCharacters, cell.label.text!, minimumCharacters))
         return .Invalid
       } else {
         return .Valid
@@ -374,21 +401,14 @@ class CardCreatorViewController: UITableViewController, UITextFieldDelegate
     }
     
     if !self.isValidZIPCode(self.zipCell.textField.text!) {
-      let alertController = UIAlertController(
+      self.presentError(
+        cell: self.zipCell,
         title: NSLocalizedString(
           "Invalid ZIP Code",
           comment: "The quality of a ZIP code not being valid"),
         message: NSLocalizedString(
           "The ZIP code you entered is not valid.",
-          comment: "A message to the user explaining that their zip code is not valid"),
-        preferredStyle: .Alert)
-      alertController.addAction(UIAlertAction(
-        title: NSLocalizedString("OK", comment: ""),
-        style: .Default,
-        handler: {_ in self.tableView.scrollRectToVisible(self.zipCell.frame, animated: true)}))
-      self.presentViewController(alertController,
-                                 animated: true,
-                                 completion: nil)
+          comment: "A message to the user explaining that their zip code is not valid"))
       return .Invalid
     }
     
