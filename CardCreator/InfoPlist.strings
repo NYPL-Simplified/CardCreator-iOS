@@ -1,1 +1,2 @@
-NSLocationWhenInUseUsageDescription = "Test Description";
+NSLocationWhenInUseUsageDescription =
+  "This app needs to check your location to see if you can be issued a library card.";
