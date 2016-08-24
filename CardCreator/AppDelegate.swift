@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     -> Bool
   {
     self.window = UIWindow.init(frame: UIScreen.mainScreen().bounds)
-    self.window?.rootViewController = CardCreatorViewController()
+    self.window?.rootViewController = IntroductionViewController()
     self.window?.makeKeyAndVisible()
     
     self.window?.tintAdjustmentMode = .Normal;

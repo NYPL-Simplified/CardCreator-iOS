@@ -11,6 +11,7 @@
 		2D39E7FA1D55704400477886 /* regions.json in Resources */ = {isa = PBXBuildFile; fileRef = 2D39E7F91D55704400477886 /* regions.json */; };
 		2D4324581D6156890064B299 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D4324571D6156890064B299 /* InfoPlist.strings */; };
 		2D63B3631D51351A0022E960 /* LabelledTextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D63B3621D51351A0022E960 /* LabelledTextViewCell.swift */; };
+		2D82C8B01D6D0E2600C1E1D0 /* IntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D82C8AF1D6D0E2600C1E1D0 /* IntroductionViewController.swift */; };
 		2DB4364F1D4D632700F8E69D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB4364E1D4D632700F8E69D /* AppDelegate.swift */; };
 		2DB436511D4D632700F8E69D /* CardCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB436501D4D632700F8E69D /* CardCreatorViewController.swift */; };
 		2DB436561D4D632700F8E69D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2DB436551D4D632700F8E69D /* Assets.xcassets */; };
@@ -24,6 +25,7 @@
 		2D4324571D6156890064B299 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
 		2D63B3601D512FB20022E960 /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = "Pods/../build/Debug-iphoneos/PureLayout/PureLayout.framework"; sourceTree = "<group>"; };
 		2D63B3621D51351A0022E960 /* LabelledTextViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelledTextViewCell.swift; sourceTree = "<group>"; };
+		2D82C8AF1D6D0E2600C1E1D0 /* IntroductionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroductionViewController.swift; sourceTree = "<group>"; };
 		2DB4364B1D4D632700F8E69D /* CardCreator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CardCreator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DB4364E1D4D632700F8E69D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2DB436501D4D632700F8E69D /* CardCreatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCreatorViewController.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 				2DB436571D4D632700F8E69D /* LaunchScreen.storyboard */,
 				2D0A062F1D5915B9005EB288 /* PlacemarkQuery.swift */,
 				2D39E7F91D55704400477886 /* regions.json */,
+				2D82C8AF1D6D0E2600C1E1D0 /* IntroductionViewController.swift */,
 			);
 			path = CardCreator;
 			sourceTree = "<group>";
@@ -223,6 +226,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2DB436511D4D632700F8E69D /* CardCreatorViewController.swift in Sources */,
+				2D82C8B01D6D0E2600C1E1D0 /* IntroductionViewController.swift in Sources */,
 				2D0A06301D5915B9005EB288 /* PlacemarkQuery.swift in Sources */,
 				2DB4364F1D4D632700F8E69D /* AppDelegate.swift in Sources */,
 				2D63B3631D51351A0022E960 /* LabelledTextViewCell.swift in Sources */,
