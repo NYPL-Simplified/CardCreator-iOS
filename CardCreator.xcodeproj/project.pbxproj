@@ -16,6 +16,7 @@
 		2DB436511D4D632700F8E69D /* CardCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB436501D4D632700F8E69D /* CardCreatorViewController.swift */; };
 		2DB436561D4D632700F8E69D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2DB436551D4D632700F8E69D /* Assets.xcassets */; };
 		2DB436591D4D632700F8E69D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2DB436571D4D632700F8E69D /* LaunchScreen.storyboard */; };
+		2DF383C11D6F912E00565406 /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DF383C01D6F912E00565406 /* LocationViewController.swift */; };
 		A5EDF4EE8C6EFB2EB9F28EE8 /* Pods_CardCreator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D10534F3FDA4909478ABF743 /* Pods_CardCreator.framework */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +33,7 @@
 		2DB436551D4D632700F8E69D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2DB436581D4D632700F8E69D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2DB4365A1D4D632700F8E69D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2DF383C01D6F912E00565406 /* LocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
 		98902DB081AFA53AD479E373 /* Pods-CardCreator.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CardCreator.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CardCreator/Pods-CardCreator.debug.xcconfig"; sourceTree = "<group>"; };
 		AD79CE3A96861416B4546603 /* Pods-CardCreator.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CardCreator.release.xcconfig"; path = "Pods/Target Support Files/Pods-CardCreator/Pods-CardCreator.release.xcconfig"; sourceTree = "<group>"; };
 		D10534F3FDA4909478ABF743 /* Pods_CardCreator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CardCreator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,6 +91,7 @@
 				2D0A062F1D5915B9005EB288 /* PlacemarkQuery.swift */,
 				2D39E7F91D55704400477886 /* regions.json */,
 				2D82C8AF1D6D0E2600C1E1D0 /* IntroductionViewController.swift */,
+				2DF383C01D6F912E00565406 /* LocationViewController.swift */,
 			);
 			path = CardCreator;
 			sourceTree = "<group>";
@@ -228,6 +231,7 @@
 				2DB436511D4D632700F8E69D /* CardCreatorViewController.swift in Sources */,
 				2D82C8B01D6D0E2600C1E1D0 /* IntroductionViewController.swift in Sources */,
 				2D0A06301D5915B9005EB288 /* PlacemarkQuery.swift in Sources */,
+				2DF383C11D6F912E00565406 /* LocationViewController.swift in Sources */,
 				2DB4364F1D4D632700F8E69D /* AppDelegate.swift in Sources */,
 				2D63B3631D51351A0022E960 /* LabelledTextViewCell.swift in Sources */,
 			);

@@ -3,6 +3,7 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate
 {
+  let navigationController = UINavigationController(rootViewController: IntroductionViewController())
   var placemarkQuery: PlacemarkQuery!
   var window: UIWindow?
 
@@ -25,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     -> Bool
   {
     self.window = UIWindow.init(frame: UIScreen.mainScreen().bounds)
-    self.window?.rootViewController = IntroductionViewController()
+    self.window?.rootViewController = self.navigationController
     self.window?.makeKeyAndVisible()
     
     self.window?.tintAdjustmentMode = .Normal;
