@@ -4,21 +4,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate
 {
   let navigationController = UINavigationController(rootViewController: IntroductionViewController())
-  var placemarkQuery: PlacemarkQuery!
   var window: UIWindow?
-
-  override init() {
-    super.init()
-    let placemarkQuery = PlacemarkQuery(handler: { result in
-      switch result {
-      case let .ErrorAlertController(alertController):
-        self.window?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
-      case let .Placemark(placemark):
-        break
-      }
-    })
-    self.placemarkQuery = placemarkQuery
-  }
   
   func application(
     application: UIApplication,
@@ -30,8 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     self.window?.makeKeyAndVisible()
     
     self.window?.tintAdjustmentMode = .Normal;
-    
-    self.placemarkQuery.start()
     
     return true
   }

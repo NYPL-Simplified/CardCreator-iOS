@@ -9,17 +9,19 @@ class PlacemarkQuery: NSObject, CLLocationManagerDelegate {
   }
   
   var receivedRecentLocation = false
-  let handler: Result -> Void
+  var handler: (Result -> Void)? = nil
   let geocoder = CLGeocoder()
   let locationManager = CLLocationManager()
   
-  init(handler: Result -> Void) {
-    self.handler = handler
+  override init() {
     super.init()
     self.locationManager.delegate = self
   }
 
-  func start() {
+  /// Due to limitations of CoreLocation, this must only ever be called 
+  /// once per `PlacemarkQuery` instance.
+  func startWithHandler(handler: Result -> Void) {
+    self.handler = handler
     switch CLLocationManager.authorizationStatus() {
     case .AuthorizedAlways:
       fallthrough
@@ -46,7 +48,7 @@ class PlacemarkQuery: NSObject, CLLocationManagerDelegate {
         style: .Cancel,
         handler: nil))
       NSOperationQueue.mainQueue().addOperationWithBlock({ 
-        self.handler(.ErrorAlertController(alertController: alertController))
+        self.handler!(.ErrorAlertController(alertController: alertController))
       })
     case .NotDetermined:
       self.locationManager.requestWhenInUseAuthorization()
@@ -64,7 +66,7 @@ class PlacemarkQuery: NSObject, CLLocationManagerDelegate {
         style: .Default,
         handler: nil))
       NSOperationQueue.mainQueue().addOperationWithBlock({ 
-        self.handler(.ErrorAlertController(alertController: alertController))
+        self.handler!(.ErrorAlertController(alertController: alertController))
       })
     }
   }
@@ -90,7 +92,7 @@ class PlacemarkQuery: NSObject, CLLocationManagerDelegate {
       self.geocoder.reverseGeocodeLocation(locations.last!) { (placemarks: [CLPlacemark]?, error) in
         if let placemark = placemarks?.last {
           NSOperationQueue.mainQueue().addOperationWithBlock({ 
-            self.handler(.Placemark(placemark: placemark))
+            self.handler!(.Placemark(placemark: placemark))
           })
         } else {
           let alertController = UIAlertController(
@@ -104,7 +106,7 @@ class PlacemarkQuery: NSObject, CLLocationManagerDelegate {
             style: .Default,
             handler: nil))
           NSOperationQueue.mainQueue().addOperationWithBlock({
-            self.handler(.ErrorAlertController(alertController: alertController))
+            self.handler!(.ErrorAlertController(alertController: alertController))
           })
         }
       }
