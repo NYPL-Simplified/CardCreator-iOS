@@ -3,13 +3,9 @@ import UIKit
 
 final class IntroductionViewController: UIViewController {
   
-  let containerView: UIView
-  let continueButton: UIButton
   let descriptionLabel: UILabel
 
   init() {
-    containerView = UIView()
-    continueButton = UIButton(type: .System)
     descriptionLabel = UILabel()
     super.init(nibName: nil, bundle: nil)
   }
@@ -26,15 +22,8 @@ final class IntroductionViewController: UIViewController {
     
     self.view.backgroundColor = UIColor.whiteColor()
     
-    self.view.addSubview(self.containerView)
-    
-    self.containerView.autoAlignAxisToSuperviewAxis(.Horizontal)
-    self.containerView.autoPinEdgeToSuperviewMargin(.Left)
-    self.containerView.autoPinEdgeToSuperviewMargin(.Right)
-    self.containerView.addSubview(self.descriptionLabel)
-    self.containerView.addSubview(self.continueButton)
-    
-    self.descriptionLabel.autoPinEdgesToSuperviewEdgesWithInsets(UIEdgeInsetsZero, excludingEdge: .Bottom)
+    self.view.addSubview(self.descriptionLabel)
+    self.descriptionLabel.autoPinEdgesToSuperviewMargins()
     self.descriptionLabel.textColor = UIColor.darkGrayColor()
     self.descriptionLabel.textAlignment = .Center
     self.descriptionLabel.numberOfLines = 0
@@ -45,18 +34,14 @@ final class IntroductionViewController: UIViewController {
           + "purus, semper a tortor et, semper ornare augue."),
         comment: "A description of what is required to get a library card")
     
-    self.continueButton.autoAlignAxisToSuperviewAxis(.Vertical)
-    self.continueButton.autoPinEdge(.Top, toEdge: .Bottom, ofView: self.descriptionLabel, withOffset: 8)
-    self.continueButton.autoPinEdgeToSuperviewEdge(.Bottom)
-    self.continueButton.addTarget(self, action: #selector(didSelectContinue), forControlEvents: .PrimaryActionTriggered)
-    self.continueButton.setTitle(
-      NSLocalizedString(
-        "Continue",
-        comment: "A button that lets the user go to the next section or screen"),
-      forState: .Normal)
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+      title: NSLocalizedString("Next", comment: "A title for a button that goes to the next screen"),
+      style: .Plain,
+      target: self,
+      action: #selector(didSelectNext))
   }
   
-  @objc private func didSelectContinue() {
+  @objc private func didSelectNext() {
     let alertController = UIAlertController(
       title: NSLocalizedString(
         "Age Verification",
@@ -66,11 +51,11 @@ final class IntroductionViewController: UIViewController {
         comment: "An alert message telling the user they must be at least 13 years old and asking how old they are"),
       preferredStyle: .Alert)
     alertController.addAction(UIAlertAction(
-      title: "13 or Older",
+      title: NSLocalizedString("13 or Older", comment: "A button title indicating an age range"),
       style: .Default,
       handler: { _ in self.didSelect13OrOlder()}))
     alertController.addAction(UIAlertAction(
-      title: "Under 13",
+      title: NSLocalizedString("Under 13", comment: "A button title indicating an age range"),
       style: .Cancel,
       handler: { _ in self.didSelectUnder13()}))
     self.presentViewController(alertController, animated: true, completion: nil)
@@ -82,6 +67,18 @@ final class IntroductionViewController: UIViewController {
   }
   
   private func didSelectUnder13() {
-    
+    let alertController = UIAlertController(
+      title: NSLocalizedString(
+        "Age Restriction",
+        comment: "An alert title indicating that the user has encountered an age restriction"),
+      message: NSLocalizedString(
+        "You are not old enough to sign up for a library card.",
+        comment: "An alert message telling the user are not old enough to sign up for a library card"),
+      preferredStyle: .Alert)
+    alertController.addAction(UIAlertAction(
+      title: NSLocalizedString("OK", comment: ""),
+      style: .Default,
+      handler: nil))
+    self.presentViewController(alertController, animated: true, completion: nil)
   }
 }

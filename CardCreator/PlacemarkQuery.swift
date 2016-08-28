@@ -81,7 +81,7 @@ class PlacemarkQuery: NSObject, CLLocationManagerDelegate {
   }
   
   func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    if self.receivedRecentLocation {
+    if self.handler == nil || self.receivedRecentLocation {
       return
     }
     let latestLocation = locations.last!

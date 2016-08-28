@@ -26,7 +26,7 @@ class LocationViewController: UIViewController {
     self.view.backgroundColor = UIColor.whiteColor()
     
     self.navigationItem.rightBarButtonItem =
-      UIBarButtonItem(title: NSLocalizedString("Next", comment: "Go to the next screen"),
+      UIBarButtonItem(title: NSLocalizedString("Next", comment: "A title for a button that goes to the next screen"),
                       style: .Plain,
                       target: self,
                       action: #selector(didSelectNext))
