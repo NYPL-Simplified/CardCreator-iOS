@@ -70,7 +70,7 @@ class LocationViewController: UIViewController {
   }
   
   @objc private func didSelectNext() {
-    
+    self.navigationController?.pushViewController(AddressViewController(), animated: true)
   }
   
   private func checkLocation() {
