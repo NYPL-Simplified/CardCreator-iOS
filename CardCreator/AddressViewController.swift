@@ -191,7 +191,7 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
   
   @objc private func didSelectNext() {
     self.view.endEditing(false)
-    // FIXME: Do stuff!
+    self.submit()
   }
   
   private func isPossibleStartOfValidZIPCode(string: String) -> Bool {
@@ -267,5 +267,58 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
         && self.regionCell.textField.text?.characters.count > 0
         && self.zipCell.textField.text?.characters.count > 0
         && self.isValidZIPCode(self.zipCell.textField.text!))
+  }
+  
+  private func submit() {
+    self.navigationController?.view.userInteractionEnabled = false
+    let originalTitle = self.title
+    self.title = NSLocalizedString(
+      "Validating Address…",
+      comment: "A title telling the user their address is currently being validated")
+    let request = NSMutableURLRequest(URL: NSURL(string: "https://patrons.librarysimplified.org/validate/address")!)
+    let JSONObject: [String: [String: String]] = ["address":
+      [
+        "line_1": self.street1Cell.textField.text!,
+        "line_2": self.street2Cell.textField.text == nil ? "" : self.street2Cell.textField.text!,
+        "city": self.cityCell.textField.text!,
+        "state": self.regionCell.textField.text!,
+        "zip": self.zipCell.textField.text!
+      ]
+    ]
+    request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(JSONObject, options: [.PrettyPrinted])
+    request.HTTPMethod = "POST"
+    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.timeoutInterval = 5.0
+    NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) in
+      self.navigationController?.view.userInteractionEnabled = true
+      self.title = originalTitle
+      if let error = error {
+        let alertController = UIAlertController(
+          title: NSLocalizedString("Error", comment: "The title for an error alert"),
+          message: error.localizedDescription,
+          preferredStyle: .Alert)
+        alertController.addAction(UIAlertAction(
+          title: NSLocalizedString("OK", comment: ""),
+          style: .Default,
+          handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
+        return
+      }
+      if (response as! NSHTTPURLResponse).statusCode != 200 || data == nil {
+        let alertController = UIAlertController(
+          title: NSLocalizedString("Error", comment: "The title for an error alert"),
+          message: NSLocalizedString(
+            "A server error occurred during address validation. Please try again later.",
+            comment: "An alert message explaining an error and telling the user to try again later"),
+          preferredStyle: .Alert)
+        alertController.addAction(UIAlertAction(
+          title: NSLocalizedString("OK", comment: ""),
+          style: .Default,
+          handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
+        return
+      }
+      
+    }.resume()
   }
 }
