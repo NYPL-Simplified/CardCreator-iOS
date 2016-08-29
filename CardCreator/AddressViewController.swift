@@ -69,6 +69,12 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
     fatalError("init(coder:) has not been implemented")
   }
   
+  override func viewDidLoad() {
+    self.title = NSLocalizedString(
+      "Home Address",
+      comment: "A title for a screen asking the user for their home address")
+  }
+  
   private func returnToolbar() -> UIToolbar {
     let flexibleSpaceBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
     let nextBarButtonItem = UIBarButtonItem(

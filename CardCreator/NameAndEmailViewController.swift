@@ -36,6 +36,12 @@ class NameAndEmailViewController: UITableViewController, UITextFieldDelegate {
     fatalError("init(coder:) has not been implemented")
   }
   
+  override func viewDidLoad() {
+    self.title = NSLocalizedString(
+      "Personal Information",
+      comment: "A title for a screen asking the user for their personal information")
+  }
+  
   private func prepareTableViewCells() {
     for cell in self.cells {
       if let labelledTextViewCell = cell as? LabelledTextViewCell {
