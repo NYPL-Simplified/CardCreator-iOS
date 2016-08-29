@@ -289,36 +289,124 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
     request.HTTPMethod = "POST"
     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
     request.timeoutInterval = 5.0
-    NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) in
-      self.navigationController?.view.userInteractionEnabled = true
-      self.title = originalTitle
-      if let error = error {
-        let alertController = UIAlertController(
-          title: NSLocalizedString("Error", comment: "The title for an error alert"),
-          message: error.localizedDescription,
-          preferredStyle: .Alert)
-        alertController.addAction(UIAlertAction(
-          title: NSLocalizedString("OK", comment: ""),
-          style: .Default,
-          handler: nil))
-        self.presentViewController(alertController, animated: true, completion: nil)
-        return
+    let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) in
+      NSOperationQueue.mainQueue().addOperationWithBlock {
+        self.navigationController?.view.userInteractionEnabled = true
+        self.title = originalTitle
+        if let error = error {
+          let alertController = UIAlertController(
+            title: NSLocalizedString("Error", comment: "The title for an error alert"),
+            message: error.localizedDescription,
+            preferredStyle: .Alert)
+          alertController.addAction(UIAlertAction(
+            title: NSLocalizedString("OK", comment: ""),
+            style: .Default,
+            handler: nil))
+          self.presentViewController(alertController, animated: true, completion: nil)
+          return
+        }
+        func showErrorAlert() {
+          let alertController = UIAlertController(
+            title: NSLocalizedString("Error", comment: "The title for an error alert"),
+            message: NSLocalizedString(
+              "A server error occurred during address validation. Please try again later.",
+              comment: "An alert message explaining an error and telling the user to try again later"),
+            preferredStyle: .Alert)
+          alertController.addAction(UIAlertAction(
+            title: NSLocalizedString("OK", comment: ""),
+            style: .Default,
+            handler: nil))
+          self.presentViewController(alertController, animated: true, completion: nil)
+        }
+        if (response as! NSHTTPURLResponse).statusCode != 200 || data == nil {
+          showErrorAlert()
+          return
+        }
+        guard let validateAddressResponse = ValidateAddressResponse.responseFromData(data!) else {
+          showErrorAlert()
+          return
+        }
+        switch validateAddressResponse {
+        case let .ValidAddress(_, _, cardType):
+          switch cardType {
+          case .None:
+            // MARK: FIXME
+            let alertController = UIAlertController(
+              title: NSLocalizedString("FIXME: Unknown Flow", comment: ""),
+              message: NSLocalizedString(
+                "FIXME: The app is not sure what to do next!",
+                comment: ""),
+              preferredStyle: .Alert)
+            alertController.addAction(UIAlertAction(
+              title: NSLocalizedString("OK", comment: ""),
+              style: .Default,
+              handler: {_ in
+                self.navigationController?.pushViewController(NameAndEmailViewController(), animated: true)
+            }))
+            self.presentViewController(alertController, animated: true, completion: nil)
+          case .Temporary:
+            let alertController = UIAlertController(
+              title: NSLocalizedString("Temporary Card", comment: ""),
+              message: NSLocalizedString(
+                ("Your address qualifies you for a temporary 30-day library card. You will need to visit your local "
+                  + "NYPL branch within 30 days to receive a standard card."),
+                comment: "An alert message telling the user she'll get a 30-day library card"),
+              preferredStyle: .Alert)
+            alertController.addAction(UIAlertAction(
+              title: NSLocalizedString("OK", comment: ""),
+              style: .Default,
+              handler: {_ in
+                self.navigationController?.pushViewController(NameAndEmailViewController(), animated: true)
+            }))
+            self.presentViewController(alertController, animated: true, completion: nil)
+          case .Standard:
+            let alertController = UIAlertController(
+              title: NSLocalizedString("Standard Card", comment: ""),
+              message: NSLocalizedString(
+                "Congratulations! Your address qualifies you for a standard three-year library card.",
+                comment: "An alert message telling the user she'll get a three-year library card"),
+              preferredStyle: .Alert)
+            alertController.addAction(UIAlertAction(
+              title: NSLocalizedString("OK", comment: ""),
+              style: .Default,
+              handler: {_ in
+                self.navigationController?.pushViewController(NameAndEmailViewController(), animated: true)
+            }))
+            self.presentViewController(alertController, animated: true, completion: nil)
+          }
+        case .AlternateAddresses:
+          // MARK: FIXME
+          let alertController = UIAlertController(
+            title: NSLocalizedString("FIXME: Unknown Flow", comment: ""),
+            message: NSLocalizedString(
+              "FIXME: The app is not sure what to do next!",
+              comment: ""),
+            preferredStyle: .Alert)
+          alertController.addAction(UIAlertAction(
+            title: NSLocalizedString("OK", comment: ""),
+            style: .Default,
+            handler: {_ in
+              self.navigationController?.pushViewController(NameAndEmailViewController(), animated: true)
+          }))
+          self.presentViewController(alertController, animated: true, completion: nil)
+        case .UnrecognizedAddress:
+          let alertController = UIAlertController(
+            title: NSLocalizedString(
+              "Unrecognized Address",
+              comment: "An alert title telling the user their address was not recognized by the server"),
+            message: NSLocalizedString(
+              "Your address could not be verified. Please try another address.",
+              comment: "An alert message telling the user their address was not recognized by the server"),
+            preferredStyle: .Alert)
+          alertController.addAction(UIAlertAction(
+            title: NSLocalizedString("OK", comment: ""),
+            style: .Default,
+            handler: nil))
+          self.presentViewController(alertController, animated: true, completion: nil)
+        }
       }
-      if (response as! NSHTTPURLResponse).statusCode != 200 || data == nil {
-        let alertController = UIAlertController(
-          title: NSLocalizedString("Error", comment: "The title for an error alert"),
-          message: NSLocalizedString(
-            "A server error occurred during address validation. Please try again later.",
-            comment: "An alert message explaining an error and telling the user to try again later"),
-          preferredStyle: .Alert)
-        alertController.addAction(UIAlertAction(
-          title: NSLocalizedString("OK", comment: ""),
-          style: .Default,
-          handler: nil))
-        self.presentViewController(alertController, animated: true, completion: nil)
-        return
-      }
-      
-    }.resume()
+    }
+    
+    task.resume()
   }
 }

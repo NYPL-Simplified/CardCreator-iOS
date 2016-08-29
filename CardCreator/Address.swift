@@ -9,16 +9,16 @@ struct Address {
   
   static func addressFromJSONObject(object: AnyObject) -> Address? {
     guard
-      let object = object as? [String: String],
-      let street1 = object["line_1"],
-      let city = object["city"],
-      let region = object["state"],
-      let zip = object["zip"]
+      let address = object as? [String: AnyObject],
+      let street1 = address["line_1"] as? String,
+      let city = address["city"] as? String,
+      let region = address["state"] as? String,
+      let zip = address["zip"] as? String
       else
     {
       return nil
     }
     
-    return Address(street1: street1, street2: object["line_2"], city: city, region: region, zip: zip)
+    return Address(street1: street1, street2: address["line_2"] as? String, city: city, region: region, zip: zip)
   }
 }
