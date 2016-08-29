@@ -136,26 +136,26 @@ class NameAndEmailViewController: UITableViewController, UITextFieldDelegate {
           self.presentViewController(alertController, animated: true, completion: nil)
           return
         }
+        func showErrorAlert() {
+          let alertController = UIAlertController(
+            title: NSLocalizedString("Error", comment: "The title for an error alert"),
+            message: NSLocalizedString(
+              "A server error occurred during address validation. Please try again later.",
+              comment: "An alert message explaining an error and telling the user to try again later"),
+            preferredStyle: .Alert)
+          alertController.addAction(UIAlertAction(
+            title: NSLocalizedString("OK", comment: ""),
+            style: .Default,
+            handler: nil))
+          self.presentViewController(alertController, animated: true, completion: nil)
+        }
+        if (response as! NSHTTPURLResponse).statusCode != 200 || data == nil {
+          showErrorAlert()
+          return
+        }
+        
+        // FIXME: Continue
       }
-      func showErrorAlert() {
-        let alertController = UIAlertController(
-          title: NSLocalizedString("Error", comment: "The title for an error alert"),
-          message: NSLocalizedString(
-            "A server error occurred during address validation. Please try again later.",
-            comment: "An alert message explaining an error and telling the user to try again later"),
-          preferredStyle: .Alert)
-        alertController.addAction(UIAlertAction(
-          title: NSLocalizedString("OK", comment: ""),
-          style: .Default,
-          handler: nil))
-        self.presentViewController(alertController, animated: true, completion: nil)
-      }
-      if (response as! NSHTTPURLResponse).statusCode != 200 || data == nil {
-        showErrorAlert()
-        return
-      }
-      
-      // FIXME: Continue
     }
     
     task.resume()
