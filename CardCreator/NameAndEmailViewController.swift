@@ -103,6 +103,56 @@ class NameAndEmailViewController: UITableViewController, UITextFieldDelegate {
   
   @objc private func didSelectNext() {
     self.view.endEditing(false)
+    self.navigationController?.view.userInteractionEnabled = false
+    let originalTitle = self.title
+    self.title = NSLocalizedString(
+      "Validating Name…",
+      comment: "A title telling the user their full name is currently being validated")
+    let request = NSMutableURLRequest(URL: NSURL(string: "https://patrons.librarysimplified.org/validate/address")!)
+    let JSONObject: [String: String] = ["name": self.fullNameCell.textField.text!]
+    request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(JSONObject, options: [.PrettyPrinted])
+    request.HTTPMethod = "POST"
+    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.timeoutInterval = 5.0
+    let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) in
+      NSOperationQueue.mainQueue().addOperationWithBlock {
+        self.navigationController?.view.userInteractionEnabled = true
+        self.title = originalTitle
+        if let error = error {
+          let alertController = UIAlertController(
+            title: NSLocalizedString("Error", comment: "The title for an error alert"),
+            message: error.localizedDescription,
+            preferredStyle: .Alert)
+          alertController.addAction(UIAlertAction(
+            title: NSLocalizedString("OK", comment: ""),
+            style: .Default,
+            handler: nil))
+          self.presentViewController(alertController, animated: true, completion: nil)
+          return
+        }
+      }
+      func showErrorAlert() {
+        let alertController = UIAlertController(
+          title: NSLocalizedString("Error", comment: "The title for an error alert"),
+          message: NSLocalizedString(
+            "A server error occurred during address validation. Please try again later.",
+            comment: "An alert message explaining an error and telling the user to try again later"),
+          preferredStyle: .Alert)
+        alertController.addAction(UIAlertAction(
+          title: NSLocalizedString("OK", comment: ""),
+          style: .Default,
+          handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
+      }
+      if (response as! NSHTTPURLResponse).statusCode != 200 || data == nil {
+        showErrorAlert()
+        return
+      }
+      
+      // FIXME: Continue
+    }
+    
+    task.resume()
   }
   
   @objc private func textFieldDidChange() {
