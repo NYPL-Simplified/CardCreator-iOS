@@ -1,6 +1,12 @@
 import UIKit
 
 class AddressViewController: UITableViewController, UITextFieldDelegate {
+  
+  enum AddressType {
+    case Home
+    case Work
+  }
+  
   private static let regions: [String] = {
     let stream = NSInputStream.init(URL: NSBundle.mainBundle().URLForResource("regions", withExtension: "json")!)!
     stream.open()
@@ -10,6 +16,7 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
     return try! NSJSONSerialization.JSONObjectWithStream(stream, options: [.AllowFragments]) as! [String]
   }()
   
+  private let addressType: AddressType
   private let street1Cell: LabelledTextViewCell
   private let street2Cell: LabelledTextViewCell
   private let cityCell: LabelledTextViewCell
@@ -21,7 +28,8 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
   private let regionPickerView = UIPickerView()
   private let regionPickerViewDataSourceAndDelegate: RegionPickerViewDataSourceAndDelegate
   
-  init() {
+  init(addressType: AddressType) {
+    self.addressType = addressType
     self.street1Cell = LabelledTextViewCell(
       title: NSLocalizedString("Street 1", comment: "The first line of a US street address"),
       placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
