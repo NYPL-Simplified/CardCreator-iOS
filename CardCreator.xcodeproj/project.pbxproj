@@ -72,6 +72,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		2D8935971D7E4938001C5A75 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2DB436551D4D632700F8E69D /* Assets.xcassets */,
+				2DB4365A1D4D632700F8E69D /* Info.plist */,
+				2D4324571D6156890064B299 /* InfoPlist.strings */,
+				2DB436571D4D632700F8E69D /* LaunchScreen.storyboard */,
+				2D39E7F91D55704400477886 /* regions.json */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		2DB436421D4D632700F8E69D = {
 			isa = PBXGroup;
 			children = (
@@ -96,20 +108,16 @@
 				2D45A7AF1D73BF2800B1FEB6 /* Address.swift */,
 				2D45A7AB1D7388F200B1FEB6 /* AddressViewController.swift */,
 				2DB4364E1D4D632700F8E69D /* AppDelegate.swift */,
-				2DB436551D4D632700F8E69D /* Assets.xcassets */,
 				2DB436501D4D632700F8E69D /* CardCreatorViewController.swift */,
 				2D8935851D7A294B001C5A75 /* Configuration.swift */,
-				2DB4365A1D4D632700F8E69D /* Info.plist */,
-				2D4324571D6156890064B299 /* InfoPlist.strings */,
 				2D82C8AF1D6D0E2600C1E1D0 /* IntroductionViewController.swift */,
 				2D63B3621D51351A0022E960 /* LabelledTextViewCell.swift */,
-				2DB436571D4D632700F8E69D /* LaunchScreen.storyboard */,
 				2DF383C01D6F912E00565406 /* LocationViewController.swift */,
 				2D45A7B61D73D98300B1FEB6 /* NameAndEmailViewController.swift */,
 				2D0A062F1D5915B9005EB288 /* PlacemarkQuery.swift */,
-				2D39E7F91D55704400477886 /* regions.json */,
 				2D8935871D7E415D001C5A75 /* UsernameAndPINViewController.swift */,
 				2D45A7AD1D73BE0000B1FEB6 /* ValidateAddressResponse.swift */,
+				2D8935971D7E4938001C5A75 /* Resources */,
 			);
 			path = CardCreator;
 			sourceTree = "<group>";
