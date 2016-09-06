@@ -397,23 +397,34 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
                 style: .Cancel,
                 handler: nil))
               self.presentViewController(alertController, animated: true, completion: nil)
-              break
             case .School:
-              fallthrough
-            case .Work:
               let alertController = UIAlertController(
                 title: NSLocalizedString(
                   "Card Denied",
                   comment: "An alert title telling the user they cannot receive a library card"),
                 message: NSLocalizedString(
-                  "You cannot receive a library card because you do not work or attend school in New York.",
+                  "You cannot receive a library card because your school address does not appear to be in New York.",
                   comment: "An alert title telling the user they cannot receive a library card"),
                 preferredStyle: .Alert)
               alertController.addAction(UIAlertAction(
                 title: NSLocalizedString("OK", comment: ""),
                 style: .Default,
                 handler: nil))
-              break
+              self.presentViewController(alertController, animated: true, completion: nil)
+            case .Work:
+              let alertController = UIAlertController(
+                title: NSLocalizedString(
+                  "Card Denied",
+                  comment: "An alert title telling the user they cannot receive a library card"),
+                message: NSLocalizedString(
+                  "You cannot receive a library card because your work address does not appear to be in New York.",
+                  comment: "An alert title telling the user they cannot receive a library card"),
+                preferredStyle: .Alert)
+              alertController.addAction(UIAlertAction(
+                title: NSLocalizedString("OK", comment: ""),
+                style: .Default,
+                handler: nil))
+              self.presentViewController(alertController, animated: true, completion: nil)
             }
           case .Temporary:
             let alertController = UIAlertController(
