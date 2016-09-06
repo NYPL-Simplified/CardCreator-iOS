@@ -3,16 +3,21 @@ import UIKit
 class NameAndEmailViewController: UITableViewController, UITextFieldDelegate {
   private let fullNameCell: LabelledTextViewCell
   private let emailCell: LabelledTextViewCell
+  private let homeAddress: Address
+  private let schoolOrWorkAddress: Address?
   
   let cells: [UITableViewCell]
   
-  init() {
+  init(homeAddress: Address, schoolOrWorkAddress: Address?) {
     self.fullNameCell = LabelledTextViewCell(
       title: NSLocalizedString("Full Name", comment: "The text field title for the full name of a user"),
       placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
     self.emailCell = LabelledTextViewCell(
       title: NSLocalizedString("Email", comment: "A text field title for a user's email address"),
       placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
+    
+    self.homeAddress = homeAddress
+    self.schoolOrWorkAddress = schoolOrWorkAddress
     
     self.cells = [
       self.fullNameCell,
@@ -109,7 +114,13 @@ class NameAndEmailViewController: UITableViewController, UITextFieldDelegate {
   
   @objc private func didSelectNext() {
     self.view.endEditing(false)
-    self.navigationController?.pushViewController(UsernameAndPINViewController(), animated: true)
+    self.navigationController?.pushViewController(
+      UsernameAndPINViewController(
+        homeAddress: self.homeAddress,
+        schoolOrWorkAddress: self.schoolOrWorkAddress,
+        fullName: self.fullNameCell.textField.text!,
+        email: self.emailCell.textField.text!),
+      animated: true)
   }
   
   @objc private func textFieldDidChange() {

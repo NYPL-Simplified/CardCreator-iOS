@@ -4,8 +4,8 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
   
   enum AddressType {
     case Home
-    case School
-    case Work
+    case School(homeAddress: Address)
+    case Work(homeAddress: Address)
   }
   
   private static let regions: [String] = {
@@ -307,6 +307,34 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
         && self.isValidZIPCode(self.zipCell.textField.text!))
   }
   
+  private func currentAddress() -> Address? {
+    guard let
+      street1 = self.street1Cell.textField.text,
+      city = self.cityCell.textField.text,
+      region = self.regionCell.textField.text,
+      zip = self.zipCell.textField.text
+      else
+    {
+      return nil
+    }
+    
+    return Address(street1: street1, street2: self.street2Cell.textField.text, city: city, region: region, zip: zip)
+  }
+  
+  private func homeAndSchoolOrWorkAddresses() -> (Address, Address?)? {
+    guard let currentAddress = self.currentAddress() else {
+      return nil
+    }
+    switch self.addressType {
+    case .Home:
+      return (currentAddress, nil)
+    case let .School(homeAddress):
+      return (homeAddress, currentAddress)
+    case let .Work(homeAddress):
+      return (homeAddress, currentAddress)
+    }
+  }
+  
   private func submit() {
     self.navigationController?.view.userInteractionEnabled = false
     let originalTitle = self.title
@@ -314,15 +342,19 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
       "Validating Address…",
       comment: "A title telling the user their address is currently being validated")
     let request = NSMutableURLRequest(URL: Configuration.APIEndpoint.URLByAppendingPathComponent("validate/address"))
+    let isSchoolOrWorkAddress: Bool = {
+      switch self.addressType {
+      case .Home:
+        return false
+      case .School:
+        return true
+      case .Work:
+        return true
+      }
+    }()
     let JSONObject: [String: AnyObject] = [
-      "address": [
-        "line_1": self.street1Cell.textField.text!,
-        "line_2": self.street2Cell.textField.text == nil ? "" : self.street2Cell.textField.text!,
-        "city": self.cityCell.textField.text!,
-        "state": self.regionCell.textField.text!,
-        "zip": self.zipCell.textField.text!
-      ],
-      "is_work_address": self.addressType == .School || self.addressType == .Work
+      "address": Address.JSONObjectWithAddress(self.currentAddress()!),
+      "is_work_address": isSchoolOrWorkAddress
     ]
     request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(JSONObject, options: [.PrettyPrinted])
     request.HTTPMethod = "POST"
@@ -383,7 +415,7 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
                 style: .Default,
                 handler: {_ in
                   self.navigationController?.pushViewController(
-                    AddressViewController(addressType: .Work),
+                    AddressViewController(addressType: .Work(homeAddress: self.currentAddress()!)),
                     animated: true)
               }))
               alertController.addAction(UIAlertAction(
@@ -391,7 +423,7 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
                 style: .Default,
                 handler: {_ in
                   self.navigationController?.pushViewController(
-                    AddressViewController(addressType: .School),
+                    AddressViewController(addressType: .School(homeAddress: self.currentAddress()!)),
                     animated: true)
               }))
               alertController.addAction(UIAlertAction(
@@ -440,7 +472,11 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
               title: NSLocalizedString("OK", comment: ""),
               style: .Default,
               handler: {_ in
-                self.navigationController?.pushViewController(NameAndEmailViewController(), animated: true)
+                let (homeAddress, schoolOrWorkAddress) = self.homeAndSchoolOrWorkAddresses()!
+                let viewController = NameAndEmailViewController(
+                  homeAddress: homeAddress,
+                  schoolOrWorkAddress: schoolOrWorkAddress)
+                self.navigationController?.pushViewController(viewController, animated: true)
             }))
             self.presentViewController(alertController, animated: true, completion: nil)
           case .Standard:
@@ -454,7 +490,11 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
               title: NSLocalizedString("OK", comment: ""),
               style: .Default,
               handler: {_ in
-                self.navigationController?.pushViewController(NameAndEmailViewController(), animated: true)
+                let (homeAddress, schoolOrWorkAddress) = self.homeAndSchoolOrWorkAddresses()!
+                let viewController = NameAndEmailViewController(
+                  homeAddress: homeAddress,
+                  schoolOrWorkAddress: schoolOrWorkAddress)
+                self.navigationController?.pushViewController(viewController, animated: true)
             }))
             self.presentViewController(alertController, animated: true, completion: nil)
           }
@@ -470,7 +510,7 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
             title: NSLocalizedString("OK", comment: ""),
             style: .Default,
             handler: {_ in
-              self.navigationController?.pushViewController(NameAndEmailViewController(), animated: true)
+              // FIXME: Do something.
           }))
           self.presentViewController(alertController, animated: true, completion: nil)
         case .UnrecognizedAddress:

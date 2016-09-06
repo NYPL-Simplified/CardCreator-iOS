@@ -3,16 +3,25 @@ import UIKit
 class UsernameAndPINViewController: UITableViewController, UITextFieldDelegate {
   private let usernameCell: LabelledTextViewCell
   private let pinCell: LabelledTextViewCell
+  private let homeAddress: Address
+  private let schoolOrWorkAddress: Address?
+  private let fullName: String
+  private let email: String
   
   let cells: [UITableViewCell]
   
-  init() {
+  init(homeAddress: Address, schoolOrWorkAddress: Address?, fullName: String, email: String) {
     self.usernameCell = LabelledTextViewCell(
       title: NSLocalizedString("Username", comment: "A username used to log into a service"),
       placeholder: NSLocalizedString("janedoe123", comment: "An example of a possible username"))
     self.pinCell = LabelledTextViewCell(
       title: NSLocalizedString("PIN", comment: "An abbreviation for personal identification number"),
       placeholder: "0987")
+    
+    self.homeAddress = homeAddress
+    self.schoolOrWorkAddress = schoolOrWorkAddress
+    self.fullName = fullName
+    self.email = email
     
     self.cells = [
       self.usernameCell,

@@ -21,4 +21,14 @@ struct Address {
     
     return Address(street1: street1, street2: address["line_2"] as? String, city: city, region: region, zip: zip)
   }
+  
+  static func JSONObjectWithAddress(address: Address) -> [String: String] {
+    return [
+      "line_1": address.street1,
+      "line_2": address.street2 == nil ? "" : address.street2!,
+      "city": address.city,
+      "state": address.region,
+      "zip": address.zip
+    ]
+  }
 }
