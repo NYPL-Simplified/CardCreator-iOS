@@ -239,8 +239,7 @@ class UsernameAndPINViewController: UITableViewController, UITextFieldDelegate {
             handler: nil))
           self.presentViewController(alertController, animated: true, completion: nil)
         case .AvailableUsername:
-          // FIXME: Do the create_patron step!
-          break
+          self.createPatron()
         }
       }
     }
@@ -252,5 +251,70 @@ class UsernameAndPINViewController: UITableViewController, UITextFieldDelegate {
     self.navigationItem.rightBarButtonItem?.enabled =
       (self.usernameCell.textField.text?.characters.count >= 5
         && self.pinCell.textField.text?.characters.count == 4)
+  }
+  
+  private func createPatron() {
+    self.view.endEditing(false)
+    self.navigationController?.view.userInteractionEnabled = false
+    let originalTitle = self.title
+    self.title = NSLocalizedString(
+      "Creating Card…",
+      comment: "A title telling the user their card is currently being created")
+    let request = NSMutableURLRequest(URL: Configuration.APIEndpoint.URLByAppendingPathComponent("create_patron"))
+    let schoolOrWorkAddressOrNull: AnyObject = {
+      if let schoolOrWorkAddress = self.schoolOrWorkAddress {
+        return Address.JSONObjectWithAddress(schoolOrWorkAddress)
+      } else {
+        return NSNull()
+      }
+    }()
+    let JSONObject: [String: AnyObject] = [
+      "name": self.fullName,
+      "email": self.email,
+      "address": Address.JSONObjectWithAddress(self.homeAddress),
+      "username": self.usernameCell.textField.text!,
+      "pin": self.pinCell.textField.text!,
+      "work_address": schoolOrWorkAddressOrNull
+    ]
+    request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(JSONObject, options: [.PrettyPrinted])
+    request.HTTPMethod = "POST"
+    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.timeoutInterval = 5.0
+    let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) in
+      NSOperationQueue.mainQueue().addOperationWithBlock {
+        self.navigationController?.view.userInteractionEnabled = true
+        self.title = originalTitle
+        if let error = error {
+          let alertController = UIAlertController(
+            title: NSLocalizedString("Error", comment: "The title for an error alert"),
+            message: error.localizedDescription,
+            preferredStyle: .Alert)
+          alertController.addAction(UIAlertAction(
+            title: NSLocalizedString("OK", comment: ""),
+            style: .Default,
+            handler: nil))
+          self.presentViewController(alertController, animated: true, completion: nil)
+          return
+        }
+        func showErrorAlert() {
+          let alertController = UIAlertController(
+            title: NSLocalizedString("Error", comment: "The title for an error alert"),
+            message: NSLocalizedString(
+              "A server error occurred during card creation. Please try again later.",
+              comment: "An alert message explaining an error and telling the user to try again later"),
+            preferredStyle: .Alert)
+          alertController.addAction(UIAlertAction(
+            title: NSLocalizedString("OK", comment: ""),
+            style: .Default,
+            handler: nil))
+          self.presentViewController(alertController, animated: true, completion: nil)
+        }
+        if (response as! NSHTTPURLResponse).statusCode != 200 || data == nil {
+          showErrorAlert()
+          return
+        }
+        // FIXME: Present success to the user!
+      }
+    }
   }
 }
