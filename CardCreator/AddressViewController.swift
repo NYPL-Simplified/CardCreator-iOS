@@ -4,6 +4,7 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
   
   enum AddressType {
     case Home
+    case School
     case Work
   }
   
@@ -78,9 +79,20 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
   }
   
   override func viewDidLoad() {
-    self.title = NSLocalizedString(
-      "Home Address",
-      comment: "A title for a screen asking the user for their home address")
+    switch self.addressType {
+    case .Home:
+      self.title = NSLocalizedString(
+        "Home Address",
+        comment: "A title for a screen asking the user for their home address")
+    case .School:
+      self.title = NSLocalizedString(
+        "School Address",
+        comment: "A title for a screen asking the user for their school address")
+    case .Work:
+      self.title = NSLocalizedString(
+        "Work Address",
+        comment: "A title for a screen asking the user for their work address")
+    }
   }
   
   private func returnToolbar() -> UIToolbar {
@@ -133,6 +145,15 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
     
     self.regionCell.textField.inputView = self.regionPickerView
     self.regionCell.textField.inputAccessoryView = self.returnToolbar()
+    switch self.addressType {
+    case .Home:
+      break
+    case .School:
+      fallthrough
+    case .Work:
+      self.regionCell.textField.userInteractionEnabled = false
+      self.regionCell.textField.text = "New York"
+    }
     
     self.zipCell.textField.keyboardType = .NumberPad
     self.zipCell.textField.inputAccessoryView = self.doneToolbar()
@@ -145,7 +166,9 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
     var foundFirstResponder = false
     for cell in self.cells {
       if let labelledTextViewCell = cell as? LabelledTextViewCell {
-        if foundFirstResponder {
+        // Skip fields that are not enabled, e.g. the region field when entering school
+        // or work addresses.
+        if foundFirstResponder && labelledTextViewCell.textField.userInteractionEnabled {
           labelledTextViewCell.textField.becomeFirstResponder()
           return
         }
@@ -289,7 +312,7 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
     self.title = NSLocalizedString(
       "Validating Address…",
       comment: "A title telling the user their address is currently being validated")
-    let request = NSMutableURLRequest(URL: NSURL(string: "https://patrons.librarysimplified.org/validate/address")!)
+    let request = NSMutableURLRequest(URL: Configuration.APIEndpoint.URLByAppendingPathComponent("validate/address"))
     let JSONObject: [String: [String: String]] = ["address":
       [
         "line_1": self.street1Cell.textField.text!,
@@ -344,20 +367,54 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
         case let .ValidAddress(_, _, cardType):
           switch cardType {
           case .None:
-            // MARK: FIXME
-            let alertController = UIAlertController(
-              title: NSLocalizedString("FIXME: Unknown Flow", comment: ""),
-              message: NSLocalizedString(
-                "FIXME: The app is not sure what to do next!",
-                comment: ""),
-              preferredStyle: .Alert)
-            alertController.addAction(UIAlertAction(
-              title: NSLocalizedString("OK", comment: ""),
-              style: .Default,
-              handler: {_ in
-                self.navigationController?.pushViewController(NameAndEmailViewController(), animated: true)
-            }))
-            self.presentViewController(alertController, animated: true, completion: nil)
+            switch self.addressType {
+            case .Home:
+              let alertController = UIAlertController(
+                title: NSLocalizedString("Out-of-State Address", comment: ""),
+                message: NSLocalizedString(
+                  ("Since you do not live in New York, you must work or attend school in New York to qualify for a "
+                    + "library card."),
+                  comment: "A message informing the user what they must assert given that they live outside NY"),
+                preferredStyle: .ActionSheet)
+              alertController.addAction(UIAlertAction(
+                title: NSLocalizedString("I Work in New York", comment: ""),
+                style: .Default,
+                handler: {_ in
+                  self.navigationController?.pushViewController(
+                    AddressViewController(addressType: .Work),
+                    animated: true)
+              }))
+              alertController.addAction(UIAlertAction(
+                title: NSLocalizedString("I Attend School in New York", comment: ""),
+                style: .Default,
+                handler: {_ in
+                  self.navigationController?.pushViewController(
+                    AddressViewController(addressType: .School),
+                    animated: true)
+              }))
+              alertController.addAction(UIAlertAction(
+                title: NSLocalizedString("Edit Home Address", comment: ""),
+                style: .Cancel,
+                handler: nil))
+              self.presentViewController(alertController, animated: true, completion: nil)
+              break
+            case .School:
+              fallthrough
+            case .Work:
+              let alertController = UIAlertController(
+                title: NSLocalizedString(
+                  "Card Denied",
+                  comment: "An alert title telling the user they cannot receive a library card"),
+                message: NSLocalizedString(
+                  "You cannot receive a library card because you do not work or attend school in New York.",
+                  comment: "An alert title telling the user they cannot receive a library card"),
+                preferredStyle: .Alert)
+              alertController.addAction(UIAlertAction(
+                title: NSLocalizedString("OK", comment: ""),
+                style: .Default,
+                handler: nil))
+              break
+            }
           case .Temporary:
             let alertController = UIAlertController(
               title: NSLocalizedString("Temporary Card", comment: ""),
