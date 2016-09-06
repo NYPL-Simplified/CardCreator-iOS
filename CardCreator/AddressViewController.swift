@@ -314,14 +314,15 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
       "Validating Address…",
       comment: "A title telling the user their address is currently being validated")
     let request = NSMutableURLRequest(URL: Configuration.APIEndpoint.URLByAppendingPathComponent("validate/address"))
-    let JSONObject: [String: [String: String]] = ["address":
-      [
+    let JSONObject: [String: AnyObject] = [
+      "address": [
         "line_1": self.street1Cell.textField.text!,
         "line_2": self.street2Cell.textField.text == nil ? "" : self.street2Cell.textField.text!,
         "city": self.cityCell.textField.text!,
         "state": self.regionCell.textField.text!,
         "zip": self.zipCell.textField.text!
-      ]
+      ],
+      "is_work_address": self.addressType == .School || self.addressType == .Work
     ]
     request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(JSONObject, options: [.PrettyPrinted])
     request.HTTPMethod = "POST"
