@@ -153,6 +153,7 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
     case .Work:
       self.regionCell.textField.userInteractionEnabled = false
       self.regionCell.textField.text = "New York"
+      self.regionCell.textField.textColor = UIColor.grayColor()
     }
     
     self.zipCell.textField.keyboardType = .NumberPad
