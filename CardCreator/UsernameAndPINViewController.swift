@@ -274,7 +274,7 @@ class UsernameAndPINViewController: UITableViewController, UITextFieldDelegate {
       "address": Address.JSONObjectWithAddress(self.homeAddress),
       "username": self.usernameCell.textField.text!,
       "pin": self.pinCell.textField.text!,
-      "work_address": schoolOrWorkAddressOrNull
+      "work_or_school_address": schoolOrWorkAddressOrNull
     ]
     request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(JSONObject, options: [.PrettyPrinted])
     request.HTTPMethod = "POST"
