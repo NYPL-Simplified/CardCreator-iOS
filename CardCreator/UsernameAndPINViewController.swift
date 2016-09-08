@@ -316,5 +316,7 @@ class UsernameAndPINViewController: UITableViewController, UITextFieldDelegate {
         // FIXME: Present success to the user!
       }
     }
+    
+    task.resume()
   }
 }
