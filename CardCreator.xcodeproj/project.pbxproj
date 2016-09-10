@@ -18,6 +18,7 @@
 		2D82C8B01D6D0E2600C1E1D0 /* IntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D82C8AF1D6D0E2600C1E1D0 /* IntroductionViewController.swift */; };
 		2D8451281D7F50D800B0BB8B /* AlternativeAddressesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D8451271D7F50D800B0BB8B /* AlternativeAddressesViewController.swift */; };
 		2D84512A1D7F565F00B0BB8B /* AddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D8451291D7F565F00B0BB8B /* AddressCell.swift */; };
+		2D84514E1D821E5B00B0BB8B /* AddressStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D84514D1D821E5B00B0BB8B /* AddressStep.swift */; };
 		2D8935861D7A294B001C5A75 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D8935851D7A294B001C5A75 /* Configuration.swift */; };
 		2D8935881D7E415D001C5A75 /* UsernameAndPINViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D8935871D7E415D001C5A75 /* UsernameAndPINViewController.swift */; };
 		2D89359A1D7F0148001C5A75 /* ValidateUsernameResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D8935991D7F0148001C5A75 /* ValidateUsernameResponse.swift */; };
@@ -33,15 +34,16 @@
 		2D0A062F1D5915B9005EB288 /* PlacemarkQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacemarkQuery.swift; sourceTree = "<group>"; };
 		2D39E7F91D55704400477886 /* regions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = regions.json; sourceTree = "<group>"; };
 		2D4324571D6156890064B299 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
-		2D45A7AB1D7388F200B1FEB6 /* AddressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressViewController.swift; sourceTree = "<group>"; };
+		2D45A7AB1D7388F200B1FEB6 /* AddressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AddressViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2D45A7AD1D73BE0000B1FEB6 /* ValidateAddressResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidateAddressResponse.swift; sourceTree = "<group>"; };
 		2D45A7AF1D73BF2800B1FEB6 /* Address.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
 		2D45A7B61D73D98300B1FEB6 /* NameAndEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NameAndEmailViewController.swift; sourceTree = "<group>"; };
 		2D63B3601D512FB20022E960 /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = "Pods/../build/Debug-iphoneos/PureLayout/PureLayout.framework"; sourceTree = "<group>"; };
 		2D63B3621D51351A0022E960 /* LabelledTextViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelledTextViewCell.swift; sourceTree = "<group>"; };
 		2D82C8AF1D6D0E2600C1E1D0 /* IntroductionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroductionViewController.swift; sourceTree = "<group>"; };
-		2D8451271D7F50D800B0BB8B /* AlternativeAddressesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlternativeAddressesViewController.swift; sourceTree = "<group>"; };
+		2D8451271D7F50D800B0BB8B /* AlternativeAddressesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AlternativeAddressesViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		2D8451291D7F565F00B0BB8B /* AddressCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressCell.swift; sourceTree = "<group>"; };
+		2D84514D1D821E5B00B0BB8B /* AddressStep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressStep.swift; sourceTree = "<group>"; };
 		2D8935851D7A294B001C5A75 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		2D8935871D7E415D001C5A75 /* UsernameAndPINViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsernameAndPINViewController.swift; sourceTree = "<group>"; };
 		2D8935991D7F0148001C5A75 /* ValidateUsernameResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidateUsernameResponse.swift; sourceTree = "<group>"; };
@@ -51,7 +53,7 @@
 		2DB436551D4D632700F8E69D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2DB436581D4D632700F8E69D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2DB4365A1D4D632700F8E69D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2DF383C01D6F912E00565406 /* LocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
+		2DF383C01D6F912E00565406 /* LocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LocationViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		98902DB081AFA53AD479E373 /* Pods-CardCreator.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CardCreator.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CardCreator/Pods-CardCreator.debug.xcconfig"; sourceTree = "<group>"; };
 		AD79CE3A96861416B4546603 /* Pods-CardCreator.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CardCreator.release.xcconfig"; path = "Pods/Target Support Files/Pods-CardCreator/Pods-CardCreator.release.xcconfig"; sourceTree = "<group>"; };
 		D10534F3FDA4909478ABF743 /* Pods_CardCreator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CardCreator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -137,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				2D45A7AF1D73BF2800B1FEB6 /* Address.swift */,
+				2D84514D1D821E5B00B0BB8B /* AddressStep.swift */,
 				2DB4364E1D4D632700F8E69D /* AppDelegate.swift */,
 				2D8935851D7A294B001C5A75 /* Configuration.swift */,
 				2D0A062F1D5915B9005EB288 /* PlacemarkQuery.swift */,
@@ -293,6 +296,7 @@
 				2D89359A1D7F0148001C5A75 /* ValidateUsernameResponse.swift in Sources */,
 				2D63B3631D51351A0022E960 /* LabelledTextViewCell.swift in Sources */,
 				2D45A7AE1D73BE0000B1FEB6 /* ValidateAddressResponse.swift in Sources */,
+				2D84514E1D821E5B00B0BB8B /* AddressStep.swift in Sources */,
 				2D8935861D7A294B001C5A75 /* Configuration.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,7 +9,7 @@ class ValidateAddressResponse {
   
   enum Response {
     case ValidAddress(message: String, address: Address, cardType: CardType)
-    case AlternateAddresses(message: String, addresses: [Address])
+    case AlternativeAddresses(message: String, addresses: [Address])
     case UnrecognizedAddress(message: String)
   }
   
@@ -38,7 +38,7 @@ class ValidateAddressResponse {
         let addressObjects = JSONObject["addresses"] as? [AnyObject],
         let addresses = addressObjects.map(Address.addressFromJSONObject) as? [Address]
         else { return nil }
-      return Response.AlternateAddresses(message: message, addresses: addresses)
+      return Response.AlternativeAddresses(message: message, addresses: addresses)
     case "unrecognized-address":
       return Response.UnrecognizedAddress(message: message)
     default:

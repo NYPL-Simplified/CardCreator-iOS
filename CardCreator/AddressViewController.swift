@@ -2,12 +2,6 @@ import UIKit
 
 class AddressViewController: UITableViewController, UITextFieldDelegate {
   
-  enum AddressType {
-    case Home
-    case School(homeAddress: Address)
-    case Work(homeAddress: Address)
-  }
-  
   private static let regions: [String] = {
     let stream = NSInputStream.init(URL: NSBundle.mainBundle().URLForResource("regions", withExtension: "json")!)!
     stream.open()
@@ -17,7 +11,7 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
     return try! NSJSONSerialization.JSONObjectWithStream(stream, options: [.AllowFragments]) as! [String]
   }()
   
-  private let addressType: AddressType
+  private let addressStep: AddressStep
   private let street1Cell: LabelledTextViewCell
   private let street2Cell: LabelledTextViewCell
   private let cityCell: LabelledTextViewCell
@@ -29,8 +23,8 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
   private let regionPickerView = UIPickerView()
   private let regionPickerViewDataSourceAndDelegate: RegionPickerViewDataSourceAndDelegate
   
-  init(addressType: AddressType) {
-    self.addressType = addressType
+  init(addressStep: AddressStep) {
+    self.addressStep = addressStep
     self.street1Cell = LabelledTextViewCell(
       title: NSLocalizedString("Street 1", comment: "The first line of a US street address"),
       placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
@@ -79,7 +73,7 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
   }
   
   override func viewDidLoad() {
-    switch self.addressType {
+    switch self.addressStep {
     case .Home:
       self.title = NSLocalizedString(
         "Home Address",
@@ -145,7 +139,7 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
     
     self.regionCell.textField.inputView = self.regionPickerView
     self.regionCell.textField.inputAccessoryView = self.returnToolbar()
-    switch self.addressType {
+    switch self.addressStep {
     case .Home:
       break
     case .School:
@@ -325,7 +319,7 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
     guard let currentAddress = self.currentAddress() else {
       return nil
     }
-    switch self.addressType {
+    switch self.addressStep {
     case .Home:
       return (currentAddress, nil)
     case let .School(homeAddress):
@@ -343,7 +337,7 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
       comment: "A title telling the user their address is currently being validated")
     let request = NSMutableURLRequest(URL: Configuration.APIEndpoint.URLByAppendingPathComponent("validate/address"))
     let isSchoolOrWorkAddress: Bool = {
-      switch self.addressType {
+      switch self.addressStep {
       case .Home:
         return false
       case .School:
@@ -401,7 +395,7 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
         case let .ValidAddress(_, _, cardType):
           switch cardType {
           case .None:
-            switch self.addressType {
+            switch self.addressStep {
             case .Home:
               let alertController = UIAlertController(
                 title: NSLocalizedString("Out-of-State Address", comment: ""),
@@ -415,7 +409,7 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
                 style: .Default,
                 handler: {_ in
                   self.navigationController?.pushViewController(
-                    AddressViewController(addressType: .Work(homeAddress: self.currentAddress()!)),
+                    AddressViewController(addressStep: .Work(homeAddress: self.currentAddress()!)),
                     animated: true)
               }))
               alertController.addAction(UIAlertAction(
@@ -423,7 +417,7 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
                 style: .Default,
                 handler: {_ in
                   self.navigationController?.pushViewController(
-                    AddressViewController(addressType: .School(homeAddress: self.currentAddress()!)),
+                    AddressViewController(addressStep: .School(homeAddress: self.currentAddress()!)),
                     animated: true)
               }))
               alertController.addAction(UIAlertAction(
@@ -498,21 +492,9 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
             }))
             self.presentViewController(alertController, animated: true, completion: nil)
           }
-        case .AlternateAddresses:
-          // MARK: FIXME
-          let alertController = UIAlertController(
-            title: NSLocalizedString("FIXME: Unknown Flow", comment: ""),
-            message: NSLocalizedString(
-              "FIXME: The app is not sure what to do next!",
-              comment: ""),
-            preferredStyle: .Alert)
-          alertController.addAction(UIAlertAction(
-            title: NSLocalizedString("OK", comment: ""),
-            style: .Default,
-            handler: {_ in
-              // FIXME: Do something.
-          }))
-          self.presentViewController(alertController, animated: true, completion: nil)
+        case .AlternativeAddresses:
+          
+          break
         case .UnrecognizedAddress:
           let alertController = UIAlertController(
             title: NSLocalizedString(

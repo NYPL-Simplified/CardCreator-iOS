@@ -1,15 +1,15 @@
 import UIKit
 
 class AlternativeAddressesViewController: UITableViewController {
-  private let addressType: AddressViewController.AddressType
+  private let addressStep: AddressStep
   private let alternativeAddressesAndCardTypes: [(Address, ValidateAddressResponse.CardType)]
 
   private static let addressCellReuseIdentifier = "addressCellReuseIdentifier"
   
-  init(addressType: AddressViewController.AddressType,
+  init(addressStep: AddressStep,
        alternativeAddressesAndCardTypes: [(Address, ValidateAddressResponse.CardType)])
   {
-    self.addressType = addressType
+    self.addressStep = addressStep
     self.alternativeAddressesAndCardTypes = alternativeAddressesAndCardTypes
     
     super.init(style: .Grouped)
