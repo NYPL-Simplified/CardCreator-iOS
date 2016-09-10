@@ -9,7 +9,7 @@ class ValidateAddressResponse {
   
   enum Response {
     case ValidAddress(message: String, address: Address, cardType: CardType)
-    case AlternativeAddresses(message: String, addresses: [Address])
+    case AlternativeAddresses(message: String, addressTuples: [(Address, CardType)])
     case UnrecognizedAddress(message: String)
   }
   
@@ -34,11 +34,26 @@ class ValidateAddressResponse {
         else { return nil }
       return Response.ValidAddress(message: message, address: address, cardType: cardType)
     case "alternate-addresses":
-      guard
-        let addressObjects = JSONObject["addresses"] as? [AnyObject],
-        let addresses = addressObjects.map(Address.addressFromJSONObject) as? [Address]
-        else { return nil }
-      return Response.AlternativeAddresses(message: message, addresses: addresses)
+      guard let addressContainingObjects = JSONObject["addresses"] as? [AnyObject] else { return nil }
+      let addressTuples = addressContainingObjects.flatMap({(object: AnyObject) -> (Address, CardType)? in
+        guard
+          let JSONObject = object as? [String: AnyObject],
+          let addressJSON = JSONObject["address"] as? [String: AnyObject],
+          let address = Address.addressFromJSONObject(addressJSON),
+          let cardTypeString = JSONObject["card_type"] as? String
+          else
+        {
+          return nil
+        }
+        var cardType = CardType.None
+        if cardTypeString == "temporary" {
+          cardType = .Temporary
+        } else if cardTypeString == "standard" {
+          cardType = .Standard
+        }
+        return (address, cardType)
+      })
+      return Response.AlternativeAddresses(message: message, addressTuples: addressTuples)
     case "unrecognized-address":
       return Response.UnrecognizedAddress(message: message)
     default:

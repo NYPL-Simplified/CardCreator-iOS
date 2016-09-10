@@ -493,7 +493,6 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
             self.presentViewController(alertController, animated: true, completion: nil)
           }
         case .AlternativeAddresses:
-          
           break
         case .UnrecognizedAddress:
           let alertController = UIAlertController(
