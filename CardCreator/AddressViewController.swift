@@ -492,8 +492,11 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
             }))
             self.presentViewController(alertController, animated: true, completion: nil)
           }
-        case .AlternativeAddresses:
-          break
+        case let .AlternativeAddresses(_, addressTuples):
+          let viewController = AlternativeAddressesViewController(
+            addressStep: self.addressStep,
+            alternativeAddressesAndCardTypes: addressTuples)
+          self.navigationController?.pushViewController(viewController, animated: true)
         case .UnrecognizedAddress:
           let alertController = UIAlertController(
             title: NSLocalizedString(

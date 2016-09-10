@@ -17,6 +17,10 @@ class AlternativeAddressesViewController: UITableViewController {
     self.tableView.registerClass(
       AddressCell.self,
       forCellReuseIdentifier: AlternativeAddressesViewController.addressCellReuseIdentifier)
+    
+    // Estimated cell height obtained via debugging. This must be set in order for the cells
+    // to be sized automatically via `UITableViewAutomaticDimension` (which is the default).
+    self.tableView.estimatedRowHeight = 104
   }
   
   @available(*, unavailable)

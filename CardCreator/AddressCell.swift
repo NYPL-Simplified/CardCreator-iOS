@@ -17,14 +17,14 @@ class AddressCell: UITableViewCell {
     }
   }
   
-  init(reuseIdentifier: String?) {
+  override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
     self.street1Label = UILabel()
     self.street2Label = UILabel()
     self.cityLabel = UILabel()
     self.regionLabel = UILabel()
     self.zipLabel = UILabel()
     
-    super.init(style: .Default, reuseIdentifier: reuseIdentifier)
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
     
     self.contentView.addSubview(self.street1Label)
     self.street1Label.autoPinEdgesToSuperviewMarginsExcludingEdge(.Bottom)
