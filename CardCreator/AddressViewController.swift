@@ -334,7 +334,7 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
       }
     }()
     let JSONObject: [String: AnyObject] = [
-      "address": Address.JSONObjectWithAddress(self.currentAddress()!),
+      "address": self.currentAddress()!.JSONObject(),
       "is_work_or_school_address": isSchoolOrWorkAddress
     ]
     request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(JSONObject, options: [.PrettyPrinted])

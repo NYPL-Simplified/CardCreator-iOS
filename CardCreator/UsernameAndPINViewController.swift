@@ -264,7 +264,7 @@ class UsernameAndPINViewController: UITableViewController, UITextFieldDelegate {
     let request = NSMutableURLRequest(URL: Configuration.APIEndpoint.URLByAppendingPathComponent("create_patron"))
     let schoolOrWorkAddressOrNull: AnyObject = {
       if let schoolOrWorkAddress = self.schoolOrWorkAddress {
-        return Address.JSONObjectWithAddress(schoolOrWorkAddress)
+        return schoolOrWorkAddress.JSONObject()
       } else {
         return NSNull()
       }
@@ -272,7 +272,7 @@ class UsernameAndPINViewController: UITableViewController, UITextFieldDelegate {
     let JSONObject: [String: AnyObject] = [
       "name": self.fullName,
       "email": self.email,
-      "address": Address.JSONObjectWithAddress(self.homeAddress),
+      "address": self.homeAddress.JSONObject(),
       "username": self.usernameCell.textField.text!,
       "pin": self.pinCell.textField.text!,
       "work_or_school_address": schoolOrWorkAddressOrNull
