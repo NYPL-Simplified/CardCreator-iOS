@@ -105,19 +105,6 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
     return toolbar
   }
   
-  private func doneToolbar() -> UIToolbar {
-    let flexibleSpaceBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-    let doneBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done,
-                                            target: self,
-                                            action: #selector(didSelectDone))
-    
-    let toolbar = UIToolbar()
-    toolbar.setItems([flexibleSpaceBarButtonItem, doneBarButtonItem], animated: false)
-    toolbar.sizeToFit()
-    
-    return toolbar
-  }
-  
   private func prepareTableViewCells() {
     for cell in self.cells {
       if let labelledTextViewCell = cell as? LabelledTextViewCell {
@@ -152,7 +139,7 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
     }
     
     self.zipCell.textField.keyboardType = .NumberPad
-    self.zipCell.textField.inputAccessoryView = self.doneToolbar()
+    self.zipCell.textField.inputAccessoryView = self.returnToolbar()
     self.zipCell.textField.addTarget(self,
                                      action: #selector(zipTextFieldDidChange),
                                      forControlEvents: .AllEditingEvents)
