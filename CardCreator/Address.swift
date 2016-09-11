@@ -7,7 +7,7 @@ struct Address {
   let region: String
   let zip: String
   
-  static func addressFromJSONObject(object: AnyObject) -> Address? {
+  static func addressWithJSONObject(object: AnyObject) -> Address? {
     guard
       let address = object as? [String: AnyObject],
       let street1 = address["line_1"] as? String,

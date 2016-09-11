@@ -24,7 +24,7 @@ class ValidateAddressResponse {
       }
       guard
         let addressObject = JSONObject["address"],
-        let address = Address.addressFromJSONObject(addressObject)
+        let address = Address.addressWithJSONObject(addressObject)
         else { return nil }
       return Response.ValidAddress(message: message, address: address, cardType: cardType)
     case "alternate-addresses":
@@ -33,7 +33,7 @@ class ValidateAddressResponse {
         guard
           let JSONObject = object as? [String: AnyObject],
           let addressJSON = JSONObject["address"] as? [String: AnyObject],
-          let address = Address.addressFromJSONObject(addressJSON),
+          let address = Address.addressWithJSONObject(addressJSON),
           let cardTypeString = JSONObject["card_type"] as? String
           else { return nil }
         var cardType = CardType.None
