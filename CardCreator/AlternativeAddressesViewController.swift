@@ -2,12 +2,12 @@ import UIKit
 
 class AlternativeAddressesViewController: UITableViewController {
   private let addressStep: AddressStep
-  private let alternativeAddressesAndCardTypes: [(Address, ValidateAddressResponse.CardType)]
+  private let alternativeAddressesAndCardTypes: [(Address, CardType)]
 
   private static let addressCellReuseIdentifier = "addressCellReuseIdentifier"
   
   init(addressStep: AddressStep,
-       alternativeAddressesAndCardTypes: [(Address, ValidateAddressResponse.CardType)])
+       alternativeAddressesAndCardTypes: [(Address, CardType)])
   {
     self.addressStep = addressStep
     self.alternativeAddressesAndCardTypes = alternativeAddressesAndCardTypes
@@ -30,6 +30,27 @@ class AlternativeAddressesViewController: UITableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    switch self.addressStep {
+    case .Home:
+      self.title = NSLocalizedString(
+        "Choose Home Address",
+        comment: "A title for a screen asking the user to choose their home address from a list")
+    case .School:
+      self.title = NSLocalizedString(
+        "Choose School Address",
+        comment: "A title for a screen asking the user to choose their school address from a list")
+    case .Work:
+      self.title = NSLocalizedString(
+        "Choose Work Address",
+        comment: "A title for a screen asking the user to choose their work address from a list")
+    }
+  }
+  
+  // MARK: UITableViewDelegate
+  
+  override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    let (address, cardType) = self.alternativeAddressesAndCardTypes[indexPath.row]
+    self.addressStep.continueFlowWithValidAddress(self, address: address, cardType: cardType)
   }
   
   // MARK: UITableViewDataSource

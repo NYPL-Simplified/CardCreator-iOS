@@ -1,12 +1,6 @@
 import Foundation
 
-class ValidateAddressResponse {
-  enum CardType {
-    case None
-    case Temporary
-    case Standard
-  }
-  
+class ValidateAddressResponse {  
   enum Response {
     case ValidAddress(message: String, address: Address, cardType: CardType)
     case AlternativeAddresses(message: String, addressTuples: [(Address, CardType)])

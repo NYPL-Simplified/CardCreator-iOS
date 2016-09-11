@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2D0A06301D5915B9005EB288 /* PlacemarkQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D0A062F1D5915B9005EB288 /* PlacemarkQuery.swift */; };
+		2D2344CB1D86084600140A2D /* CardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2344CA1D86084600140A2D /* CardType.swift */; };
 		2D39E7FA1D55704400477886 /* regions.json in Resources */ = {isa = PBXBuildFile; fileRef = 2D39E7F91D55704400477886 /* regions.json */; };
 		2D4324581D6156890064B299 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D4324571D6156890064B299 /* InfoPlist.strings */; };
 		2D45A7AC1D7388F200B1FEB6 /* AddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D45A7AB1D7388F200B1FEB6 /* AddressViewController.swift */; };
@@ -32,6 +33,7 @@
 
 /* Begin PBXFileReference section */
 		2D0A062F1D5915B9005EB288 /* PlacemarkQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacemarkQuery.swift; sourceTree = "<group>"; };
+		2D2344CA1D86084600140A2D /* CardType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardType.swift; sourceTree = "<group>"; };
 		2D39E7F91D55704400477886 /* regions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = regions.json; sourceTree = "<group>"; };
 		2D4324571D6156890064B299 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
 		2D45A7AB1D7388F200B1FEB6 /* AddressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AddressViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -141,6 +143,7 @@
 				2D45A7AF1D73BF2800B1FEB6 /* Address.swift */,
 				2D84514D1D821E5B00B0BB8B /* AddressStep.swift */,
 				2DB4364E1D4D632700F8E69D /* AppDelegate.swift */,
+				2D2344CA1D86084600140A2D /* CardType.swift */,
 				2D8935851D7A294B001C5A75 /* Configuration.swift */,
 				2D0A062F1D5915B9005EB288 /* PlacemarkQuery.swift */,
 				2D8935971D7E4938001C5A75 /* Resources */,
@@ -282,6 +285,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D2344CB1D86084600140A2D /* CardType.swift in Sources */,
 				2D45A7B01D73BF2800B1FEB6 /* Address.swift in Sources */,
 				2D84512A1D7F565F00B0BB8B /* AddressCell.swift in Sources */,
 				2DB436511D4D632700F8E69D /* CardCreatorViewController.swift in Sources */,
