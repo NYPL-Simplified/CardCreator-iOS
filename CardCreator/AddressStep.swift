@@ -37,7 +37,7 @@ enum AddressStep {
             ("Since you do not live in New York, you must work or attend school in New York to qualify for a "
               + "library card."),
             comment: "A message informing the user what they must assert given that they live outside NY"),
-          preferredStyle: .ActionSheet)
+          preferredStyle: .Alert)
         alertController.addAction(UIAlertAction(
           title: NSLocalizedString("I Work in New York", comment: ""),
           style: .Default,
