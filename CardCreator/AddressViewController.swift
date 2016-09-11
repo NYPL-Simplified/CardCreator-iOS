@@ -208,10 +208,6 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
   
   // MARK: -
   
-  @objc private func didSelectDone() {
-    self.view.endEditing(false)
-  }
-  
   @objc private func didSelectNext() {
     self.view.endEditing(false)
     self.submit()

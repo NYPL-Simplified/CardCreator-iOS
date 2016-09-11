@@ -163,10 +163,6 @@ class UsernameAndPINViewController: UITableViewController, UITextFieldDelegate {
   
   // MARK: -
   
-  @objc private func didSelectDone() {
-    self.view.endEditing(false)
-  }
-  
   @objc private func didSelectNext() {
     self.view.endEditing(false)
     self.navigationController?.view.userInteractionEnabled = false
