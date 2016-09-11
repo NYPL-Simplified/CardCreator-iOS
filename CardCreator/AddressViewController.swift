@@ -146,20 +146,23 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
   }
   
   @objc private func advanceToNextTextField() {
-    var foundFirstResponder = false
+    var firstResponser: LabelledTextViewCell? = nil
+    
     for cell in self.cells {
       if let labelledTextViewCell = cell as? LabelledTextViewCell {
         // Skip fields that are not enabled, e.g. the region field when entering school
         // or work addresses.
-        if foundFirstResponder && labelledTextViewCell.textField.userInteractionEnabled {
+        if firstResponser != nil && labelledTextViewCell.textField.userInteractionEnabled {
           labelledTextViewCell.textField.becomeFirstResponder()
           return
         }
         if labelledTextViewCell.textField.isFirstResponder() {
-          foundFirstResponder = true
+          firstResponser = labelledTextViewCell
         }
       }
     }
+    
+    firstResponser?.textField.resignFirstResponder()
   }
   
   // MARK: UITableViewDataSource
