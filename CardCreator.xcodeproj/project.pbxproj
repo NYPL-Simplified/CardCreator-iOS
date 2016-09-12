@@ -94,29 +94,56 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		2D8935981D7F0130001C5A75 /* Responses */ = {
+		2D8935981D7F0130001C5A75 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				2D45A7AF1D73BF2800B1FEB6 /* Address.swift */,
+				2D84514D1D821E5B00B0BB8B /* AddressStep.swift */,
+				2D2344CA1D86084600140A2D /* CardType.swift */,
 				2D45A7AD1D73BE0000B1FEB6 /* ValidateAddressResponse.swift */,
 				2D8935991D7F0148001C5A75 /* ValidateUsernameResponse.swift */,
 			);
-			name = Responses;
+			name = Models;
 			sourceTree = "<group>";
 		};
 		2D89359B1D7F0578001C5A75 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				2D8451291D7F565F00B0BB8B /* AddressCell.swift */,
+				2D8D24291D86505C006E3D0F /* View Controllers */,
+				2D8D242A1D86507F006E3D0F /* Views */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		2D8D24291D86505C006E3D0F /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
 				2D45A7AB1D7388F200B1FEB6 /* AddressViewController.swift */,
 				2D8451271D7F50D800B0BB8B /* AlternativeAddressesViewController.swift */,
 				2D0CD9101D863452002DF274 /* FormTableViewController.swift */,
 				2D82C8AF1D6D0E2600C1E1D0 /* IntroductionViewController.swift */,
-				2D63B3621D51351A0022E960 /* LabelledTextViewCell.swift */,
 				2DF383C01D6F912E00565406 /* LocationViewController.swift */,
 				2D45A7B61D73D98300B1FEB6 /* NameAndEmailViewController.swift */,
 				2D8935871D7E415D001C5A75 /* UsernameAndPINViewController.swift */,
 			);
-			name = UI;
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		2D8D242A1D86507F006E3D0F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2D8451291D7F565F00B0BB8B /* AddressCell.swift */,
+				2D63B3621D51351A0022E960 /* LabelledTextViewCell.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		2D8D242B1D8650AA006E3D0F /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				2D0A062F1D5915B9005EB288 /* PlacemarkQuery.swift */,
+			);
+			name = Utility;
 			sourceTree = "<group>";
 		};
 		2DB436421D4D632700F8E69D = {
@@ -140,15 +167,12 @@
 		2DB4364D1D4D632700F8E69D /* CardCreator */ = {
 			isa = PBXGroup;
 			children = (
-				2D45A7AF1D73BF2800B1FEB6 /* Address.swift */,
-				2D84514D1D821E5B00B0BB8B /* AddressStep.swift */,
 				2DB4364E1D4D632700F8E69D /* AppDelegate.swift */,
-				2D2344CA1D86084600140A2D /* CardType.swift */,
 				2D8935851D7A294B001C5A75 /* Configuration.swift */,
-				2D0A062F1D5915B9005EB288 /* PlacemarkQuery.swift */,
+				2D8935981D7F0130001C5A75 /* Models */,
 				2D8935971D7E4938001C5A75 /* Resources */,
-				2D8935981D7F0130001C5A75 /* Responses */,
 				2D89359B1D7F0578001C5A75 /* UI */,
+				2D8D242B1D8650AA006E3D0F /* Utility */,
 			);
 			path = CardCreator;
 			sourceTree = "<group>";
