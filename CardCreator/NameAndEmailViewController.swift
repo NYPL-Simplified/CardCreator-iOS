@@ -1,12 +1,16 @@
 import UIKit
 
 class NameAndEmailViewController: FormTableViewController {
+  
+  private let configuration: Configuration
+  
   private let fullNameCell: LabelledTextViewCell
   private let emailCell: LabelledTextViewCell
   private let homeAddress: Address
   private let schoolOrWorkAddress: Address?
   
-  init(homeAddress: Address, schoolOrWorkAddress: Address?) {
+  init(configuration: Configuration, homeAddress: Address, schoolOrWorkAddress: Address?) {
+    self.configuration = configuration
     self.fullNameCell = LabelledTextViewCell(
       title: NSLocalizedString("Full Name", comment: "The text field title for the full name of a user"),
       placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
@@ -17,9 +21,10 @@ class NameAndEmailViewController: FormTableViewController {
     self.homeAddress = homeAddress
     self.schoolOrWorkAddress = schoolOrWorkAddress
     
-    super.init(cells: [
-      self.fullNameCell,
-      self.emailCell
+    super.init(
+      cells: [
+        self.fullNameCell,
+        self.emailCell
       ])
     
     self.navigationItem.rightBarButtonItem?.enabled = false
@@ -64,6 +69,7 @@ class NameAndEmailViewController: FormTableViewController {
     self.view.endEditing(false)
     self.navigationController?.pushViewController(
       UsernameAndPINViewController(
+        configuration: self.configuration,
         homeAddress: self.homeAddress,
         schoolOrWorkAddress: self.schoolOrWorkAddress,
         fullName: self.fullNameCell.textField.text!,

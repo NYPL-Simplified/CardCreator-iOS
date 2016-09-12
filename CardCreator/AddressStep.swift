@@ -26,7 +26,12 @@ enum AddressStep {
     }
   }
   
-  func continueFlowWithValidAddress(viewController: UIViewController, address: Address, cardType: CardType) {
+  func continueFlowWithValidAddress(
+    configuration: Configuration,
+    viewController: UIViewController,
+    address: Address,
+    cardType: CardType)
+  {
     switch cardType {
     case .None:
       switch self {
@@ -43,7 +48,7 @@ enum AddressStep {
           style: .Default,
           handler: {_ in
             viewController.navigationController?.pushViewController(
-              AddressViewController(addressStep: .Work(homeAddress: address)),
+              AddressViewController(configuration: configuration, addressStep: .Work(homeAddress: address)),
               animated: true)
         }))
         alertController.addAction(UIAlertAction(
@@ -51,7 +56,7 @@ enum AddressStep {
           style: .Default,
           handler: {_ in
             viewController.navigationController?.pushViewController(
-              AddressViewController(addressStep: .School(homeAddress: address)),
+              AddressViewController(configuration: configuration, addressStep: .School(homeAddress: address)),
               animated: true)
         }))
         alertController.addAction(UIAlertAction(
@@ -102,6 +107,7 @@ enum AddressStep {
         handler: {_ in
           let (homeAddress, schoolOrWorkAddress) = self.pairWithAppendedAddress(address)
           let nameAndEmailViewController = NameAndEmailViewController(
+            configuration: configuration,
             homeAddress: homeAddress,
             schoolOrWorkAddress: schoolOrWorkAddress)
           viewController.navigationController?.pushViewController(nameAndEmailViewController, animated: true)
@@ -120,6 +126,7 @@ enum AddressStep {
         handler: {_ in
           let (homeAddress, schoolOrWorkAddress) = self.pairWithAppendedAddress(address)
           let nameAndEmailViewController = NameAndEmailViewController(
+            configuration: configuration,
             homeAddress: homeAddress,
             schoolOrWorkAddress: schoolOrWorkAddress)
           viewController.navigationController?.pushViewController(nameAndEmailViewController, animated: true)

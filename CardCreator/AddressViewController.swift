@@ -11,6 +11,8 @@ class AddressViewController: FormTableViewController {
     return try! NSJSONSerialization.JSONObjectWithStream(stream, options: [.AllowFragments]) as! [String]
   }()
   
+  let configuration: Configuration
+  
   private let addressStep: AddressStep
   private let street1Cell: LabelledTextViewCell
   private let street2Cell: LabelledTextViewCell
@@ -21,7 +23,8 @@ class AddressViewController: FormTableViewController {
   private let regionPickerView = UIPickerView()
   private let regionPickerViewDataSourceAndDelegate: RegionPickerViewDataSourceAndDelegate
   
-  init(addressStep: AddressStep) {
+  init(configuration: Configuration, addressStep: AddressStep) {
+    self.configuration = configuration
     self.addressStep = addressStep
     self.street1Cell = LabelledTextViewCell(
       title: NSLocalizedString("Street 1", comment: "The first line of a US street address"),
@@ -42,12 +45,13 @@ class AddressViewController: FormTableViewController {
     self.regionPickerViewDataSourceAndDelegate =
       RegionPickerViewDataSourceAndDelegate(textField: self.regionCell.textField)
     
-    super.init(cells: [
-      self.street1Cell,
-      self.street2Cell,
-      self.cityCell,
-      self.regionCell,
-      self.zipCell
+    super.init(
+      cells: [
+        self.street1Cell,
+        self.street2Cell,
+        self.cityCell,
+        self.regionCell,
+        self.zipCell
       ])
     
     self.regionPickerView.dataSource = self.regionPickerViewDataSourceAndDelegate
@@ -120,7 +124,7 @@ class AddressViewController: FormTableViewController {
                                      action: #selector(zipTextFieldDidChange),
                                      forControlEvents: .AllEditingEvents)
   }
-
+  
   // MARK: UITextFieldDelegate
   
   @objc func textField(textField: UITextField,
@@ -246,7 +250,8 @@ class AddressViewController: FormTableViewController {
         NSLocalizedString(
           "Validating Address",
           comment: "A title telling the user their address is currently being validated"))
-    let request = NSMutableURLRequest(URL: Configuration.APIEndpoint.URLByAppendingPathComponent("validate/address"))
+    let request = NSMutableURLRequest(
+      URL: self.configuration.endpointURL.URLByAppendingPathComponent("validate/address"))
     let isSchoolOrWorkAddress: Bool = {
       switch self.addressStep {
       case .Home:
@@ -264,7 +269,7 @@ class AddressViewController: FormTableViewController {
     request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(JSONObject, options: [.PrettyPrinted])
     request.HTTPMethod = "POST"
     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.timeoutInterval = Configuration.requestTimeoutInterval
+    request.timeoutInterval = self.configuration.requestTimeoutInterval
     let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) in
       NSOperationQueue.mainQueue().addOperationWithBlock {
         self.navigationController?.view.userInteractionEnabled = true
@@ -304,7 +309,11 @@ class AddressViewController: FormTableViewController {
         }
         switch validateAddressResponse {
         case let .ValidAddress(_, address, cardType):
-          self.addressStep.continueFlowWithValidAddress(self, address: address, cardType: cardType)
+          self.addressStep.continueFlowWithValidAddress(
+            self.configuration,
+            viewController: self,
+            address: address,
+            cardType: cardType)
         case let .AlternativeAddresses(_, addressTuples):
           let alertViewController = UIAlertController(
             title: NSLocalizedString(
@@ -320,6 +329,7 @@ class AddressViewController: FormTableViewController {
             style: .Default,
             handler: { _ in
               let viewController = AlternativeAddressesViewController(
+                configuration: self.configuration,
                 addressStep: self.addressStep,
                 alternativeAddressesAndCardTypes: addressTuples)
               self.navigationController?.pushViewController(viewController, animated: true)

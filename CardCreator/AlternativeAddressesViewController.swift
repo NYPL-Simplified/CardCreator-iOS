@@ -6,9 +6,14 @@ class AlternativeAddressesViewController: UITableViewController {
 
   private static let addressCellReuseIdentifier = "addressCellReuseIdentifier"
   
-  init(addressStep: AddressStep,
-       alternativeAddressesAndCardTypes: [(Address, CardType)])
+  let configuration: Configuration
+  
+  init(
+    configuration: Configuration,
+    addressStep: AddressStep,
+    alternativeAddressesAndCardTypes: [(Address, CardType)])
   {
+    self.configuration = configuration
     self.addressStep = addressStep
     self.alternativeAddressesAndCardTypes = alternativeAddressesAndCardTypes
     
@@ -50,7 +55,11 @@ class AlternativeAddressesViewController: UITableViewController {
   
   override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     let (address, cardType) = self.alternativeAddressesAndCardTypes[indexPath.row]
-    self.addressStep.continueFlowWithValidAddress(self, address: address, cardType: cardType)
+    self.addressStep.continueFlowWithValidAddress(
+      self.configuration,
+      viewController: self,
+      address: address,
+      cardType: cardType)
   }
   
   // MARK: UITableViewDataSource

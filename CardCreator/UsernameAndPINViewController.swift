@@ -1,6 +1,9 @@
 import UIKit
 
 class UsernameAndPINViewController: FormTableViewController {
+  
+  private let configuration: Configuration
+  
   private let usernameCell: LabelledTextViewCell
   private let pinCell: LabelledTextViewCell
   private let homeAddress: Address
@@ -8,7 +11,15 @@ class UsernameAndPINViewController: FormTableViewController {
   private let fullName: String
   private let email: String
   
-  init(homeAddress: Address, schoolOrWorkAddress: Address?, fullName: String, email: String) {
+  init(
+    configuration: Configuration,
+    homeAddress: Address,
+    schoolOrWorkAddress: Address?,
+    fullName: String,
+    email: String)
+  {
+    self.configuration = configuration
+    
     self.usernameCell = LabelledTextViewCell(
       title: NSLocalizedString("Username", comment: "A username used to log into a service"),
       placeholder: NSLocalizedString("janedoe123", comment: "An example of a possible username"))
@@ -21,9 +32,10 @@ class UsernameAndPINViewController: FormTableViewController {
     self.fullName = fullName
     self.email = email
     
-    super.init(cells: [
-      self.usernameCell,
-      self.pinCell
+    super.init(
+      cells: [
+        self.usernameCell,
+        self.pinCell
       ])
     
     self.navigationItem.rightBarButtonItem?.enabled = false
@@ -106,12 +118,12 @@ class UsernameAndPINViewController: FormTableViewController {
         NSLocalizedString(
           "Validating Name",
           comment: "A title telling the user their full name is currently being validated"))
-    let request = NSMutableURLRequest(URL: Configuration.APIEndpoint.URLByAppendingPathComponent("validate/username"))
+    let request = NSMutableURLRequest(URL: self.configuration.endpointURL.URLByAppendingPathComponent("validate/username"))
     let JSONObject: [String: String] = ["username": self.usernameCell.textField.text!]
     request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(JSONObject, options: [.PrettyPrinted])
     request.HTTPMethod = "POST"
     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.timeoutInterval = Configuration.requestTimeoutInterval
+    request.timeoutInterval = self.configuration.requestTimeoutInterval
     let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) in
       NSOperationQueue.mainQueue().addOperationWithBlock {
         self.navigationController?.view.userInteractionEnabled = true
@@ -198,7 +210,7 @@ class UsernameAndPINViewController: FormTableViewController {
         NSLocalizedString(
           "Creating Card",
           comment: "A title telling the user their card is currently being created"))
-    let request = NSMutableURLRequest(URL: Configuration.APIEndpoint.URLByAppendingPathComponent("create_patron"))
+    let request = NSMutableURLRequest(URL: self.configuration.endpointURL.URLByAppendingPathComponent("create_patron"))
     let schoolOrWorkAddressOrNull: AnyObject = {
       if let schoolOrWorkAddress = self.schoolOrWorkAddress {
         return schoolOrWorkAddress.JSONObject()
@@ -217,7 +229,7 @@ class UsernameAndPINViewController: FormTableViewController {
     request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(JSONObject, options: [.PrettyPrinted])
     request.HTTPMethod = "POST"
     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.timeoutInterval = Configuration.requestTimeoutInterval
+    request.timeoutInterval = self.configuration.requestTimeoutInterval
     let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) in
       NSOperationQueue.mainQueue().addOperationWithBlock {
         self.navigationController?.view.userInteractionEnabled = true

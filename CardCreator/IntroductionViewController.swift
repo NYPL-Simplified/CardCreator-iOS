@@ -3,11 +3,17 @@ import UIKit
 
 final class IntroductionViewController: UIViewController {
   
+  let configuration: Configuration
   let descriptionLabel: UILabel
 
-  init() {
-    descriptionLabel = UILabel()
+  init(configuration: Configuration) {
+    self.configuration = configuration
+    self.descriptionLabel = UILabel()
     super.init(nibName: nil, bundle: nil)
+  }
+  
+  convenience init() {
+    self.init(configuration: Configuration())
   }
   
   @available(*, unavailable)
@@ -63,7 +69,9 @@ final class IntroductionViewController: UIViewController {
   
   
   private func didSelect13OrOlder() {
-    self.navigationController?.pushViewController(LocationViewController(), animated: true)
+    self.navigationController?.pushViewController(
+      LocationViewController(configuration: self.configuration),
+      animated: true)
   }
   
   private func didSelectUnder13() {

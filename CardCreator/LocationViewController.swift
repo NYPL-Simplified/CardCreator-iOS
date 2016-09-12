@@ -2,13 +2,16 @@ import UIKit
 
 class LocationViewController: UIViewController {
   
+  let configuration: Configuration
+  
   let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
   var observers: [NSObjectProtocol] = []
   let resultLabel = UILabel()
   var placemarkQuery: PlacemarkQuery? = nil
   var viewDidAppearPreviously: Bool = false
 
-  init() {
+  init(configuration: Configuration) {
+    self.configuration = configuration
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -70,7 +73,11 @@ class LocationViewController: UIViewController {
   }
   
   @objc private func didSelectNext() {
-    self.navigationController?.pushViewController(AddressViewController(addressStep: .Home), animated: true)
+    self.navigationController?.pushViewController(
+      AddressViewController(
+        configuration: self.configuration,
+        addressStep: .Home),
+      animated: true)
   }
   
   private func checkLocation() {

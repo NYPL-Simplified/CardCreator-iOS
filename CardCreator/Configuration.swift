@@ -1,6 +1,6 @@
 import Foundation
 
-final class Configuration {
-  static let APIEndpoint = NSURL(string: "http://qa.patrons.librarysimplified.org/v1")!
-  static let requestTimeoutInterval = 10.0
+@objc public class Configuration: NSObject {
+  public var endpointURL: NSURL = NSURL(string: "http://qa.patrons.librarysimplified.org/v1")!
+  public var requestTimeoutInterval: NSTimeInterval = 10.0
 }
