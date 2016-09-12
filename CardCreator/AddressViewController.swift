@@ -1,6 +1,6 @@
 import UIKit
 
-class AddressViewController: UITableViewController, UITextFieldDelegate {
+class AddressViewController: FormTableViewController {
   
   private static let regions: [String] = {
     let stream = NSInputStream.init(URL: NSBundle.mainBundle().URLForResource("regions", withExtension: "json")!)!
@@ -17,8 +17,6 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
   private let cityCell: LabelledTextViewCell
   private let regionCell: LabelledTextViewCell
   private let zipCell: LabelledTextViewCell
-  
-  let cells: [UITableViewCell]
   
   private let regionPickerView = UIPickerView()
   private let regionPickerViewDataSourceAndDelegate: RegionPickerViewDataSourceAndDelegate
@@ -40,28 +38,21 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
     self.zipCell = LabelledTextViewCell(
       title: NSLocalizedString("ZIP", comment: "The common name for a US ZIP code"),
       placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
-
-    self.cells = [
+    
+    self.regionPickerViewDataSourceAndDelegate =
+      RegionPickerViewDataSourceAndDelegate(textField: self.regionCell.textField)
+    
+    super.init(cells: [
       self.street1Cell,
       self.street2Cell,
       self.cityCell,
       self.regionCell,
       self.zipCell
-    ]
-    
-    self.regionPickerViewDataSourceAndDelegate =
-      RegionPickerViewDataSourceAndDelegate(textField: self.regionCell.textField)
-    
-    super.init(style: UITableViewStyle.Grouped)
+      ])
     
     self.regionPickerView.dataSource = self.regionPickerViewDataSourceAndDelegate
     self.regionPickerView.delegate = self.regionPickerViewDataSourceAndDelegate
     
-    self.navigationItem.rightBarButtonItem =
-      UIBarButtonItem(title: NSLocalizedString("Next", comment: "A title for a button that goes to the next screen"),
-                      style: .Plain,
-                      target: self,
-                      action: #selector(didSelectNext))
     self.navigationItem.rightBarButtonItem?.enabled = false
     
     self.prepareTableViewCells()
@@ -90,21 +81,6 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
     }
   }
   
-  private func returnToolbar() -> UIToolbar {
-    let flexibleSpaceBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-    let nextBarButtonItem = UIBarButtonItem(
-      title: NSLocalizedString("Return", comment: "The title of the button that goes to the next line in a form"),
-      style: .Plain,
-      target: self,
-      action: #selector(advanceToNextTextField))
-    
-    let toolbar = UIToolbar()
-    toolbar.setItems([flexibleSpaceBarButtonItem, nextBarButtonItem], animated: false)
-    toolbar.sizeToFit()
-    
-    return toolbar
-  }
-  
   private func prepareTableViewCells() {
     for cell in self.cells {
       if let labelledTextViewCell = cell as? LabelledTextViewCell {
@@ -115,7 +91,7 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
                                                  forControlEvents: .EditingChanged)
       }
     }
-
+    
     self.street1Cell.textField.keyboardType = .Alphabet
     self.street1Cell.textField.autocapitalizationType = .Words
     
@@ -144,47 +120,8 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
                                      action: #selector(zipTextFieldDidChange),
                                      forControlEvents: .AllEditingEvents)
   }
-  
-  @objc private func advanceToNextTextField() {
-    var firstResponser: LabelledTextViewCell? = nil
-    
-    for cell in self.cells {
-      if let labelledTextViewCell = cell as? LabelledTextViewCell {
-        // Skip fields that are not enabled, e.g. the region field when entering school
-        // or work addresses.
-        if firstResponser != nil && labelledTextViewCell.textField.userInteractionEnabled {
-          labelledTextViewCell.textField.becomeFirstResponder()
-          return
-        }
-        if labelledTextViewCell.textField.isFirstResponder() {
-          firstResponser = labelledTextViewCell
-        }
-      }
-    }
-    
-    firstResponser?.textField.resignFirstResponder()
-  }
-  
-  // MARK: UITableViewDataSource
-  
-  override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.cells.count
-  }
-  
-  override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-    return 1
-  }
-  
-  override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    return self.cells[indexPath.row]
-  }
-  
+
   // MARK: UITextFieldDelegate
-  
-  @objc func textFieldShouldReturn(textField: UITextField) -> Bool {
-    self.advanceToNextTextField()
-    return true
-  }
   
   @objc func textField(textField: UITextField,
                        shouldChangeCharactersInRange range: NSRange,
@@ -208,7 +145,7 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
   
   // MARK: -
   
-  @objc private func didSelectNext() {
+  @objc override func didSelectNext() {
     self.view.endEditing(false)
     self.submit()
   }
@@ -300,20 +237,6 @@ class AddressViewController: UITableViewController, UITextFieldDelegate {
     }
     
     return Address(street1: street1, street2: self.street2Cell.textField.text, city: city, region: region, zip: zip)
-  }
-  
-  private func homeAndSchoolOrWorkAddresses() -> (Address, Address?)? {
-    guard let currentAddress = self.currentAddress() else {
-      return nil
-    }
-    switch self.addressStep {
-    case .Home:
-      return (currentAddress, nil)
-    case let .School(homeAddress):
-      return (homeAddress, currentAddress)
-    case let .Work(homeAddress):
-      return (homeAddress, currentAddress)
-    }
   }
   
   private func submit() {

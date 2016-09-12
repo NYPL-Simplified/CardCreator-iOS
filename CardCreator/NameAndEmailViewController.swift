@@ -1,12 +1,10 @@
 import UIKit
 
-class NameAndEmailViewController: UITableViewController, UITextFieldDelegate {
+class NameAndEmailViewController: FormTableViewController {
   private let fullNameCell: LabelledTextViewCell
   private let emailCell: LabelledTextViewCell
   private let homeAddress: Address
   private let schoolOrWorkAddress: Address?
-  
-  let cells: [UITableViewCell]
   
   init(homeAddress: Address, schoolOrWorkAddress: Address?) {
     self.fullNameCell = LabelledTextViewCell(
@@ -19,18 +17,11 @@ class NameAndEmailViewController: UITableViewController, UITextFieldDelegate {
     self.homeAddress = homeAddress
     self.schoolOrWorkAddress = schoolOrWorkAddress
     
-    self.cells = [
+    super.init(cells: [
       self.fullNameCell,
       self.emailCell
-    ]
+      ])
     
-    super.init(style: UITableViewStyle.Grouped)
-    
-    self.navigationItem.rightBarButtonItem =
-      UIBarButtonItem(title: NSLocalizedString("Next", comment: "A title for a button that goes to the next screen"),
-                      style: .Plain,
-                      target: self,
-                      action: #selector(didSelectNext))
     self.navigationItem.rightBarButtonItem?.enabled = false
     
     self.prepareTableViewCells()
@@ -67,53 +58,9 @@ class NameAndEmailViewController: UITableViewController, UITextFieldDelegate {
     self.emailCell.textField.returnKeyType = .Done
   }
   
-  @objc private func advanceToNextTextField() {
-    var firstResponser: LabelledTextViewCell? = nil
-    
-    for cell in self.cells {
-      if let labelledTextViewCell = cell as? LabelledTextViewCell {
-        // Skip fields that are not enabled, e.g. the region field when entering school
-        // or work addresses.
-        if firstResponser != nil && labelledTextViewCell.textField.userInteractionEnabled {
-          labelledTextViewCell.textField.becomeFirstResponder()
-          return
-        }
-        if labelledTextViewCell.textField.isFirstResponder() {
-          firstResponser = labelledTextViewCell
-        }
-      }
-    }
-    
-    firstResponser?.textField.resignFirstResponder()
-  }
-  
-  // MARK: UITableViewDataSource
-  
-  override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.cells.count
-  }
-  
-  override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-    return 1
-  }
-  
-  override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    return self.cells[indexPath.row]
-  }
-  
-  // MARK: UITextFieldDelegate
-  
-  @objc func textFieldShouldReturn(textField: UITextField) -> Bool {
-    self.advanceToNextTextField()
-    if(textField == self.emailCell.textField) {
-      self.view.endEditing(false)
-    }
-    return true
-  }
-  
   // MARK: -
   
-  @objc private func didSelectNext() {
+  @objc override func didSelectNext() {
     self.view.endEditing(false)
     self.navigationController?.pushViewController(
       UsernameAndPINViewController(
