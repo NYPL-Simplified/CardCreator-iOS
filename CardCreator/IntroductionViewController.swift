@@ -29,9 +29,9 @@ final class IntroductionViewController: UIViewController {
     self.descriptionLabel.numberOfLines = 0
     self.descriptionLabel.text =
       NSLocalizedString(
-        ("In order to obtain a library card, you must dolor sit amet, consectetur adipiscing elit. "
-          + "Phasellus sagittis augue sed nisl tincidunt pulvinar vitae eget nulla. Suspendisse ante "
-          + "purus, semper a tortor et, semper ornare augue."),
+        ("To obtain a digital library card for the New York Public Library, you must live, work, "
+          + "or attend school in New York State. You must also be at least 13 years of age and be "
+          + "physically present in New York at the time of sign-up."),
         comment: "A description of what is required to get a library card")
     
     self.navigationItem.rightBarButtonItem = UIBarButtonItem(
