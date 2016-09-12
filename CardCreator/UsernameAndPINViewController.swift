@@ -101,10 +101,10 @@ class UsernameAndPINViewController: FormTableViewController {
   @objc override func didSelectNext() {
     self.view.endEditing(false)
     self.navigationController?.view.userInteractionEnabled = false
-    let originalTitle = self.title
-    self.title = NSLocalizedString(
-      "Validating Name…",
-      comment: "A title telling the user their full name is currently being validated")
+    self.showActivityTitleView(
+      NSLocalizedString(
+        "Validating Name",
+        comment: "A title telling the user their full name is currently being validated"))
     let request = NSMutableURLRequest(URL: Configuration.APIEndpoint.URLByAppendingPathComponent("validate/username"))
     let JSONObject: [String: String] = ["username": self.usernameCell.textField.text!]
     request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(JSONObject, options: [.PrettyPrinted])
@@ -114,7 +114,7 @@ class UsernameAndPINViewController: FormTableViewController {
     let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) in
       NSOperationQueue.mainQueue().addOperationWithBlock {
         self.navigationController?.view.userInteractionEnabled = true
-        self.title = originalTitle
+        self.navigationItem.titleView = nil
         if let error = error {
           let alertController = UIAlertController(
             title: NSLocalizedString("Error", comment: "The title for an error alert"),
@@ -192,10 +192,10 @@ class UsernameAndPINViewController: FormTableViewController {
   private func createPatron() {
     self.view.endEditing(false)
     self.navigationController?.view.userInteractionEnabled = false
-    let originalTitle = self.title
-    self.title = NSLocalizedString(
-      "Creating Card…",
-      comment: "A title telling the user their card is currently being created")
+    self.showActivityTitleView(
+      NSLocalizedString(
+        "Creating Card",
+        comment: "A title telling the user their card is currently being created"))
     let request = NSMutableURLRequest(URL: Configuration.APIEndpoint.URLByAppendingPathComponent("create_patron"))
     let schoolOrWorkAddressOrNull: AnyObject = {
       if let schoolOrWorkAddress = self.schoolOrWorkAddress {
@@ -219,7 +219,7 @@ class UsernameAndPINViewController: FormTableViewController {
     let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) in
       NSOperationQueue.mainQueue().addOperationWithBlock {
         self.navigationController?.view.userInteractionEnabled = true
-        self.title = originalTitle
+        self.navigationItem.titleView = nil
         if let error = error {
           let alertController = UIAlertController(
             title: NSLocalizedString("Error", comment: "The title for an error alert"),
