@@ -80,34 +80,4 @@ class FormTableViewController: UITableViewController, UITextFieldDelegate {
   func didSelectNext() {
     
   }
-  
-  func showActivityTitleView(title: String) {
-    let padding: CGFloat = 5.0
-    
-    let containerView = UIView()
-    
-    let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
-    activityIndicatorView.startAnimating()
-    containerView.addSubview(activityIndicatorView)
-    activityIndicatorView.autoPinEdgesToSuperviewEdgesWithInsets(UIEdgeInsetsZero, excludingEdge: .Right)
-    
-    let titleLabel = UILabel()
-    titleLabel.text = title
-    titleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-    titleLabel.sizeToFit()
-    containerView.addSubview(titleLabel)
-    titleLabel.autoPinEdge(.Left, toEdge: .Right, ofView: activityIndicatorView, withOffset: padding)
-    titleLabel.autoPinEdgeToSuperviewEdge(.Top)
-    titleLabel.autoPinEdgeToSuperviewEdge(.Bottom)
-    
-    // This view is used to keep the title label centered as in Apple's Settings application.
-    let rightPaddingView = UIView(frame:activityIndicatorView.bounds)
-    containerView.addSubview(rightPaddingView)
-    rightPaddingView.autoPinEdgesToSuperviewEdgesWithInsets(UIEdgeInsetsZero, excludingEdge: .Left)
-    rightPaddingView.autoPinEdge(.Left, toEdge: .Right, ofView: titleLabel, withOffset: padding)
-    
-    containerView.frame.size = containerView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
-    
-    self.navigationItem.titleView = containerView
-  }
 }

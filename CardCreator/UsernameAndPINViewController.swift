@@ -101,10 +101,11 @@ class UsernameAndPINViewController: FormTableViewController {
   @objc override func didSelectNext() {
     self.view.endEditing(false)
     self.navigationController?.view.userInteractionEnabled = false
-    self.showActivityTitleView(
-      NSLocalizedString(
-        "Validating Name",
-        comment: "A title telling the user their full name is currently being validated"))
+    self.navigationItem.titleView =
+      ActivityTitleView(title:
+        NSLocalizedString(
+          "Validating Name",
+          comment: "A title telling the user their full name is currently being validated"))
     let request = NSMutableURLRequest(URL: Configuration.APIEndpoint.URLByAppendingPathComponent("validate/username"))
     let JSONObject: [String: String] = ["username": self.usernameCell.textField.text!]
     request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(JSONObject, options: [.PrettyPrinted])
@@ -192,10 +193,11 @@ class UsernameAndPINViewController: FormTableViewController {
   private func createPatron() {
     self.view.endEditing(false)
     self.navigationController?.view.userInteractionEnabled = false
-    self.showActivityTitleView(
-      NSLocalizedString(
-        "Creating Card",
-        comment: "A title telling the user their card is currently being created"))
+    self.navigationItem.titleView =
+      ActivityTitleView(title:
+        NSLocalizedString(
+          "Creating Card",
+          comment: "A title telling the user their card is currently being created"))
     let request = NSMutableURLRequest(URL: Configuration.APIEndpoint.URLByAppendingPathComponent("create_patron"))
     let schoolOrWorkAddressOrNull: AnyObject = {
       if let schoolOrWorkAddress = self.schoolOrWorkAddress {

@@ -241,10 +241,11 @@ class AddressViewController: FormTableViewController {
   
   private func submit() {
     self.navigationController?.view.userInteractionEnabled = false
-    self.showActivityTitleView(
-      NSLocalizedString(
-        "Validating Address",
-        comment: "A title telling the user their address is currently being validated"))
+    self.navigationItem.titleView =
+      ActivityTitleView(title:
+        NSLocalizedString(
+          "Validating Address",
+          comment: "A title telling the user their address is currently being validated"))
     let request = NSMutableURLRequest(URL: Configuration.APIEndpoint.URLByAppendingPathComponent("validate/address"))
     let isSchoolOrWorkAddress: Bool = {
       switch self.addressStep {

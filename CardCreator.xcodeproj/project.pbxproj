@@ -24,6 +24,7 @@
 		2D8935861D7A294B001C5A75 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D8935851D7A294B001C5A75 /* Configuration.swift */; };
 		2D8935881D7E415D001C5A75 /* UsernameAndPINViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D8935871D7E415D001C5A75 /* UsernameAndPINViewController.swift */; };
 		2D89359A1D7F0148001C5A75 /* ValidateUsernameResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D8935991D7F0148001C5A75 /* ValidateUsernameResponse.swift */; };
+		2D8D242D1D8650F2006E3D0F /* ActivityTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D8D242C1D8650F2006E3D0F /* ActivityTitleView.swift */; };
 		2DB4364F1D4D632700F8E69D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB4364E1D4D632700F8E69D /* AppDelegate.swift */; };
 		2DB436561D4D632700F8E69D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2DB436551D4D632700F8E69D /* Assets.xcassets */; };
 		2DB436591D4D632700F8E69D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2DB436571D4D632700F8E69D /* LaunchScreen.storyboard */; };
@@ -50,6 +51,7 @@
 		2D8935851D7A294B001C5A75 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		2D8935871D7E415D001C5A75 /* UsernameAndPINViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsernameAndPINViewController.swift; sourceTree = "<group>"; };
 		2D8935991D7F0148001C5A75 /* ValidateUsernameResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidateUsernameResponse.swift; sourceTree = "<group>"; };
+		2D8D242C1D8650F2006E3D0F /* ActivityTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityTitleView.swift; sourceTree = "<group>"; };
 		2DB4364B1D4D632700F8E69D /* CardCreator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CardCreator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DB4364E1D4D632700F8E69D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2DB436551D4D632700F8E69D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 		2D8D242A1D86507F006E3D0F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				2D8D242C1D8650F2006E3D0F /* ActivityTitleView.swift */,
 				2D8451291D7F565F00B0BB8B /* AddressCell.swift */,
 				2D63B3621D51351A0022E960 /* LabelledTextViewCell.swift */,
 			);
@@ -311,6 +314,7 @@
 			files = (
 				2D2344CB1D86084600140A2D /* CardType.swift in Sources */,
 				2D45A7B01D73BF2800B1FEB6 /* Address.swift in Sources */,
+				2D8D242D1D8650F2006E3D0F /* ActivityTitleView.swift in Sources */,
 				2D84512A1D7F565F00B0BB8B /* AddressCell.swift in Sources */,
 				2D82C8B01D6D0E2600C1E1D0 /* IntroductionViewController.swift in Sources */,
 				2D0A06301D5915B9005EB288 /* PlacemarkQuery.swift in Sources */,
