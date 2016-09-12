@@ -297,7 +297,7 @@ class AddressViewController: FormTableViewController {
           showErrorAlert()
           return
         }
-        guard let validateAddressResponse = ValidateAddressResponse.responseFromData(data!) else {
+        guard let validateAddressResponse = ValidateAddressResponse.responseWithData(data!) else {
           showErrorAlert()
           return
         }

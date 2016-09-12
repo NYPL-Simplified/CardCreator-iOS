@@ -7,7 +7,7 @@ class ValidateAddressResponse {
     case UnrecognizedAddress(message: String)
   }
   
-  class func responseFromData(data: NSData) -> Response? {
+  class func responseWithData(data: NSData) -> Response? {
     guard
       let JSONObject = try? NSJSONSerialization.JSONObjectWithData(data, options: []) as! [String: AnyObject],
       let type = JSONObject["type"] as? String,

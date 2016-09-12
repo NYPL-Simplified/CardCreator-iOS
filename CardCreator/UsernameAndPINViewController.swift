@@ -144,7 +144,7 @@ class UsernameAndPINViewController: FormTableViewController {
           showErrorAlert()
           return
         }
-        guard let validateUsernameResponse = ValidateUsernameResponse.responseFromData(data!) else {
+        guard let validateUsernameResponse = ValidateUsernameResponse.responseWithData(data!) else {
           showErrorAlert()
           return
         }
