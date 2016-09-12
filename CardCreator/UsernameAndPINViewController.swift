@@ -110,7 +110,7 @@ class UsernameAndPINViewController: FormTableViewController {
     request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(JSONObject, options: [.PrettyPrinted])
     request.HTTPMethod = "POST"
     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.timeoutInterval = 5.0
+    request.timeoutInterval = Configuration.requestTimeoutInterval
     let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) in
       NSOperationQueue.mainQueue().addOperationWithBlock {
         self.navigationController?.view.userInteractionEnabled = true
@@ -215,7 +215,7 @@ class UsernameAndPINViewController: FormTableViewController {
     request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(JSONObject, options: [.PrettyPrinted])
     request.HTTPMethod = "POST"
     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.timeoutInterval = 5.0
+    request.timeoutInterval = Configuration.requestTimeoutInterval
     let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) in
       NSOperationQueue.mainQueue().addOperationWithBlock {
         self.navigationController?.view.userInteractionEnabled = true
@@ -249,7 +249,23 @@ class UsernameAndPINViewController: FormTableViewController {
           showErrorAlert()
           return
         }
-        // FIXME: Present success to the user!
+        let alertController = UIAlertController(
+          title: NSLocalizedString(
+            "Card Created Successfully",
+            comment: "An alert title telling the user their card has been created"),
+          message: NSLocalizedString(
+            "You have been issued a digital library card! Be sure to keep your username and PIN in a safe location.",
+            comment: "An alert message telling the user they received a library card"),
+          preferredStyle: .Alert)
+        alertController.addAction(UIAlertAction(
+          title: NSLocalizedString(
+            "Sign In",
+            comment: "An alert action the user may select to sign in with their new library card"),
+          style: .Default,
+          handler: { _ in
+            // FIXME
+        }))
+        self.presentViewController(alertController, animated: true, completion: nil)
       }
     }
     
