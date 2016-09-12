@@ -51,13 +51,13 @@ final class IntroductionViewController: UIViewController {
         comment: "An alert message telling the user they must be at least 13 years old and asking how old they are"),
       preferredStyle: .Alert)
     alertController.addAction(UIAlertAction(
+      title: NSLocalizedString("Under 13", comment: "A button title indicating an age range"),
+      style: .Default,
+      handler: { _ in self.didSelectUnder13()}))
+    alertController.addAction(UIAlertAction(
       title: NSLocalizedString("13 or Older", comment: "A button title indicating an age range"),
       style: .Default,
       handler: { _ in self.didSelect13OrOlder()}))
-    alertController.addAction(UIAlertAction(
-      title: NSLocalizedString("Under 13", comment: "A button title indicating an age range"),
-      style: .Cancel,
-      handler: { _ in self.didSelectUnder13()}))
     self.presentViewController(alertController, animated: true, completion: nil)
   }
   
