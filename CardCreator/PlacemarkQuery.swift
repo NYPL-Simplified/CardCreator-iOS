@@ -24,7 +24,7 @@ class PlacemarkQuery: NSObject, CLLocationManagerDelegate {
     self.handler = handler
     switch CLLocationManager.authorizationStatus() {
     case .AuthorizedAlways:
-      fallthrough
+      break
     case .AuthorizedWhenInUse:
       self.locationManager.startUpdatingLocation()
     case .Denied:
@@ -77,7 +77,14 @@ class PlacemarkQuery: NSObject, CLLocationManagerDelegate {
     manager: CLLocationManager,
     didChangeAuthorizationStatus status: CLAuthorizationStatus)
   {
-    locationManager.startUpdatingLocation()
+    switch status {
+    case .AuthorizedAlways:
+      fallthrough
+    case .AuthorizedWhenInUse:
+      locationManager.startUpdatingLocation()
+    default:
+      break
+    }
   }
   
   func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
