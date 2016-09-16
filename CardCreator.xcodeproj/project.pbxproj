@@ -52,7 +52,7 @@
 		2D8935871D7E415D001C5A75 /* UsernameAndPINViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsernameAndPINViewController.swift; sourceTree = "<group>"; };
 		2D8935991D7F0148001C5A75 /* ValidateUsernameResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidateUsernameResponse.swift; sourceTree = "<group>"; };
 		2D8D242C1D8650F2006E3D0F /* ActivityTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityTitleView.swift; sourceTree = "<group>"; };
-		2DB4364B1D4D632700F8E69D /* CardCreator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CardCreator.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2DB4364B1D4D632700F8E69D /* CardCreatorDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CardCreatorDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DB4364E1D4D632700F8E69D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2DB436551D4D632700F8E69D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2DB436581D4D632700F8E69D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -163,7 +163,7 @@
 		2DB4364C1D4D632700F8E69D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2DB4364B1D4D632700F8E69D /* CardCreator.app */,
+				2DB4364B1D4D632700F8E69D /* CardCreatorDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -192,9 +192,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		2DB4364A1D4D632700F8E69D /* CardCreator */ = {
+		2DB4364A1D4D632700F8E69D /* CardCreatorDemo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2DB4365D1D4D632700F8E69D /* Build configuration list for PBXNativeTarget "CardCreator" */;
+			buildConfigurationList = 2DB4365D1D4D632700F8E69D /* Build configuration list for PBXNativeTarget "CardCreatorDemo" */;
 			buildPhases = (
 				D3D2D9EB0599F5EEA226062A /* 📦 Check Pods Manifest.lock */,
 				2DB436471D4D632700F8E69D /* Sources */,
@@ -207,9 +207,9 @@
 			);
 			dependencies = (
 			);
-			name = CardCreator;
+			name = CardCreatorDemo;
 			productName = CardCreator;
-			productReference = 2DB4364B1D4D632700F8E69D /* CardCreator.app */;
+			productReference = 2DB4364B1D4D632700F8E69D /* CardCreatorDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -240,7 +240,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2DB4364A1D4D632700F8E69D /* CardCreator */,
+				2DB4364A1D4D632700F8E69D /* CardCreatorDemo */,
 			);
 		};
 /* End PBXProject section */
@@ -439,7 +439,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = CardCreator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.nypl.CardCreator;
+				PRODUCT_BUNDLE_IDENTIFIER = org.nypl.CardCreatorDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -451,7 +451,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = CardCreator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.nypl.CardCreator;
+				PRODUCT_BUNDLE_IDENTIFIER = org.nypl.CardCreatorDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -468,7 +468,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2DB4365D1D4D632700F8E69D /* Build configuration list for PBXNativeTarget "CardCreator" */ = {
+		2DB4365D1D4D632700F8E69D /* Build configuration list for PBXNativeTarget "CardCreatorDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2DB4365E1D4D632700F8E69D /* Debug */,

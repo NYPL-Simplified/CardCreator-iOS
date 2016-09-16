@@ -12,8 +12,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     -> Bool
   {
     self.window = UIWindow.init(frame: UIScreen.mainScreen().bounds)
-    self.window?.rootViewController = self.navigationController
+    self.window?.rootViewController = UIViewController()
     self.window?.makeKeyAndVisible()
+   
+    self.window?.rootViewController?.view.backgroundColor = UIColor.whiteColor()
+    self.navigationController.modalPresentationStyle = .FormSheet
+    self.window?.rootViewController?.presentViewController(navigationController, animated: false, completion: nil)
     
     self.window?.tintAdjustmentMode = .Normal;
     
