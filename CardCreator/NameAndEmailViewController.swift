@@ -60,7 +60,6 @@ class NameAndEmailViewController: FormTableViewController {
     self.emailCell.textField.keyboardType = .EmailAddress
     self.emailCell.textField.autocapitalizationType = .None
     self.emailCell.textField.autocorrectionType = .No
-    self.emailCell.textField.returnKeyType = .Done
   }
   
   // MARK: -
