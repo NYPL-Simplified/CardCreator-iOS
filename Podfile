@@ -1,4 +1,4 @@
-target 'CardCreator' do
+target 'CardCreatorDemo' do
   use_frameworks!
 
   pod 'PureLayout'

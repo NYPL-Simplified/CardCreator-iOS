@@ -30,6 +30,7 @@
 		2DB436591D4D632700F8E69D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2DB436571D4D632700F8E69D /* LaunchScreen.storyboard */; };
 		2DF383C11D6F912E00565406 /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DF383C01D6F912E00565406 /* LocationViewController.swift */; };
 		A5EDF4EE8C6EFB2EB9F28EE8 /* Pods_CardCreator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D10534F3FDA4909478ABF743 /* Pods_CardCreator.framework */; };
+		DC2F56A52403CCB2428934F8 /* Pods_CardCreatorDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73298AC7647E0CB3DA1787C0 /* Pods_CardCreatorDemo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,8 +59,11 @@
 		2DB436581D4D632700F8E69D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2DB4365A1D4D632700F8E69D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2DF383C01D6F912E00565406 /* LocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LocationViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		73298AC7647E0CB3DA1787C0 /* Pods_CardCreatorDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CardCreatorDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B94AC85723B204C4E821ED7 /* Pods-CardCreatorDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CardCreatorDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-CardCreatorDemo/Pods-CardCreatorDemo.release.xcconfig"; sourceTree = "<group>"; };
 		98902DB081AFA53AD479E373 /* Pods-CardCreator.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CardCreator.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CardCreator/Pods-CardCreator.debug.xcconfig"; sourceTree = "<group>"; };
 		AD79CE3A96861416B4546603 /* Pods-CardCreator.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CardCreator.release.xcconfig"; path = "Pods/Target Support Files/Pods-CardCreator/Pods-CardCreator.release.xcconfig"; sourceTree = "<group>"; };
+		AFAF457E859DB7A1FE813776 /* Pods-CardCreatorDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CardCreatorDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CardCreatorDemo/Pods-CardCreatorDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		D10534F3FDA4909478ABF743 /* Pods_CardCreator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CardCreator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -69,6 +73,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5EDF4EE8C6EFB2EB9F28EE8 /* Pods_CardCreator.framework in Frameworks */,
+				DC2F56A52403CCB2428934F8 /* Pods_CardCreatorDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,6 +85,7 @@
 			children = (
 				2D63B3601D512FB20022E960 /* PureLayout.framework */,
 				D10534F3FDA4909478ABF743 /* Pods_CardCreator.framework */,
+				73298AC7647E0CB3DA1787C0 /* Pods_CardCreatorDemo.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -185,6 +191,8 @@
 			children = (
 				98902DB081AFA53AD479E373 /* Pods-CardCreator.debug.xcconfig */,
 				AD79CE3A96861416B4546603 /* Pods-CardCreator.release.xcconfig */,
+				AFAF457E859DB7A1FE813776 /* Pods-CardCreatorDemo.debug.xcconfig */,
+				8B94AC85723B204C4E821ED7 /* Pods-CardCreatorDemo.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -287,7 +295,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CardCreator/Pods-CardCreator-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CardCreatorDemo/Pods-CardCreatorDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F4EBAC66536BFE033DD1A13A /* 📦 Embed Pods Frameworks */ = {
@@ -302,7 +310,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CardCreator/Pods-CardCreator-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CardCreatorDemo/Pods-CardCreatorDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -434,7 +442,7 @@
 		};
 		2DB4365E1D4D632700F8E69D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 98902DB081AFA53AD479E373 /* Pods-CardCreator.debug.xcconfig */;
+			baseConfigurationReference = AFAF457E859DB7A1FE813776 /* Pods-CardCreatorDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = CardCreator/Info.plist;
@@ -446,7 +454,7 @@
 		};
 		2DB4365F1D4D632700F8E69D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AD79CE3A96861416B4546603 /* Pods-CardCreator.release.xcconfig */;
+			baseConfigurationReference = 8B94AC85723B204C4E821ED7 /* Pods-CardCreatorDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = CardCreator/Info.plist;
