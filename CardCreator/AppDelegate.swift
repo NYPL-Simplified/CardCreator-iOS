@@ -13,13 +13,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate
   {
     self.window = UIWindow.init(frame: UIScreen.mainScreen().bounds)
     self.window?.rootViewController = UIViewController()
-    self.window?.makeKeyAndVisible()
-   
     self.window?.rootViewController?.view.backgroundColor = UIColor.whiteColor()
-    self.navigationController.modalPresentationStyle = .FormSheet
-    self.window?.rootViewController?.presentViewController(navigationController, animated: false, completion: nil)
-    
     self.window?.tintAdjustmentMode = .Normal;
+    self.window?.makeKeyAndVisible()
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(NSEC_PER_SEC)), dispatch_get_main_queue()) {
+      self.navigationController.modalPresentationStyle = .FormSheet
+      self.window?.rootViewController?.presentViewController(self.navigationController, animated: true, completion: nil)
+    }
     
     return true
   }
