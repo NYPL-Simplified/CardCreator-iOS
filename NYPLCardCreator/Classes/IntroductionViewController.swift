@@ -1,7 +1,7 @@
 import PureLayout
 import UIKit
 
-final class IntroductionViewController: UIViewController {
+public final class IntroductionViewController: UIViewController {
   
   let configuration: Configuration
   let descriptionLabel: UILabel
@@ -12,16 +12,16 @@ final class IntroductionViewController: UIViewController {
     super.init(nibName: nil, bundle: nil)
   }
   
-  convenience init() {
+  public convenience init() {
     self.init(configuration: Configuration())
   }
   
   @available(*, unavailable)
-  required init?(coder aDecoder: NSCoder) {
+  public required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
   
-  override func viewDidLoad() {
+  public override func viewDidLoad() {
     super.viewDidLoad()
     
     self.title = NSLocalizedString("Sign Up", comment: "A title welcoming the user to library card sign up")

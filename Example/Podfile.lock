@@ -1,0 +1,19 @@
+PODS:
+  - NYPLCardCreator (0.1.0):
+    - PureLayout (~> 3.0)
+  - PureLayout (3.0.2)
+
+DEPENDENCIES:
+  - NYPLCardCreator (from `../`)
+
+EXTERNAL SOURCES:
+  NYPLCardCreator:
+    :path: ../
+
+SPEC CHECKSUMS:
+  NYPLCardCreator: 40ef4d6117b431c6f2ede271755af8d85866c586
+  PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
+
+PODFILE CHECKSUM: 7242e80288f4ae5cfc6e13faef6063712ab044ab
+
+COCOAPODS: 1.0.1

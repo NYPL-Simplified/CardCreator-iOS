@@ -1,9 +1,10 @@
+import NYPLCardCreator
 import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate
 {
-  let navigationController = UINavigationController(rootViewController: IntroductionViewController())
+  let navigationController = UINavigationController(rootViewController: NYPLCardCreator.IntroductionViewController())
   var window: UIWindow?
   
   func application(

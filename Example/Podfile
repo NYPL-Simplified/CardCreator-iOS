@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'NYPLCardCreator_Example' do
+  pod 'NYPLCardCreator', :path => '../'
+
+  target 'NYPLCardCreator_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
