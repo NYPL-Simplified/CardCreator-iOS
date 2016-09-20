@@ -1,18 +1,18 @@
 import PureLayout
 import UIKit
 
-public final class IntroductionViewController: UIViewController {
+@objc public final class IntroductionViewController: UIViewController {
   
   let configuration: Configuration
   let descriptionLabel: UILabel
 
-  init(configuration: Configuration) {
+  @objc public init(configuration: Configuration) {
     self.configuration = configuration
     self.descriptionLabel = UILabel()
     super.init(nibName: nil, bundle: nil)
   }
   
-  public convenience init() {
+  @objc public convenience init() {
     self.init(configuration: Configuration())
   }
   
