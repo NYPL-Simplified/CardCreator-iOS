@@ -32,10 +32,7 @@ make their way through the registration flow in order to obtain a new library ca
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'NYPLCardCreator/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'NYPLCardCreator' => ['NYPLCardCreator/Assets/*.png']
-  # }
+  s.resources = 'NYPLCardCreator/Assets/*'
 
   s.frameworks = 'UIKit'
   s.dependency 'PureLayout', '~> 3.0'

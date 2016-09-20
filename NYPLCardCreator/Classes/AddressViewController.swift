@@ -3,7 +3,8 @@ import UIKit
 class AddressViewController: FormTableViewController {
   
   private static let regions: [String] = {
-    let stream = NSInputStream.init(URL: NSBundle.mainBundle().URLForResource("regions", withExtension: "json")!)!
+    let stream = NSInputStream.init(URL:
+      NSBundle(forClass: AddressViewController.self).URLForResource("regions", withExtension: "json")!)!
     stream.open()
     defer {
       stream.close()
