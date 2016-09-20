@@ -10,7 +10,7 @@ NYPLCardCreator is available through [CocoaPods](http://cocoapods.org). To insta
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod "NYPLCardCreator", :git => "https://github.com/NYPL-Simplified/NYPLCardCreator.git"
+pod "NYPLCardCreator", :git => "https://github.com/NYPL-Simplified/CardCreator-iOS.git"
 ```
 
 ## License
