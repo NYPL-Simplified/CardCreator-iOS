@@ -281,7 +281,9 @@ class UsernameAndPINViewController: FormTableViewController {
             comment: "An alert action the user may select to sign in with their new library card"),
           style: .Default,
           handler: { _ in
-            // FIXME
+            self.configuration.completionHandler(
+              username: self.usernameCell.textField.text!,
+              PIN: self.pinCell.textField.text!)
         }))
         self.presentViewController(alertController, animated: true, completion: nil)
       }
