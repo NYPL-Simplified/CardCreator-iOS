@@ -85,6 +85,10 @@ class UsernameAndPINViewController: FormTableViewController {
                        shouldChangeCharactersInRange range: NSRange,
                                                      replacementString string: String) -> Bool
   {
+    if !string.canBeConvertedToEncoding(NSASCIIStringEncoding) {
+      return false
+    }
+    
     if textField == self.usernameCell.textField {
       if let _ = string.rangeOfCharacterFromSet(NSCharacterSet.alphanumericCharacterSet().invertedSet) {
         return false
