@@ -18,12 +18,19 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
     super.init(nibName: nil, bundle: nil)
     self.tableView.dataSource = self
     self.tableView.delegate = self
-    self.view = self.tableView
   }
   
   @available(*, unavailable)
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  // MARK: UIView
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    self.view.addSubview(self.tableView)
+    self.tableView.autoPinEdgesToSuperviewEdges()
   }
   
   // MARK: UITableViewDataSource

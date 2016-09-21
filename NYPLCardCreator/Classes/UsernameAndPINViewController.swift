@@ -54,6 +54,7 @@ class UsernameAndPINViewController: FormTableViewController {
   }
   
   override func viewDidLoad() {
+    super.viewDidLoad()
     self.title = NSLocalizedString(
       "Username & PIN",
       comment: "A title for a screen asking the user for the user's username and PIN")

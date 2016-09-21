@@ -38,6 +38,7 @@ class NameAndEmailViewController: FormTableViewController {
   }
   
   override func viewDidLoad() {
+    super.viewDidLoad()
     self.title = NSLocalizedString(
       "Personal Information",
       comment: "A title for a screen asking the user for their personal information")
