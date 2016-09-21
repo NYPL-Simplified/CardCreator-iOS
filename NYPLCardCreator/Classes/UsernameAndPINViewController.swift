@@ -74,7 +74,7 @@ class UsernameAndPINViewController: FormTableViewController {
   
   // MARK: UITableViewDataSource
   
-  override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+  func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
     return NSLocalizedString("Usernames must be 5–25 letters and numbers only. PINs must be four digits.",
                              comment: "A description of valid usernames and PINs")
   }

@@ -1,6 +1,6 @@
 import UIKit
 
-class FormTableViewController: UITableViewController, UITextFieldDelegate {
+class FormTableViewController: TableViewController, UITextFieldDelegate {
   let cells: [UITableViewCell]
   
   init(cells: [UITableViewCell]) {
@@ -13,11 +13,7 @@ class FormTableViewController: UITableViewController, UITextFieldDelegate {
                       target: self,
                       action: #selector(didSelectNext))
   }
-  
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
+
   func returnToolbar() -> UIToolbar {
     let flexibleSpaceBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
     let nextBarButtonItem = UIBarButtonItem(
@@ -59,7 +55,7 @@ class FormTableViewController: UITableViewController, UITextFieldDelegate {
     return self.cells.count
   }
   
-  override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+  func numberOfSectionsInTableView(tableView: UITableView) -> Int {
     return 1
   }
   
