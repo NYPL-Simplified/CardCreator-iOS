@@ -24,6 +24,8 @@ class AddressViewController: FormTableViewController {
   private let regionPickerView = UIPickerView()
   private let regionPickerViewDataSourceAndDelegate: RegionPickerViewDataSourceAndDelegate
   
+  private let session: AuthenticatingSession
+  
   init(configuration: Configuration, addressStep: AddressStep) {
     self.configuration = configuration
     self.addressStep = addressStep
@@ -46,6 +48,10 @@ class AddressViewController: FormTableViewController {
     self.regionPickerViewDataSourceAndDelegate =
       RegionPickerViewDataSourceAndDelegate(textField: self.regionCell.textField)
     
+    self.session = AuthenticatingSession(
+      endpointUsername: configuration.endpointUsername,
+      endpointPassword: configuration.endpointPassword)
+    
     super.init(
       cells: [
         self.street1Cell,
@@ -66,6 +72,10 @@ class AddressViewController: FormTableViewController {
   @available(*, unavailable)
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  deinit {
+    self.session.invalidateAndCancel()
   }
   
   override func viewDidLoad() {
@@ -271,7 +281,7 @@ class AddressViewController: FormTableViewController {
     request.HTTPMethod = "POST"
     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
     request.timeoutInterval = self.configuration.requestTimeoutInterval
-    let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) in
+    let task = self.session.dataTaskWithRequest(request) { (data, response, error) in
       NSOperationQueue.mainQueue().addOperationWithBlock {
         self.navigationController?.view.userInteractionEnabled = true
         self.navigationItem.titleView = nil

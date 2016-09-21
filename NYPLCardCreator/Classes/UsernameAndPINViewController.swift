@@ -11,6 +11,8 @@ class UsernameAndPINViewController: FormTableViewController {
   private let fullName: String
   private let email: String
   
+  private let session: AuthenticatingSession
+  
   init(
     configuration: Configuration,
     homeAddress: Address,
@@ -31,6 +33,10 @@ class UsernameAndPINViewController: FormTableViewController {
     self.schoolOrWorkAddress = schoolOrWorkAddress
     self.fullName = fullName
     self.email = email
+    
+    self.session = AuthenticatingSession(
+      endpointUsername: configuration.endpointUsername,
+      endpointPassword: configuration.endpointPassword)
     
     super.init(
       cells: [
@@ -128,7 +134,7 @@ class UsernameAndPINViewController: FormTableViewController {
     request.HTTPMethod = "POST"
     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
     request.timeoutInterval = self.configuration.requestTimeoutInterval
-    let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) in
+    let task = self.session.dataTaskWithRequest(request) { (data, response, error) in
       NSOperationQueue.mainQueue().addOperationWithBlock {
         self.navigationController?.view.userInteractionEnabled = true
         self.navigationItem.titleView = nil
@@ -234,7 +240,7 @@ class UsernameAndPINViewController: FormTableViewController {
     request.HTTPMethod = "POST"
     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
     request.timeoutInterval = self.configuration.requestTimeoutInterval
-    let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) in
+    let task = self.session.dataTaskWithRequest(request) { (data, response, error) in
       NSOperationQueue.mainQueue().addOperationWithBlock {
         self.navigationController?.view.userInteractionEnabled = true
         self.navigationItem.titleView = nil
