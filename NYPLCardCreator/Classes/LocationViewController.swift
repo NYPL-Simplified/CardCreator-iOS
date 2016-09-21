@@ -60,7 +60,8 @@ class LocationViewController: UIViewController {
         queue: NSOperationQueue.mainQueue(),
         usingBlock: { _ in
           if !(self.navigationItem.rightBarButtonItem?.enabled)! {
-            self.checkLocation()
+            // FIXME: Temporarily disabled due to being called during another location check.
+            // self.checkLocation()
           }}))
   }
   

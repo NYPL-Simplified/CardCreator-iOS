@@ -24,9 +24,9 @@ class PlacemarkQuery: NSObject, CLLocationManagerDelegate {
     self.handler = handler
     switch CLLocationManager.authorizationStatus() {
     case .AuthorizedAlways:
-      break
+      fallthrough
     case .AuthorizedWhenInUse:
-      self.locationManager.startUpdatingLocation()
+      break
     case .Denied:
       let alertController = UIAlertController(
         title: NSLocalizedString("Location Access Disabled",
