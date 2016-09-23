@@ -1,6 +1,6 @@
 import UIKit
 
-class AlternativeAddressesViewController: UITableViewController {
+class AlternativeAddressesViewController: TableViewController {
   private let addressStep: AddressStep
   private let alternativeAddressesAndCardTypes: [(Address, CardType)]
 
@@ -28,11 +28,6 @@ class AlternativeAddressesViewController: UITableViewController {
     self.tableView.estimatedRowHeight = 104
   }
   
-  @available(*, unavailable)
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
   override func viewDidLoad() {
     super.viewDidLoad()
     switch self.addressStep {
@@ -53,7 +48,7 @@ class AlternativeAddressesViewController: UITableViewController {
   
   // MARK: UITableViewDelegate
   
-  override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     let (address, cardType) = self.alternativeAddressesAndCardTypes[indexPath.row]
     self.addressStep.continueFlowWithValidAddress(
       self.configuration,
@@ -64,7 +59,7 @@ class AlternativeAddressesViewController: UITableViewController {
   
   // MARK: UITableViewDataSource
   
-  override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+  func numberOfSectionsInTableView(tableView: UITableView) -> Int {
     return 1
   }
   

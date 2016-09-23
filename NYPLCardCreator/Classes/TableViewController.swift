@@ -1,7 +1,7 @@
 import UIKit
 
-/// This class is similar to `UITableViewController` except it is not broken on iOS 8 and it
-/// does not implement a refresh control.
+/// This class is similar to `UITableViewController` except it is not broken on iOS 8,
+/// does not implement a refresh control, and may be missing a couple other nicities.
 ///
 /// On iOS 8, `UITableViewController` has a bug where `init(style:)` will inappropriately
 /// call `init(nibName:bundle:)` on `self`. This makes subclassing `UITableViewController`
@@ -12,6 +12,7 @@ import UIKit
 /// See http://stackoverflow.com/a/30719434 for more information.
 class TableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
   let tableView: UITableView
+  var clearsSelectedOnViewWillAppear = true
   
   init(style: UITableViewStyle) {
     self.tableView = UITableView(frame: CGRectZero, style: style)
@@ -26,6 +27,14 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
   }
   
   // MARK: UIView
+  
+  override func viewWillAppear(animated: Bool) {
+    if self.clearsSelectedOnViewWillAppear {
+      if let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow {
+        self.tableView.deselectRowAtIndexPath(indexPathForSelectedRow, animated: true)
+      }
+    }
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
