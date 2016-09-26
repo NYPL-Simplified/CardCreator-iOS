@@ -1,9 +1,9 @@
 import UIKit
 
 @objc public class CardCreator: NSObject {
-  @objc public static func initialViewControllerWithConfiguration(
+  @objc public static func initialNavigationControllerWithConfiguration(
     configuration: CardCreatorConfiguration)
-    -> UIViewController
+    -> UINavigationController
   {
     return UINavigationController(rootViewController: IntroductionViewController(configuration: configuration))
   }
