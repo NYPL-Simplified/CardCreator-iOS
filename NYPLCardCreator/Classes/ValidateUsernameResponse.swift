@@ -1,6 +1,6 @@
 import Foundation
 
-class ValidateUsernameResponse {
+final class ValidateUsernameResponse {
   enum Response {
     case InvalidUsername
     case UnavailableUsername

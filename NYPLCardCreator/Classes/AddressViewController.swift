@@ -1,7 +1,7 @@
 import UIKit
 
 /// This class is used for allowing the user to enter an address.
-class AddressViewController: FormTableViewController {
+final class AddressViewController: FormTableViewController {
   
   private static let regions: [String] = {
     let stream = NSInputStream.init(URL:

@@ -1,7 +1,7 @@
 import UIKit
 
 /// The second step in the card registration flow.
-class LocationViewController: UIViewController {
+final class LocationViewController: UIViewController {
   
   private let configuration: CardCreatorConfiguration
   

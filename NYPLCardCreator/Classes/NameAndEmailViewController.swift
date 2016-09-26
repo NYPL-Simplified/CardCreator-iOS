@@ -1,6 +1,6 @@
 import UIKit
 
-class NameAndEmailViewController: FormTableViewController {
+final class NameAndEmailViewController: FormTableViewController {
   
   private let configuration: CardCreatorConfiguration
   

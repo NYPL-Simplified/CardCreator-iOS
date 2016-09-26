@@ -3,7 +3,7 @@ import UIKit
 /// This class presents a `UIActivityIndicatorView` adjacent to a `UILabel`. It is meant
 /// to be used as a title view when the UI is disabled due to an action in progress (as
 /// demonstrated in Apple's Settings application).
-class ActivityTitleView: UIView {
+final class ActivityTitleView: UIView {
   
   init(title: String) {
     super.init(frame: CGRectZero)

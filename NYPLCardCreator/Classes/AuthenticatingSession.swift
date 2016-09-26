@@ -2,7 +2,7 @@ import UIKit
 
 /// This class is a tiny version of `NSURLSession` that will automatically handle
 /// authentication with the API endpoint using basic authentication.
-class AuthenticatingSession {
+final class AuthenticatingSession {
   private let delegate: Delegate
   private let URLSession: NSURLSession
   

@@ -1,6 +1,6 @@
 import UIKit
 
-@objc public class CardCreator: NSObject {
+@objc public final class CardCreator: NSObject {
   @objc public static func initialNavigationControllerWithConfiguration(
     configuration: CardCreatorConfiguration)
     -> UINavigationController

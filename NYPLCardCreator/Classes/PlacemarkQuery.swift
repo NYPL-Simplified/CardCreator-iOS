@@ -1,7 +1,7 @@
 import CoreLocation
 import UIKit
 
-class PlacemarkQuery: NSObject, CLLocationManagerDelegate {
+final class PlacemarkQuery: NSObject, CLLocationManagerDelegate {
   
   enum Result {
     case Placemark(placemark: CLPlacemark)

@@ -2,7 +2,7 @@ import UIKit
 
 /// This class is used to display a list of addresses suggested by the server so
 /// that the user can choose the correct address.
-class AlternativeAddressesViewController: TableViewController {
+final class AlternativeAddressesViewController: TableViewController {
   private let addressStep: AddressStep
   private let alternativeAddressesAndCardTypes: [(Address, CardType)]
   

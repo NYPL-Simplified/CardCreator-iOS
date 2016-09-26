@@ -1,7 +1,7 @@
 import UIKit
 
 /// This class is used to allow the user to enter their desired username and PIN.
-class UsernameAndPINViewController: FormTableViewController {
+final class UsernameAndPINViewController: FormTableViewController {
   
   private let configuration: CardCreatorConfiguration
   
