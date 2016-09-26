@@ -105,7 +105,9 @@ enum AddressStep {
       }
     case .Temporary:
       let alertController = UIAlertController(
-        title: NSLocalizedString("Temporary Card", comment: ""),
+        title: NSLocalizedString(
+          "Temporary Card",
+          comment: "An alert title telling the user they've received a temporary card"),
         message: NSLocalizedString(
           ("Your address qualifies you for a temporary 30-day ebook-only library card. You will need to visit your "
             + "local NYPL branch within 30 days to receive a standard card."),
@@ -125,9 +127,11 @@ enum AddressStep {
       viewController.presentViewController(alertController, animated: true, completion: nil)
     case .Standard:
       let alertController = UIAlertController(
-        title: NSLocalizedString("Standard Card", comment: ""),
+        title: NSLocalizedString(
+          "Standard Card",
+          comment: "An alert title telling the user they've received a standard card"),
         message: NSLocalizedString(
-          "Congratulations! Your address qualifies you for a three-year ebook-only library card.",
+          "Congratulations! Your address qualifies you for a standard three-year ebook-only library card.",
           comment: "An alert message telling the user she'll get a three-year library card"),
         preferredStyle: .Alert)
       alertController.addAction(UIAlertAction(
