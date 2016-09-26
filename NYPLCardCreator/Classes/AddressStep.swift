@@ -1,10 +1,17 @@
 import UIKit
 
+/// This represents the user's progress in the registration flow.
 enum AddressStep {
+  /// The user is currently entering their home address.
   case Home
+  /// The user is currently entering their school address (and has previously entered
+  /// the given home address).
   case School(homeAddress: Address)
+  /// The user is currently entering their work address (and has previously entered
+  /// the given home address).
   case Work(homeAddress: Address)
   
+  /// Returns the previously entered home address (if any).
   var homeAddress: Address? {
     get {
       switch self {
@@ -26,8 +33,11 @@ enum AddressStep {
     }
   }
   
+  /// Given a `Configuration`, the current `UIViewController`, an `Address` that has just
+  /// been validated, and the `CardType` implied by the validated address, continue with the
+  /// registration flow as appropriate.
   func continueFlowWithValidAddress(
-    configuration: Configuration,
+    configuration: CardCreatorConfiguration,
     viewController: UIViewController,
     address: Address,
     cardType: CardType)
@@ -97,8 +107,8 @@ enum AddressStep {
       let alertController = UIAlertController(
         title: NSLocalizedString("Temporary Card", comment: ""),
         message: NSLocalizedString(
-          ("Your address qualifies you for a temporary 30-day library card. You will need to visit your local "
-            + "NYPL branch within 30 days to receive a standard card."),
+          ("Your address qualifies you for a temporary 30-day ebook-only library card. You will need to visit your "
+            + "local NYPL branch within 30 days to receive a standard card."),
           comment: "An alert message telling the user she'll get a 30-day library card"),
         preferredStyle: .Alert)
       alertController.addAction(UIAlertAction(
@@ -117,7 +127,7 @@ enum AddressStep {
       let alertController = UIAlertController(
         title: NSLocalizedString("Standard Card", comment: ""),
         message: NSLocalizedString(
-          "Congratulations! Your address qualifies you for a standard three-year library card.",
+          "Congratulations! Your address qualifies you for a three-year ebook-only library card.",
           comment: "An alert message telling the user she'll get a three-year library card"),
         preferredStyle: .Alert)
       alertController.addAction(UIAlertAction(

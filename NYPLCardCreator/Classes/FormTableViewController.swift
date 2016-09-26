@@ -1,5 +1,11 @@
 import UIKit
 
+/// The superclass for all form-like view controllers in the application. It provides
+/// for cell navigation via a "Return" button, management of the "Next" button for going
+/// to the next step of the registration flow, and implements `UITableViewDataSource`.
+///
+/// **Note:** The `didSelectNext` method should be overridden in all subclasses to advance
+/// the registration flow as appropriate. The default behavior is to do nothing.
 class FormTableViewController: TableViewController, UITextFieldDelegate {
   let cells: [UITableViewCell]
   
@@ -14,6 +20,7 @@ class FormTableViewController: TableViewController, UITextFieldDelegate {
                       action: #selector(didSelectNext))
   }
 
+  /// Returns a `UIToolbar` with a "Return" button that advances to the next text field.
   func returnToolbar() -> UIToolbar {
     let flexibleSpaceBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
     let nextBarButtonItem = UIBarButtonItem(
@@ -72,7 +79,7 @@ class FormTableViewController: TableViewController, UITextFieldDelegate {
   
   // MARK: -
   
-  /// Override in subclasses.
+  /// Should be overridden in subclasses of `FormTableViewController`.
   func didSelectNext() {
     
   }

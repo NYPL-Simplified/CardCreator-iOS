@@ -1,15 +1,17 @@
 import UIKit
 
+/// This class is used to display a list of addresses suggested by the server so
+/// that the user can choose the correct address.
 class AlternativeAddressesViewController: TableViewController {
   private let addressStep: AddressStep
   private let alternativeAddressesAndCardTypes: [(Address, CardType)]
-
+  
+  private let configuration: CardCreatorConfiguration
+  
   private static let addressCellReuseIdentifier = "addressCellReuseIdentifier"
   
-  let configuration: Configuration
-  
   init(
-    configuration: Configuration,
+    configuration: CardCreatorConfiguration,
     addressStep: AddressStep,
     alternativeAddressesAndCardTypes: [(Address, CardType)])
   {

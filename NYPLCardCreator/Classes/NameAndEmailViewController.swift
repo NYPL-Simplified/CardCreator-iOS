@@ -2,14 +2,14 @@ import UIKit
 
 class NameAndEmailViewController: FormTableViewController {
   
-  private let configuration: Configuration
+  private let configuration: CardCreatorConfiguration
   
   private let fullNameCell: LabelledTextViewCell
   private let emailCell: LabelledTextViewCell
   private let homeAddress: Address
   private let schoolOrWorkAddress: Address?
   
-  init(configuration: Configuration, homeAddress: Address, schoolOrWorkAddress: Address?) {
+  init(configuration: CardCreatorConfiguration, homeAddress: Address, schoolOrWorkAddress: Address?) {
     self.configuration = configuration
     self.fullNameCell = LabelledTextViewCell(
       title: NSLocalizedString("Full Name", comment: "The text field title for the full name of a user"),

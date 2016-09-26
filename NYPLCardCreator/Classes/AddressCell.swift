@@ -1,7 +1,10 @@
 import UIKit
 
+/// A subclass of `UITableViewCell` that displays an address within its content view.
 class AddressCell: UITableViewCell {
+  
   let street1Label, street2Label, cityLabel, regionLabel, zipLabel: UILabel
+  
   private var addressValue: Address?
   var address: Address? {
     get {

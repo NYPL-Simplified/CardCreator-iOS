@@ -1,5 +1,6 @@
 import UIKit
 
+/// This class is used for allowing the user to enter an address.
 class AddressViewController: FormTableViewController {
   
   private static let regions: [String] = {
@@ -12,7 +13,7 @@ class AddressViewController: FormTableViewController {
     return try! NSJSONSerialization.JSONObjectWithStream(stream, options: [.AllowFragments]) as! [String]
   }()
   
-  let configuration: Configuration
+  private let configuration: CardCreatorConfiguration
   
   private let addressStep: AddressStep
   private let street1Cell: LabelledTextViewCell
@@ -26,7 +27,7 @@ class AddressViewController: FormTableViewController {
   
   private let session: AuthenticatingSession
   
-  init(configuration: Configuration, addressStep: AddressStep) {
+  init(configuration: CardCreatorConfiguration, addressStep: AddressStep) {
     self.configuration = configuration
     self.addressStep = addressStep
     self.street1Cell = LabelledTextViewCell(
@@ -48,9 +49,7 @@ class AddressViewController: FormTableViewController {
     self.regionPickerViewDataSourceAndDelegate =
       RegionPickerViewDataSourceAndDelegate(textField: self.regionCell.textField)
     
-    self.session = AuthenticatingSession(
-      endpointUsername: configuration.endpointUsername,
-      endpointPassword: configuration.endpointPassword)
+    self.session = AuthenticatingSession(configuration: configuration)
     
     super.init(
       cells: [
@@ -208,7 +207,7 @@ class AddressViewController: FormTableViewController {
   }
   
   private class RegionPickerViewDataSourceAndDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
-    let textField: UITextField
+    private let textField: UITextField
     
     init(textField: UITextField) {
       self.textField = textField

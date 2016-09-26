@@ -1,16 +1,17 @@
 import UIKit
 
+/// The second step in the card registration flow.
 class LocationViewController: UIViewController {
   
-  let configuration: Configuration
+  private let configuration: CardCreatorConfiguration
   
-  let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
-  var observers: [NSObjectProtocol] = []
-  let resultLabel = UILabel()
-  var placemarkQuery: PlacemarkQuery? = nil
-  var viewDidAppearPreviously: Bool = false
+  private let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+  private var observers: [NSObjectProtocol] = []
+  private let resultLabel = UILabel()
+  private var placemarkQuery: PlacemarkQuery? = nil
+  private var viewDidAppearPreviously: Bool = false
 
-  init(configuration: Configuration) {
+  init(configuration: CardCreatorConfiguration) {
     self.configuration = configuration
     super.init(nibName: nil, bundle: nil)
   }

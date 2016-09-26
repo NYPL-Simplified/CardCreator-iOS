@@ -7,6 +7,8 @@ struct Address {
   let region: String
   let zip: String
   
+  /// Takes a JSON object of the form retured from the server (where "state" is mapped
+  /// to the `region` property).
   static func addressWithJSONObject(object: AnyObject) -> Address? {
     guard
       let address = object as? [String: AnyObject],
@@ -22,6 +24,7 @@ struct Address {
     return Address(street1: street1, street2: address["line_2"] as? String, city: city, region: region, zip: zip)
   }
   
+  /// Returns a JSON object of the form required by the server.
   func JSONObject() -> [String: String] {
     return [
       "line_1": self.street1,

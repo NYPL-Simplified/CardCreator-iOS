@@ -1,6 +1,8 @@
 import PureLayout
 import UIKit
 
+/// A subclass of `UITableViewCell` with a label on the left side and a text field
+/// on the right. Metrics are identical to those often used by Apple.
 final class LabelledTextViewCell: UITableViewCell
 {
   let label: UILabel

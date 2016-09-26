@@ -1,17 +1,21 @@
 import UIKit
 
+/// This class is a tiny version of `NSURLSession` that will automatically handle
+/// authentication with the API endpoint using basic authentication.
 class AuthenticatingSession {
-   private let delegate: Delegate
+  private let delegate: Delegate
   private let URLSession: NSURLSession
   
-  init(endpointUsername: String, endpointPassword: String) {
-    self.delegate = Delegate(username: endpointUsername, password: endpointPassword)
+  init(configuration: CardCreatorConfiguration) {
+    self.delegate = Delegate(username: configuration.endpointUsername, password: configuration.endpointPassword)
     self.URLSession = NSURLSession(
       configuration: NSURLSessionConfiguration.ephemeralSessionConfiguration(),
       delegate: self.delegate,
       delegateQueue: nil)
   }
   
+  /// Functionally equivalent to the `NSURLSession` method with the addition of automatic
+  /// authentication with the API endpoint.
   func dataTaskWithRequest(
     request: NSURLRequest,
     completionHandler: (NSData?, NSURLResponse?, NSError?) -> Void) -> NSURLSessionDataTask
@@ -19,17 +23,21 @@ class AuthenticatingSession {
     return self.URLSession.dataTaskWithRequest(request, completionHandler: completionHandler)
   }
   
+  /// As with an `NSURLSession`, this or `finishTasksAndInvalidate` must be called else
+  /// resources will not be freed.
   func invalidateAndCancel() {
     self.URLSession.invalidateAndCancel()
   }
-  
+
+  /// As with an `NSURLSession`, this or `invalidateAndCancel` must be called else
+  /// resources will not be freed.
   func finishTasksAndInvalidate() {
     self.URLSession.finishTasksAndInvalidate()
   }
   
   private class Delegate: NSObject, NSURLSessionDelegate {
-    let username: String
-    let password: String
+    private let username: String
+    private let password: String
     
     init(username: String, password: String) {
       self.username = username

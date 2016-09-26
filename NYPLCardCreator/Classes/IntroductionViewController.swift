@@ -1,19 +1,16 @@
 import PureLayout
 import UIKit
 
-@objc public final class IntroductionViewController: UIViewController {
+/// The first step in the card registration flow.
+final class IntroductionViewController: UIViewController {
   
-  let configuration: Configuration
-  let descriptionLabel: UILabel
+  private let configuration: CardCreatorConfiguration
+  private let descriptionLabel: UILabel
 
-  @objc public init(configuration: Configuration) {
+  public init(configuration: CardCreatorConfiguration) {
     self.configuration = configuration
     self.descriptionLabel = UILabel()
     super.init(nibName: nil, bundle: nil)
-  }
-  
-  @objc public convenience init() {
-    self.init(configuration: Configuration())
   }
   
   @available(*, unavailable)
@@ -35,7 +32,7 @@ import UIKit
     self.descriptionLabel.numberOfLines = 0
     self.descriptionLabel.text =
       NSLocalizedString(
-        ("To obtain a digital library card from the New York Public Library, you must live, work, "
+        ("To get a digital library card from the New York Public Library, you must live, work, "
           + "or attend school in New York State. You must also be at least 13 years of age and be "
           + "physically present in New York at the time of sign-up."),
         comment: "A description of what is required to get a library card")

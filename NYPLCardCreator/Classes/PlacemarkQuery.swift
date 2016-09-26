@@ -8,10 +8,10 @@ class PlacemarkQuery: NSObject, CLLocationManagerDelegate {
     case ErrorAlertController(alertController: UIAlertController)
   }
   
-  var receivedRecentLocation = false
-  var handler: (Result -> Void)? = nil
-  let geocoder = CLGeocoder()
-  let locationManager = CLLocationManager()
+  private var receivedRecentLocation = false
+  private var handler: (Result -> Void)? = nil
+  private let geocoder = CLGeocoder()
+  private let locationManager = CLLocationManager()
   
   override init() {
     super.init()
@@ -48,7 +48,7 @@ class PlacemarkQuery: NSObject, CLLocationManagerDelegate {
         style: .Cancel,
         handler: nil))
       NSOperationQueue.mainQueue().addOperationWithBlock({ 
-        self.handler!(.ErrorAlertController(alertController: alertController))
+        handler(.ErrorAlertController(alertController: alertController))
       })
     case .NotDetermined:
       self.locationManager.requestWhenInUseAuthorization()
@@ -66,7 +66,7 @@ class PlacemarkQuery: NSObject, CLLocationManagerDelegate {
         style: .Default,
         handler: nil))
       NSOperationQueue.mainQueue().addOperationWithBlock({ 
-        self.handler!(.ErrorAlertController(alertController: alertController))
+        handler(.ErrorAlertController(alertController: alertController))
       })
     }
   }
@@ -88,9 +88,15 @@ class PlacemarkQuery: NSObject, CLLocationManagerDelegate {
   }
   
   func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    if self.handler == nil || self.receivedRecentLocation {
+    if self.receivedRecentLocation {
       return
     }
+    
+    guard let handler = self.handler else {
+      return
+    }
+    
+    // The last element is always the most recent.
     let latestLocation = locations.last!
     let fiveMinutesAgo = NSDate(timeIntervalSinceNow: -300)
     if latestLocation.timestamp == latestLocation.timestamp.laterDate(fiveMinutesAgo) {
@@ -99,7 +105,7 @@ class PlacemarkQuery: NSObject, CLLocationManagerDelegate {
       self.geocoder.reverseGeocodeLocation(locations.last!) { (placemarks: [CLPlacemark]?, error) in
         if let placemark = placemarks?.last {
           NSOperationQueue.mainQueue().addOperationWithBlock({ 
-            self.handler!(.Placemark(placemark: placemark))
+            handler(.Placemark(placemark: placemark))
           })
         } else {
           let alertController = UIAlertController(
@@ -113,7 +119,7 @@ class PlacemarkQuery: NSObject, CLLocationManagerDelegate {
             style: .Default,
             handler: nil))
           NSOperationQueue.mainQueue().addOperationWithBlock({
-            self.handler!(.ErrorAlertController(alertController: alertController))
+            handler(.ErrorAlertController(alertController: alertController))
           })
         }
       }

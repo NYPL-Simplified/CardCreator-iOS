@@ -1,8 +1,9 @@
 import UIKit
 
+/// This class is used to allow the user to enter their desired username and PIN.
 class UsernameAndPINViewController: FormTableViewController {
   
-  private let configuration: Configuration
+  private let configuration: CardCreatorConfiguration
   
   private let usernameCell: LabelledTextViewCell
   private let pinCell: LabelledTextViewCell
@@ -14,7 +15,7 @@ class UsernameAndPINViewController: FormTableViewController {
   private let session: AuthenticatingSession
   
   init(
-    configuration: Configuration,
+    configuration: CardCreatorConfiguration,
     homeAddress: Address,
     schoolOrWorkAddress: Address?,
     fullName: String,
@@ -24,19 +25,17 @@ class UsernameAndPINViewController: FormTableViewController {
     
     self.usernameCell = LabelledTextViewCell(
       title: NSLocalizedString("Username", comment: "A username used to log into a service"),
-      placeholder: NSLocalizedString("janedoe123", comment: "An example of a possible username"))
+      placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
     self.pinCell = LabelledTextViewCell(
       title: NSLocalizedString("PIN", comment: "An abbreviation for personal identification number"),
-      placeholder: "0987")
+      placeholder: NSLocalizedString("Optional", comment: "A placeholder for an optional text field"))
     
     self.homeAddress = homeAddress
     self.schoolOrWorkAddress = schoolOrWorkAddress
     self.fullName = fullName
     self.email = email
     
-    self.session = AuthenticatingSession(
-      endpointUsername: configuration.endpointUsername,
-      endpointPassword: configuration.endpointPassword)
+    self.session = AuthenticatingSession(configuration: configuration)
     
     super.init(
       cells: [
