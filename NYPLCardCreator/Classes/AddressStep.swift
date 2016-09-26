@@ -106,11 +106,11 @@ enum AddressStep {
     case .Temporary:
       let alertController = UIAlertController(
         title: NSLocalizedString(
-          "Temporary Card",
+          "30-Day Card",
           comment: "An alert title telling the user they've received a temporary card"),
         message: NSLocalizedString(
-          ("Your address qualifies you for a temporary 30-day ebook-only library card. You will need to visit your "
-            + "local NYPL branch within 30 days to receive a standard card."),
+          ("We were not able to verify your address, so we have issued you a temporary card. Please visit your local "
+            + "NYPL branch within 30 days to receive a standard card."),
           comment: "An alert message telling the user she'll get a 30-day library card"),
         preferredStyle: .Alert)
       alertController.addAction(UIAlertAction(
