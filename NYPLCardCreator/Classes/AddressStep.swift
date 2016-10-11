@@ -73,6 +73,9 @@ enum AddressStep {
           title: NSLocalizedString("Edit Home Address", comment: ""),
           style: .Cancel,
           handler: nil))
+          handler: {_ in
+          viewController.navigationController?.popViewControllerAnimated(true)
+        }))
         viewController.presentViewController(alertController, animated: true, completion: nil)
       case .School:
         let alertController = UIAlertController(

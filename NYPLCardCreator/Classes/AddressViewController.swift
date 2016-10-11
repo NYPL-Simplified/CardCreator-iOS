@@ -319,11 +319,11 @@ final class AddressViewController: FormTableViewController {
         }
         switch validateAddressResponse {
         case let .ValidAddress(_, address, cardType):
-          self.addressStep.continueFlowWithValidAddress(
-            self.configuration,
-            viewController: self,
-            address: address,
-            cardType: cardType)
+            let viewController = ConfirmValidAddressViewController(
+                configuration: self.configuration,
+                addressStep: self.addressStep,
+                validAddressAndCardType: (address, cardType))
+            self.navigationController?.pushViewController(viewController, animated: true)
         case let .AlternativeAddresses(_, addressTuples):
           let alertViewController = UIAlertController(
             title: NSLocalizedString(
