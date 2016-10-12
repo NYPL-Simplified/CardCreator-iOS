@@ -122,6 +122,24 @@ final class UsernameAndPINViewController: FormTableViewController {
   
   @objc override func didSelectNext() {
     self.view.endEditing(false)
+    self.navigationController?.pushViewController(
+      PatronInfoViewController(
+        configuration: self.configuration,
+        homeAddress: self.homeAddress,
+        schoolOrWorkAddress: self.schoolOrWorkAddress,
+        fullName: self.fullName,
+        email: self.email,
+        username: self.usernameCell.textField.text!,
+        pin: self.pinCell.textField.text!),
+      animated: true)
+  }
+  
+  
+  //GODO this will likely need to move to PatronInfoVC
+  
+  /*
+  @objc override func didSelectNext() {
+    self.view.endEditing(false)
     self.navigationController?.view.userInteractionEnabled = false
     self.navigationItem.titleView =
       ActivityTitleView(title:
@@ -205,6 +223,7 @@ final class UsernameAndPINViewController: FormTableViewController {
     
     task.resume()
   }
+ */
   
   @objc private func textFieldDidChange() {
     self.navigationItem.rightBarButtonItem?.enabled =

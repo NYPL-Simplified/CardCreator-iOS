@@ -72,8 +72,8 @@ enum AddressStep {
         alertController.addAction(UIAlertAction(
           title: NSLocalizedString("Edit Home Address", comment: ""),
           style: .Cancel,
-          handler: nil))
           handler: {_ in
+    //GODO does this work for every situation?
           viewController.navigationController?.popViewControllerAnimated(true)
         }))
         viewController.presentViewController(alertController, animated: true, completion: nil)
@@ -129,6 +129,7 @@ enum AddressStep {
       }))
       viewController.presentViewController(alertController, animated: true, completion: nil)
     case .Standard:
+        //GODO this alert either needs to be removed completely or pushed further down the process chain
       let alertController = UIAlertController(
         title: NSLocalizedString(
           "Standard Card",
