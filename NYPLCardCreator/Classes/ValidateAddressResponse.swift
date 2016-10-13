@@ -33,9 +33,9 @@ final class ValidateAddressResponse {
         guard
           let JSONObject = object as? [String: AnyObject],
           let addressJSON = JSONObject["address"] as? [String: AnyObject],
-          let address = Address.addressWithJSONObject(addressJSON),
-          let cardTypeString = JSONObject["card_type"] as? String
+          let address = Address.addressWithJSONObject(addressJSON)
           else { return nil }
+        let cardTypeString = JSONObject["card_type"] as? String
         var cardType = CardType.None
         if cardTypeString == "temporary" {
           cardType = .Temporary
