@@ -35,6 +35,7 @@ final class UsernameAndPINViewController: FormTableViewController {
     self.fullName = fullName
     self.email = email
     
+    //GODO likely don't need this here now
     self.session = AuthenticatingSession(configuration: configuration)
     
     super.init(
@@ -122,24 +123,6 @@ final class UsernameAndPINViewController: FormTableViewController {
   
   @objc override func didSelectNext() {
     self.view.endEditing(false)
-    self.navigationController?.pushViewController(
-      PatronInfoViewController(
-        configuration: self.configuration,
-        homeAddress: self.homeAddress,
-        schoolOrWorkAddress: self.schoolOrWorkAddress,
-        fullName: self.fullName,
-        email: self.email,
-        username: self.usernameCell.textField.text!,
-        pin: self.pinCell.textField.text!),
-      animated: true)
-  }
-  
-  
-  //GODO this will likely need to move to PatronInfoVC
-  
-  /*
-  @objc override func didSelectNext() {
-    self.view.endEditing(false)
     self.navigationController?.view.userInteractionEnabled = false
     self.navigationItem.titleView =
       ActivityTitleView(title:
@@ -216,104 +199,33 @@ final class UsernameAndPINViewController: FormTableViewController {
             handler: nil))
           self.presentViewController(alertController, animated: true, completion: nil)
         case .AvailableUsername:
-          self.createPatron()
+          //GODO new route here
+          self.moveToFinalReview()
         }
       }
     }
     
     task.resume()
   }
- */
-  
+
   @objc private func textFieldDidChange() {
     self.navigationItem.rightBarButtonItem?.enabled =
       (self.usernameCell.textField.text?.characters.count >= 5
         && self.pinCell.textField.text?.characters.count == 4)
   }
   
-  private func createPatron() {
+  private func moveToFinalReview() {
     self.view.endEditing(false)
-    self.navigationController?.view.userInteractionEnabled = false
-    self.navigationItem.titleView =
-      ActivityTitleView(title:
-        NSLocalizedString(
-          "Creating Card",
-          comment: "A title telling the user their card is currently being created"))
-    let request = NSMutableURLRequest(URL: self.configuration.endpointURL.URLByAppendingPathComponent("create_patron"))
-    let schoolOrWorkAddressOrNull: AnyObject = {
-      if let schoolOrWorkAddress = self.schoolOrWorkAddress {
-        return schoolOrWorkAddress.JSONObject()
-      } else {
-        return NSNull()
-      }
-    }()
-    let JSONObject: [String: AnyObject] = [
-      "name": self.fullName,
-      "email": self.email,
-      "address": self.homeAddress.JSONObject(),
-      "username": self.usernameCell.textField.text!,
-      "pin": self.pinCell.textField.text!,
-      "work_or_school_address": schoolOrWorkAddressOrNull
-    ]
-    request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(JSONObject, options: [.PrettyPrinted])
-    request.HTTPMethod = "POST"
-    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.timeoutInterval = self.configuration.requestTimeoutInterval
-    let task = self.session.dataTaskWithRequest(request) { (data, response, error) in
-      NSOperationQueue.mainQueue().addOperationWithBlock {
-        self.navigationController?.view.userInteractionEnabled = true
-        self.navigationItem.titleView = nil
-        if let error = error {
-          let alertController = UIAlertController(
-            title: NSLocalizedString("Error", comment: "The title for an error alert"),
-            message: error.localizedDescription,
-            preferredStyle: .Alert)
-          alertController.addAction(UIAlertAction(
-            title: NSLocalizedString("OK", comment: ""),
-            style: .Default,
-            handler: nil))
-          self.presentViewController(alertController, animated: true, completion: nil)
-          return
-        }
-        func showErrorAlert() {
-          let alertController = UIAlertController(
-            title: NSLocalizedString("Error", comment: "The title for an error alert"),
-            message: NSLocalizedString(
-              "A server error occurred during card creation. Please try again later.",
-              comment: "An alert message explaining an error and telling the user to try again later"),
-            preferredStyle: .Alert)
-          alertController.addAction(UIAlertAction(
-            title: NSLocalizedString("OK", comment: ""),
-            style: .Default,
-            handler: nil))
-          self.presentViewController(alertController, animated: true, completion: nil)
-        }
-        if (response as! NSHTTPURLResponse).statusCode != 200 || data == nil {
-          showErrorAlert()
-          return
-        }
-        let alertController = UIAlertController(
-          title: NSLocalizedString(
-            "Card Created Successfully",
-            comment: "An alert title telling the user their card has been created"),
-          message: NSLocalizedString(
-            "You have been issued a digital library card! Be sure to keep your username and PIN in a safe location.",
-            comment: "An alert message telling the user they received a library card"),
-          preferredStyle: .Alert)
-        alertController.addAction(UIAlertAction(
-          title: NSLocalizedString(
-            "Sign In",
-            comment: "An alert action the user may select to sign in with their new library card"),
-          style: .Default,
-          handler: { _ in
-            self.configuration.completionHandler(
-              username: self.usernameCell.textField.text!,
-              PIN: self.pinCell.textField.text!)
-        }))
-        self.presentViewController(alertController, animated: true, completion: nil)
-      }
-    }
-    
-    task.resume()
+    self.navigationController?.pushViewController(
+      UserSummaryViewController(
+        configuration: self.configuration,
+        homeAddress: self.homeAddress,
+        schoolOrWorkAddress: self.schoolOrWorkAddress,
+        fullName: self.fullName,
+        email: self.email,
+        username: self.usernameCell.textField.text!,
+        pin: self.pinCell.textField.text!),
+      animated: true)
   }
+  
 }
