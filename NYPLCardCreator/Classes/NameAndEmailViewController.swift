@@ -63,25 +63,6 @@ final class NameAndEmailViewController: FormTableViewController {
     self.emailCell.textField.autocorrectionType = .No
   }
   
-  // MARK: UITextFieldDelegate
-  
-//  @objc func textField(textField: UITextField,
-//                       shouldChangeCharactersInRange range: NSRange,
-//                                                     replacementString string: String) -> Bool
-//  {
-//    
-//    if textField == self.emailCell.textField {
-//      if let text = textField.text {
-//        return self.isPossibleStartOfValidZIPCode(
-//          (text as NSString).stringByReplacingCharactersInRange(range, withString: string))
-//      } else {
-//        return self.isPossibleStartOfValidZIPCode(string)
-//      }
-//    }
-//    
-//    return true
-//  }
-  
   // MARK: -
   
   @objc override func didSelectNext() {
@@ -101,7 +82,6 @@ final class NameAndEmailViewController: FormTableViewController {
     let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
     return emailTest.evaluateWithObject(self.emailCell.textField.text!)
   }
-  
   
   @objc private func textFieldDidChange() {
     if (self.emailIsValid()) {

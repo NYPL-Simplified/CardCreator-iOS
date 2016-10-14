@@ -37,11 +37,7 @@ final class AlternativeAddressesViewController: TableViewController {
     let headerLabel = UILabel()
     headerView.addSubview(headerLabel)
     
-    headerLabel.autoPinEdgeToSuperviewEdge(.Left, withInset: 22.0)
-    headerLabel.autoPinEdgeToSuperviewEdge(.Right, withInset: 22.0)
-    headerLabel.autoPinEdgeToSuperviewEdge(.Top, withInset: 2.0)
-    headerLabel.autoPinEdgeToSuperviewEdge(.Bottom, withInset: 2.0)
-    
+    headerLabel.autoPinEdgesToSuperviewEdgesWithInsets(UIEdgeInsetsMake(2.0, 22.0, 2.0, 22.0))
     headerLabel.numberOfLines = 2
     headerLabel.textColor = UIColor.darkGrayColor()
     headerLabel.textAlignment = .Center
