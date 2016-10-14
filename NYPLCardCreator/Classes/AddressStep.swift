@@ -133,7 +133,6 @@ enum AddressStep {
           "Standard Card",
           comment: "An alert title telling the user they've received a standard card"),
         message: NSLocalizedString(
-          //GODO new localized string
           "Your address qualifies you for a standard three-year ebook-only library card.",
           comment: "An alert message telling the user she'll get a three-year library card"),
         preferredStyle: .Alert)

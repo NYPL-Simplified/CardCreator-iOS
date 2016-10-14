@@ -80,7 +80,6 @@ final class UserSummaryViewController: TableViewController {
     super.init(style: .Grouped)
     self.tableView.estimatedRowHeight = 104
     
-    //GODO new localized string
     self.navigationItem.rightBarButtonItem =
       UIBarButtonItem(title: NSLocalizedString("Create Card", comment: "A title for a button that submits the user's information to create a library card"),
                       style: .Plain,
@@ -92,7 +91,6 @@ final class UserSummaryViewController: TableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    //GODO new localized string
     self.title = NSLocalizedString(
       "Review",
       comment: "A title for a screen letting the user know they can review the information they have entered")
@@ -105,8 +103,7 @@ final class UserSummaryViewController: TableViewController {
     headerLabel.numberOfLines = 2
     headerLabel.textColor = UIColor.darkGrayColor()
     headerLabel.textAlignment = .Center
-    //GODO new localized string
-    headerLabel.text = "Review your information before creating your library card."
+    headerLabel.text = NSLocalizedString("Review your information before creating your library card.", comment: "Description to tell a user to either review and confirm, or go back and make changes to their information.")
     
     self.tableView.tableHeaderView = headerView
     self.tableView.userInteractionEnabled = false

@@ -45,19 +45,18 @@ final class ConfirmValidAddressViewController: TableViewController {
     self.tableView.tableHeaderView = headerView
 
     switch self.addressStep {
-    //GODO new localized string
     case .Home:
-      headerLabel.text = "Select your home address, or go back to make changes."
+      headerLabel.text = NSLocalizedString("Select your home address, or go back to make changes.", comment: "Description meant to inform user to review their entered information")
       self.title = NSLocalizedString(
         "Confirm",
         comment: "A title for a screen asking the user to confirm their home address")
     case .School:
-      headerLabel.text = "Select your school address, or go back to make changes."
+      headerLabel.text = NSLocalizedString("Select your school address, or go back to make changes.", comment: "Description meant to inform user to review their entered information")
       self.title = NSLocalizedString(
         "Confirm",
         comment: "A title for a screen asking the user to confirm their school address")
     case .Work:
-      headerLabel.text = "Select your work address, or go back to make changes."
+      headerLabel.text = NSLocalizedString("Select your work address, or go back to make changes.", comment: "Description meant to inform user to review their entered information")
       self.title = NSLocalizedString(
         "Confirm",
         comment: "A title for a screen asking the user to confirm their work address")
