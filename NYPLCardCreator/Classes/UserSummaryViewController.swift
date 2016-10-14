@@ -2,7 +2,6 @@ import UIKit
 
 /// This class is used for summarizing the user's details before
 /// submitting the request to create a library card
-//GODO think of better name for class
 final class UserSummaryViewController: TableViewController {
   private var cells: [UITableViewCell]
   private var sectionHeaderTitles: [String]
@@ -36,7 +35,6 @@ final class UserSummaryViewController: TableViewController {
     self.configuration = configuration
     self.session = AuthenticatingSession(configuration: configuration)
     
-    //GODO check on this
     self.homeAddressCell = AddressCell()
     self.altAddressCell = AddressCell()
     self.fullNameCell = UITableViewCell(style: .Default, reuseIdentifier: nil)
@@ -44,7 +42,6 @@ final class UserSummaryViewController: TableViewController {
     self.usernameCell = UITableViewCell(style: .Default, reuseIdentifier: nil)
     self.pinCell = UITableViewCell(style: .Default, reuseIdentifier: nil)
     
-    //do I really need the properties in addition to the cells?
     self.homeAddress = homeAddress
     self.schoolOrWorkAddress = schoolOrWorkAddress
     self.fullName = fullName
@@ -61,8 +58,6 @@ final class UserSummaryViewController: TableViewController {
     self.usernameCell.textLabel?.text = self.username
     self.pinCell.textLabel?.text = self.pin
 
-    //GODO here this code diverts from other classes,
-    //combines both alternative addresses and formtableview
     self.cells = [
       self.homeAddressCell,
       self.fullNameCell,
@@ -85,8 +80,9 @@ final class UserSummaryViewController: TableViewController {
     super.init(style: .Grouped)
     self.tableView.estimatedRowHeight = 104
     
+    //GODO new localized string
     self.navigationItem.rightBarButtonItem =
-      UIBarButtonItem(title: NSLocalizedString("Submit", comment: "A title for a button that submits the user's information to create a library card"),
+      UIBarButtonItem(title: NSLocalizedString("Create Card", comment: "A title for a button that submits the user's information to create a library card"),
                       style: .Plain,
                       target: self,
                       action: #selector(createPatron))
@@ -96,33 +92,41 @@ final class UserSummaryViewController: TableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    //GODO need to update localized strings
+    //GODO new localized string
     self.title = NSLocalizedString(
       "Review",
       comment: "A title for a screen letting the user know they can review the information they have entered")
+    
+    let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view!.bounds.size.width, height: 80.0))
+    let headerLabel = UILabel()
+    headerView.addSubview(headerLabel)
+    
+    headerLabel.autoPinEdgesToSuperviewEdgesWithInsets(UIEdgeInsetsMake(2, 22, 2, 22))
+    headerLabel.numberOfLines = 2
+    headerLabel.textColor = UIColor.darkGrayColor()
+    headerLabel.textAlignment = .Center
+    //GODO new localized string
+    headerLabel.text = "Review your information before creating your library card."
+    
+    self.tableView.tableHeaderView = headerView
+    self.tableView.userInteractionEnabled = false
   }
   
   private func prepareTableViewCells() {
-    
-    //GODO so far this is not really being used at all to style
     for cell in self.cells {
+      cell.backgroundColor = UIColor.clearColor()
+      self.tableView.separatorStyle = .None
       
-      //GODO make sure these are caught
       if let addressViewCell = cell as? AddressCell {
         //style as an address cell
       }
       
       if let labelledTextViewCell = cell as? LabelledTextViewCell {
         labelledTextViewCell.selectionStyle = .None
-        //GODO I know this is klunky
-//        labelledTextViewCell.textField.alpha = 0
         labelledTextViewCell.textField.allowsEditingTextAttributes = false
-        //GODO need to make cells without background and borders
       }
-
     }
   }
-  
   
   // MARK: UITableViewDataSource
   
@@ -143,17 +147,13 @@ final class UserSummaryViewController: TableViewController {
   }
   
   func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    //GODO need to create localized strings for this
-    //CHANGE! should change to use property of the cell to name the section
     return self.sectionHeaderTitles[section]
   }
   
   // MARK: -
   
-  //GODO submit patron info to server
-  
   @objc private func createPatron() {
-    self.view.endEditing(false)
+//    self.view.endEditing(false)
     self.navigationController?.view.userInteractionEnabled = false
     self.navigationItem.titleView =
       ActivityTitleView(title:

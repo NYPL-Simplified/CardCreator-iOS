@@ -33,6 +33,8 @@ final class LocationViewController: UIViewController {
     self.title = NSLocalizedString(
       "Location Check",
       comment: "A title telling the user the app needs to check their location")
+    let backButton = UIBarButtonItem(title: "Location", style: .Bordered, target: nil, action: nil)
+    self.navigationItem.backBarButtonItem = backButton
     
     self.view.backgroundColor = UIColor.whiteColor()
     

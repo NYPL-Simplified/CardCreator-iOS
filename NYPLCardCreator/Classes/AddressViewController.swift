@@ -3,16 +3,6 @@ import UIKit
 /// This class is used for allowing the user to enter an address.
 final class AddressViewController: FormTableViewController {
   
-  private static let regions: [String] = {
-    let stream = NSInputStream.init(URL:
-      NSBundle(forClass: AddressViewController.self).URLForResource("regions", withExtension: "json")!)!
-    stream.open()
-    defer {
-      stream.close()
-    }
-    return try! NSJSONSerialization.JSONObjectWithStream(stream, options: [.AllowFragments]) as! [String]
-  }()
-  
   private let configuration: CardCreatorConfiguration
   
   private let addressStep: AddressStep
@@ -21,9 +11,6 @@ final class AddressViewController: FormTableViewController {
   private let cityCell: LabelledTextViewCell
   private let regionCell: LabelledTextViewCell
   private let zipCell: LabelledTextViewCell
-  
-  private let regionPickerView = UIPickerView()
-  private let regionPickerViewDataSourceAndDelegate: RegionPickerViewDataSourceAndDelegate
   
   private let session: AuthenticatingSession
   
@@ -39,18 +26,16 @@ final class AddressViewController: FormTableViewController {
     self.cityCell = LabelledTextViewCell(
       title: NSLocalizedString("City", comment: "The city portion of a US postal address"),
       placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
+    //GODO new localized string
     self.regionCell = LabelledTextViewCell(
-      title: NSLocalizedString("Region", comment: "The name for one of the 50+ states and regions in the US"),
+      title: NSLocalizedString("State", comment: "The name for one of the 50+ states and regions in the US"),
       placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
     self.zipCell = LabelledTextViewCell(
       title: NSLocalizedString("ZIP", comment: "The common name for a US ZIP code"),
       placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
     
-    self.regionPickerViewDataSourceAndDelegate =
-      RegionPickerViewDataSourceAndDelegate(textField: self.regionCell.textField)
-    
     self.session = AuthenticatingSession(configuration: configuration)
-    
+
     super.init(
       cells: [
         self.street1Cell,
@@ -60,11 +45,7 @@ final class AddressViewController: FormTableViewController {
         self.zipCell
       ])
     
-    self.regionPickerView.dataSource = self.regionPickerViewDataSourceAndDelegate
-    self.regionPickerView.delegate = self.regionPickerViewDataSourceAndDelegate
-    
     self.navigationItem.rightBarButtonItem?.enabled = false
-    
     self.prepareTableViewCells()
   }
   
@@ -115,8 +96,9 @@ final class AddressViewController: FormTableViewController {
     self.cityCell.textField.keyboardType = .Alphabet
     self.cityCell.textField.autocapitalizationType = .Words
     
-    self.regionCell.textField.inputView = self.regionPickerView
-    self.regionCell.textField.inputAccessoryView = self.returnToolbar()
+    self.regionCell.textField.keyboardType = .Alphabet
+    self.regionCell.textField.autocorrectionType = .No
+    
     switch self.addressStep {
     case .Home:
       break
@@ -141,9 +123,6 @@ final class AddressViewController: FormTableViewController {
                        shouldChangeCharactersInRange range: NSRange,
                                                      replacementString string: String) -> Bool
   {
-    if textField == self.regionCell.textField {
-      return false
-    }
     
     if textField == self.zipCell.textField {
       if let text = textField.text {
@@ -203,30 +182,6 @@ final class AddressViewController: FormTableViewController {
         self.zipCell.textField.text = text.stringByReplacingOccurrencesOfString("-", withString: "")
       }
       self.textFieldDidChange()
-    }
-  }
-  
-  private class RegionPickerViewDataSourceAndDelegate: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
-    private let textField: UITextField
-    
-    init(textField: UITextField) {
-      self.textField = textField
-    }
-    
-    @objc func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-      return 1
-    }
-    
-    @objc func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-      return AddressViewController.regions.count
-    }
-    
-    @objc func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-      return AddressViewController.regions[row]
-    }
-    
-    @objc func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-      self.textField.text = AddressViewController.regions[row]
     }
   }
   

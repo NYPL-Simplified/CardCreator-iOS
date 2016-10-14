@@ -73,7 +73,6 @@ enum AddressStep {
           title: NSLocalizedString("Edit Home Address", comment: ""),
           style: .Cancel,
           handler: {_ in
-    //GODO does this work for every situation?
           viewController.navigationController?.popViewControllerAnimated(true)
         }))
         viewController.presentViewController(alertController, animated: true, completion: nil)
@@ -129,13 +128,13 @@ enum AddressStep {
       }))
       viewController.presentViewController(alertController, animated: true, completion: nil)
     case .Standard:
-        //GODO this alert either needs to be removed completely or pushed further down the process chain
       let alertController = UIAlertController(
         title: NSLocalizedString(
           "Standard Card",
           comment: "An alert title telling the user they've received a standard card"),
         message: NSLocalizedString(
-          "Congratulations! Your address qualifies you for a standard three-year ebook-only library card.",
+          //GODO new localized string
+          "Your address qualifies you for a standard three-year ebook-only library card.",
           comment: "An alert message telling the user she'll get a three-year library card"),
         preferredStyle: .Alert)
       alertController.addAction(UIAlertAction(

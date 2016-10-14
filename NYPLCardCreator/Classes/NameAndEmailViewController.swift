@@ -63,6 +63,25 @@ final class NameAndEmailViewController: FormTableViewController {
     self.emailCell.textField.autocorrectionType = .No
   }
   
+  // MARK: UITextFieldDelegate
+  
+//  @objc func textField(textField: UITextField,
+//                       shouldChangeCharactersInRange range: NSRange,
+//                                                     replacementString string: String) -> Bool
+//  {
+//    
+//    if textField == self.emailCell.textField {
+//      if let text = textField.text {
+//        return self.isPossibleStartOfValidZIPCode(
+//          (text as NSString).stringByReplacingCharactersInRange(range, withString: string))
+//      } else {
+//        return self.isPossibleStartOfValidZIPCode(string)
+//      }
+//    }
+//    
+//    return true
+//  }
+  
   // MARK: -
   
   @objc override func didSelectNext() {
@@ -77,10 +96,24 @@ final class NameAndEmailViewController: FormTableViewController {
       animated: true)
   }
   
+  private func emailIsValid() -> Bool {
+    let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+    let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+    return emailTest.evaluateWithObject(self.emailCell.textField.text!)
+  }
+  
+  
   @objc private func textFieldDidChange() {
-    self.navigationItem.rightBarButtonItem?.enabled =
-      (self.fullNameCell.textField.text?.characters.count > 0
-        && self.emailCell.textField.text?.characters.count > 0
-        && self.emailCell.textField.text!.rangeOfString("@") != nil)
+    if (self.emailIsValid()) {
+        //Color-coding email can be reintroduced if required
+        //self.emailCell.textField.textColor = UIColor.greenColor()
+      self.navigationItem.rightBarButtonItem?.enabled =
+        self.fullNameCell.textField.text?.characters.count > 0
+    } else {
+      if (self.emailCell.textField.isFirstResponder()) {
+        //self.emailCell.textField.textColor = UIColor.redColor()
+      }
+      self.navigationItem.rightBarButtonItem?.enabled = false
+    }
   }
 }

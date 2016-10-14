@@ -22,20 +22,18 @@ final class UsernameAndPINViewController: FormTableViewController {
     email: String)
   {
     self.configuration = configuration
-    
     self.usernameCell = LabelledTextViewCell(
       title: NSLocalizedString("Username", comment: "A username used to log into a service"),
       placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
     self.pinCell = LabelledTextViewCell(
       title: NSLocalizedString("PIN", comment: "An abbreviation for personal identification number"),
-      placeholder: NSLocalizedString("Optional", comment: "A placeholder for an optional text field"))
+      placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
     
     self.homeAddress = homeAddress
     self.schoolOrWorkAddress = schoolOrWorkAddress
     self.fullName = fullName
     self.email = email
     
-    //GODO likely don't need this here now
     self.session = AuthenticatingSession(configuration: configuration)
     
     super.init(
@@ -199,7 +197,6 @@ final class UsernameAndPINViewController: FormTableViewController {
             handler: nil))
           self.presentViewController(alertController, animated: true, completion: nil)
         case .AvailableUsername:
-          //GODO new route here
           self.moveToFinalReview()
         }
       }
