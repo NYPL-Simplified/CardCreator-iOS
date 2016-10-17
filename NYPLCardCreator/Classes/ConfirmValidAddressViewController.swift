@@ -33,16 +33,11 @@ final class ConfirmValidAddressViewController: TableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view!.bounds.size.width, height: 80.0))
     let headerLabel = UILabel()
-    headerView.addSubview(headerLabel)
-    
-    headerLabel.autoPinEdgesToSuperviewEdgesWithInsets(UIEdgeInsetsMake(2, 22, 2, 22))
-    headerLabel.numberOfLines = 2
+    headerLabel.numberOfLines = 0
+    headerLabel.lineBreakMode = .ByWordWrapping
     headerLabel.textColor = UIColor.darkGrayColor()
     headerLabel.textAlignment = .Center
-    
-    self.tableView.tableHeaderView = headerView
 
     switch self.addressStep {
     case .Home:
@@ -67,6 +62,18 @@ final class ConfirmValidAddressViewController: TableViewController {
         "Confirm",
         comment: "A title for a screen asking the user to confirm their work address")
     }
+    
+    self.tableView.tableHeaderView = headerLabel
+  }
+  
+  override func viewDidLayoutSubviews() {
+    
+    //GODO still need to look at this
+    let origin_x = self.tableView.tableHeaderView!.frame.origin.x
+    let origin_y = self.tableView.tableHeaderView!.frame.origin.y
+    let size = self.tableView.tableHeaderView!.sizeThatFits(CGSizeMake(self.view.bounds.width, CGFloat.max))
+    self.tableView.tableHeaderView?.frame = CGRectMake(origin_x, origin_y, size.width, size.height + 30.0)
+
   }
   
   // MARK: UITableViewDelegate

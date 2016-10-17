@@ -32,31 +32,16 @@ final class AlternativeAddressesViewController: TableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view!.bounds.size.width, height: 80.0))
-    let headerLabel = UILabel()
-    headerView.addSubview(headerLabel)
-    
-    headerLabel.autoPinEdgesToSuperviewEdgesWithInsets(UIEdgeInsetsMake(2.0, 22.0, 2.0, 22.0))
-    headerLabel.numberOfLines = 2
-    headerLabel.textColor = UIColor.darkGrayColor()
-    headerLabel.textAlignment = .Center
-    
-    self.tableView.tableHeaderView = headerView
-    
     switch self.addressStep {
     case .Home:
-      headerLabel.text = "Select the correct home address, or go back to make changes."
       self.title = NSLocalizedString(
         "Choose Home Address",
         comment: "A title for a screen asking the user to choose their home address from a list")
     case .School:
-      headerLabel.text = "Select the correct school address, or go back to make changes."
       self.title = NSLocalizedString(
         "Choose School Address",
         comment: "A title for a screen asking the user to choose their school address from a list")
     case .Work:
-      headerLabel.text = "Select the correct work address, or go back to make changes."
       self.title = NSLocalizedString(
         "Choose Work Address",
         comment: "A title for a screen asking the user to choose their work address from a list")

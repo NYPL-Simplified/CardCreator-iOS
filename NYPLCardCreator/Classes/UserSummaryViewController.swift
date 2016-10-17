@@ -1,7 +1,7 @@
 import UIKit
 
 /// This class is used for summarizing the user's details before
-/// submitting the request to create a library card
+/// submitting the request to create a library card.
 final class UserSummaryViewController: TableViewController {
   private var cells: [UITableViewCell]
   private var sectionHeaderTitles: [String]
@@ -100,28 +100,31 @@ final class UserSummaryViewController: TableViewController {
       "Review",
       comment: "A title for a screen letting the user know they can review the information they have entered")
     
-    let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view!.bounds.size.width, height: 80.0))
     let headerLabel = UILabel()
-    headerView.addSubview(headerLabel)
-    
-    headerLabel.autoPinEdgesToSuperviewEdgesWithInsets(UIEdgeInsetsMake(2, 22, 2, 22))
-    headerLabel.numberOfLines = 2
+    headerLabel.numberOfLines = 0
+    headerLabel.lineBreakMode = .ByWordWrapping
     headerLabel.textColor = UIColor.darkGrayColor()
     headerLabel.textAlignment = .Center
-    headerLabel.text = NSLocalizedString("Review your information before creating your library card.", comment: "Description to tell a user to either review and confirm, or go back and make changes to their information.")
     
-    self.tableView.tableHeaderView = headerView
-    self.tableView.userInteractionEnabled = false
+    headerLabel.text = NSLocalizedString(
+      "Review your information before creating your library card.",
+      comment: "Description to tell a user to either review and confirm, or go back and make changes to their information.")
+    
+    self.tableView.tableHeaderView = headerLabel
+//    self.tableView.userInteractionEnabled = false
+  }
+  
+  override func viewWillLayoutSubviews() {
+    let origin_x = self.tableView.tableHeaderView!.frame.origin.x
+    let origin_y = self.tableView.tableHeaderView!.frame.origin.y
+    let size = self.tableView.tableHeaderView!.sizeThatFits(CGSizeMake(self.view.bounds.width, CGFloat.max))
+    self.tableView.tableHeaderView?.frame = CGRectMake(origin_x, origin_y, size.width, size.height + 30.0)
   }
   
   private func prepareTableViewCells() {
     for cell in self.cells {
       cell.backgroundColor = UIColor.clearColor()
       self.tableView.separatorStyle = .None
-      
-      if let addressViewCell = cell as? AddressCell {
-        //style as an address cell
-      }
       
       if let labelledTextViewCell = cell as? LabelledTextViewCell {
         labelledTextViewCell.selectionStyle = .None
@@ -144,8 +147,8 @@ final class UserSummaryViewController: TableViewController {
     return self.cells[indexPath.section]
   }
   
-  func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return 1.0
+  func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    return 20.0
   }
   
   func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -155,7 +158,6 @@ final class UserSummaryViewController: TableViewController {
   // MARK: -
   
   @objc private func createPatron() {
-//    self.view.endEditing(false)
     self.navigationController?.view.userInteractionEnabled = false
     self.navigationItem.titleView =
       ActivityTitleView(title:

@@ -96,7 +96,6 @@ final class AddressViewController: FormTableViewController {
     self.cityCell.textField.autocapitalizationType = .Words
     
     self.regionCell.textField.keyboardType = .Alphabet
-    self.regionCell.textField.autocorrectionType = .No
     
     switch self.addressStep {
     case .Home:
