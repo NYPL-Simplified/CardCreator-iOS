@@ -74,14 +74,19 @@ final class UserSummaryViewController: TableViewController {
     ]
     if (self.schoolOrWorkAddress != nil) {
       self.cells.insert(self.altAddressCell, atIndex: 1)
-      self.sectionHeaderTitles.insert("School or Work Address", atIndex: 1)
+      let headerString = NSLocalizedString(
+        "School or Work Address",
+        comment: "A title to describe an address that represents either the home or work of the user")
+      self.sectionHeaderTitles.insert(headerString, atIndex: 1)
     }
     
     super.init(style: .Grouped)
     self.tableView.estimatedRowHeight = 104
     
     self.navigationItem.rightBarButtonItem =
-      UIBarButtonItem(title: NSLocalizedString("Create Card", comment: "A title for a button that submits the user's information to create a library card"),
+      UIBarButtonItem(title: NSLocalizedString(
+        "Create Card",
+        comment: "A title for a button that submits the user's information to create a library card"),
                       style: .Plain,
                       target: self,
                       action: #selector(createPatron))

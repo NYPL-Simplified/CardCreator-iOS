@@ -27,7 +27,7 @@ final class AddressViewController: FormTableViewController {
       title: NSLocalizedString("City", comment: "The city portion of a US postal address"),
       placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
     self.regionCell = LabelledTextViewCell(
-      title: NSLocalizedString("State", comment: "The name for one of the 50+ states and regions in the US"),
+      title: NSLocalizedString("State", comment: "The common name for one of the states or regions in the US"),
       placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
     self.zipCell = LabelledTextViewCell(
       title: NSLocalizedString("ZIP", comment: "The common name for a US ZIP code"),
