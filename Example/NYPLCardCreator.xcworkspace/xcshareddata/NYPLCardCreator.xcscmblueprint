@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "DEA1A46F262C097E94020C5196FB17667AB4DFDA",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "DEA1A46F262C097E94020C5196FB17667AB4DFDA" : 0,
+    "8423724DF8D0292657A3E4E4F2DCCBFB961ED39E" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "41288073-3F90-44C3-B31F-541F3CC8310A",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "DEA1A46F262C097E94020C5196FB17667AB4DFDA" : "NYPLCardCreator\/",
+    "8423724DF8D0292657A3E4E4F2DCCBFB961ED39E" : ".."
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "NYPLCardCreator",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Example\/NYPLCardCreator.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/NYPL-Simplified\/Simplified-iOS.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8423724DF8D0292657A3E4E4F2DCCBFB961ED39E"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/NYPL-Simplified\/CardCreator-iOS.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DEA1A46F262C097E94020C5196FB17667AB4DFDA"
+    }
+  ]
+}
