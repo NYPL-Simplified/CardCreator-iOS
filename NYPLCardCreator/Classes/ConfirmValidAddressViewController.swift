@@ -8,6 +8,8 @@ final class ConfirmValidAddressViewController: TableViewController {
   
   private let configuration: CardCreatorConfiguration
   
+  private let headerLabel: UILabel
+  
   private static let addressCellReuseIdentifier = "addressCellReuseIdentifier"
   
   init(
@@ -19,6 +21,8 @@ final class ConfirmValidAddressViewController: TableViewController {
     self.addressStep = addressStep
     self.validAddressAndCardType = validAddressAndCardType
     
+    self.headerLabel = UILabel()
+
     super.init(style: .Grouped)
 
     self.tableView.registerClass(
@@ -33,7 +37,6 @@ final class ConfirmValidAddressViewController: TableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let headerLabel = UILabel()
     headerLabel.numberOfLines = 0
     headerLabel.lineBreakMode = .ByWordWrapping
     headerLabel.textColor = UIColor.darkGrayColor()
@@ -63,17 +66,19 @@ final class ConfirmValidAddressViewController: TableViewController {
         comment: "A title for a screen asking the user to confirm their work address")
     }
     
-    self.tableView.tableHeaderView = headerLabel
+    self.tableView.tableHeaderView = self.headerLabel
   }
   
   override func viewDidLayoutSubviews() {
-    
-    //GODO still need to look at this
     let origin_x = self.tableView.tableHeaderView!.frame.origin.x
     let origin_y = self.tableView.tableHeaderView!.frame.origin.y
     let size = self.tableView.tableHeaderView!.sizeThatFits(CGSizeMake(self.view.bounds.width, CGFloat.max))
-    self.tableView.tableHeaderView?.frame = CGRectMake(origin_x, origin_y, size.width, size.height + 30.0)
-
+    
+    let adjustedWidth = (size.width > CGFloat(375)) ? CGFloat(375.0) : size.width
+    let padding = CGFloat(30.0)
+    self.headerLabel.frame = CGRectMake(origin_x, origin_y, adjustedWidth, size.height + padding)
+    
+    self.tableView.tableHeaderView = self.headerLabel
   }
   
   // MARK: UITableViewDelegate

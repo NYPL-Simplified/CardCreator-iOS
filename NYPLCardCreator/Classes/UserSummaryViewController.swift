@@ -5,6 +5,7 @@ import UIKit
 final class UserSummaryViewController: TableViewController {
   private var cells: [UITableViewCell]
   private var sectionHeaderTitles: [String]
+  private let headerLabel: UILabel
   
   private let configuration: CardCreatorConfiguration
   private let session: AuthenticatingSession
@@ -80,7 +81,10 @@ final class UserSummaryViewController: TableViewController {
       self.sectionHeaderTitles.insert(headerString, atIndex: 1)
     }
     
+    self.headerLabel = UILabel()
+    
     super.init(style: .Grouped)
+    
     self.tableView.estimatedRowHeight = 104
     
     self.navigationItem.rightBarButtonItem =
@@ -100,7 +104,6 @@ final class UserSummaryViewController: TableViewController {
       "Review",
       comment: "A title for a screen letting the user know they can review the information they have entered")
     
-    let headerLabel = UILabel()
     headerLabel.numberOfLines = 0
     headerLabel.lineBreakMode = .ByWordWrapping
     headerLabel.textColor = UIColor.darkGrayColor()
@@ -111,14 +114,18 @@ final class UserSummaryViewController: TableViewController {
       comment: "Description to tell a user to either review and confirm, or go back and make changes to their information.")
     
     self.tableView.tableHeaderView = headerLabel
-//    self.tableView.userInteractionEnabled = false
   }
   
-  override func viewWillLayoutSubviews() {
+  override func viewDidLayoutSubviews() {
     let origin_x = self.tableView.tableHeaderView!.frame.origin.x
     let origin_y = self.tableView.tableHeaderView!.frame.origin.y
     let size = self.tableView.tableHeaderView!.sizeThatFits(CGSizeMake(self.view.bounds.width, CGFloat.max))
-    self.tableView.tableHeaderView?.frame = CGRectMake(origin_x, origin_y, size.width, size.height + 30.0)
+    
+    let adjustedWidth = (size.width > CGFloat(375)) ? CGFloat(375.0) : size.width
+    let padding = CGFloat(30.0)
+    self.headerLabel.frame = CGRectMake(origin_x, origin_y, adjustedWidth, size.height + padding)
+    
+    self.tableView.tableHeaderView = self.headerLabel
   }
   
   private func prepareTableViewCells() {
