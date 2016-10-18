@@ -106,48 +106,61 @@ enum AddressStep {
         viewController.presentViewController(alertController, animated: true, completion: nil)
       }
     case .Temporary:
-      let alertController = UIAlertController(
-        title: NSLocalizedString(
-          "30-Day Card",
-          comment: "An alert title telling the user they've received a temporary card"),
-        message: NSLocalizedString(
-          ("We were not able to verify your address, so we have issued you a temporary card. Please visit your local "
-            + "NYPL branch within 30 days to receive a standard card."),
-          comment: "An alert message telling the user she'll get a 30-day library card"),
-        preferredStyle: .Alert)
-      alertController.addAction(UIAlertAction(
-        title: NSLocalizedString("OK", comment: ""),
-        style: .Default,
-        handler: {_ in
-          let (homeAddress, schoolOrWorkAddress) = self.pairWithAppendedAddress(address)
-          let nameAndEmailViewController = NameAndEmailViewController(
-            configuration: configuration,
-            homeAddress: homeAddress,
-            schoolOrWorkAddress: schoolOrWorkAddress)
-          viewController.navigationController?.pushViewController(nameAndEmailViewController, animated: true)
-      }))
-      viewController.presentViewController(alertController, animated: true, completion: nil)
+      let (homeAddress, schoolOrWorkAddress) = self.pairWithAppendedAddress(address)
+      let nameAndEmailViewController = NameAndEmailViewController(
+        configuration: configuration,
+        homeAddress: homeAddress,
+        schoolOrWorkAddress: schoolOrWorkAddress)
+      viewController.navigationController?.pushViewController(nameAndEmailViewController, animated: true)
+//GODO may need to come back and use the copy at the end summary screen
+//      let alertController = UIAlertController(
+//        title: NSLocalizedString(
+//          "30-Day Card",
+//          comment: "An alert title telling the user they've received a temporary card"),
+//        message: NSLocalizedString(
+//          ("We were not able to verify your address, so we have issued you a temporary card. Please visit your local "
+//            + "NYPL branch within 30 days to receive a standard card."),
+//          comment: "An alert message telling the user she'll get a 30-day library card"),
+//        preferredStyle: .Alert)
+//      alertController.addAction(UIAlertAction(
+//        title: NSLocalizedString("OK", comment: ""),
+//        style: .Default,
+//        handler: {_ in
+//          let (homeAddress, schoolOrWorkAddress) = self.pairWithAppendedAddress(address)
+//          let nameAndEmailViewController = NameAndEmailViewController(
+//            configuration: configuration,
+//            homeAddress: homeAddress,
+//            schoolOrWorkAddress: schoolOrWorkAddress)
+//          viewController.navigationController?.pushViewController(nameAndEmailViewController, animated: true)
+//      }))
+//      viewController.presentViewController(alertController, animated: true, completion: nil)
     case .Standard:
-      let alertController = UIAlertController(
-        title: NSLocalizedString(
-          "Standard Card",
-          comment: "An alert title telling the user they've received a standard card"),
-        message: NSLocalizedString(
-          "Your address qualifies you for a standard three-year ebook-only library card.",
-          comment: "An alert message telling the user she'll get a three-year library card"),
-        preferredStyle: .Alert)
-      alertController.addAction(UIAlertAction(
-        title: NSLocalizedString("OK", comment: ""),
-        style: .Default,
-        handler: {_ in
-          let (homeAddress, schoolOrWorkAddress) = self.pairWithAppendedAddress(address)
-          let nameAndEmailViewController = NameAndEmailViewController(
-            configuration: configuration,
-            homeAddress: homeAddress,
-            schoolOrWorkAddress: schoolOrWorkAddress)
-          viewController.navigationController?.pushViewController(nameAndEmailViewController, animated: true)
-      }))
-      viewController.presentViewController(alertController, animated: true, completion: nil)
+      let (homeAddress, schoolOrWorkAddress) = self.pairWithAppendedAddress(address)
+      let nameAndEmailViewController = NameAndEmailViewController(
+        configuration: configuration,
+        homeAddress: homeAddress,
+        schoolOrWorkAddress: schoolOrWorkAddress)
+      viewController.navigationController?.pushViewController(nameAndEmailViewController, animated: true)
+//      let alertController = UIAlertController(
+//        title: NSLocalizedString(
+//          "Standard Card",
+//          comment: "An alert title telling the user they've received a standard card"),
+//        message: NSLocalizedString(
+//          "Your address qualifies you for a standard three-year ebook-only library card.",
+//          comment: "An alert message telling the user she'll get a three-year library card"),
+//        preferredStyle: .Alert)
+//      alertController.addAction(UIAlertAction(
+//        title: NSLocalizedString("OK", comment: ""),
+//        style: .Default,
+//        handler: {_ in
+//          let (homeAddress, schoolOrWorkAddress) = self.pairWithAppendedAddress(address)
+//          let nameAndEmailViewController = NameAndEmailViewController(
+//            configuration: configuration,
+//            homeAddress: homeAddress,
+//            schoolOrWorkAddress: schoolOrWorkAddress)
+//          viewController.navigationController?.pushViewController(nameAndEmailViewController, animated: true)
+//      }))
+//      viewController.presentViewController(alertController, animated: true, completion: nil)
     }
   }
 }

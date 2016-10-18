@@ -5,6 +5,7 @@ import UIKit
 final class AlternativeAddressesViewController: TableViewController {
   private let addressStep: AddressStep
   private let alternativeAddressesAndCardTypes: [(Address, CardType)]
+  private let headerLabel: UILabel
   
   private let configuration: CardCreatorConfiguration
   
@@ -19,6 +20,8 @@ final class AlternativeAddressesViewController: TableViewController {
     self.addressStep = addressStep
     self.alternativeAddressesAndCardTypes = alternativeAddressesAndCardTypes
     
+    self.headerLabel = UILabel()
+    
     super.init(style: .Grouped)
     
     self.tableView.registerClass(
@@ -32,6 +35,12 @@ final class AlternativeAddressesViewController: TableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    headerLabel.numberOfLines = 0
+    headerLabel.lineBreakMode = .ByWordWrapping
+    headerLabel.textColor = UIColor.darkGrayColor()
+    headerLabel.textAlignment = .Center
+    
     switch self.addressStep {
     case .Home:
       self.title = NSLocalizedString(
@@ -46,6 +55,25 @@ final class AlternativeAddressesViewController: TableViewController {
         "Choose Work Address",
         comment: "A title for a screen asking the user to choose their work address from a list")
     }
+    
+    self.headerLabel.text = NSLocalizedString(
+      ("The address you entered matches more than one location. Please choose the correct address "
+        + "from the list below."),
+      comment: "A message telling the user to pick the correct address")
+    
+    self.tableView.tableHeaderView = headerLabel
+  }
+  
+  override func viewDidLayoutSubviews() {
+    let origin_x = self.tableView.tableHeaderView!.frame.origin.x
+    let origin_y = self.tableView.tableHeaderView!.frame.origin.y
+    let size = self.tableView.tableHeaderView!.sizeThatFits(CGSize(width: self.view.bounds.width, height: CGFloat.max))
+    
+    let adjustedWidth = (size.width > CGFloat(375)) ? CGFloat(375.0) : size.width
+    let padding = CGFloat(30.0)
+    headerLabel.frame = CGRect(x: origin_x, y: origin_y, width: adjustedWidth, height: size.height + padding)
+    
+    self.tableView.tableHeaderView = self.headerLabel
   }
   
   // MARK: UITableViewDelegate
