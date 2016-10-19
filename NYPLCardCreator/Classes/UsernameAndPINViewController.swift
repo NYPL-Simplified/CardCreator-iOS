@@ -9,6 +9,7 @@ final class UsernameAndPINViewController: FormTableViewController {
   private let pinCell: LabelledTextViewCell
   private let homeAddress: Address
   private let schoolOrWorkAddress: Address?
+  private let cardType: CardType
   private let fullName: String
   private let email: String
   
@@ -18,6 +19,7 @@ final class UsernameAndPINViewController: FormTableViewController {
     configuration: CardCreatorConfiguration,
     homeAddress: Address,
     schoolOrWorkAddress: Address?,
+    cardType: CardType,
     fullName: String,
     email: String)
   {
@@ -31,6 +33,7 @@ final class UsernameAndPINViewController: FormTableViewController {
     
     self.homeAddress = homeAddress
     self.schoolOrWorkAddress = schoolOrWorkAddress
+    self.cardType = cardType
     self.fullName = fullName
     self.email = email
     
@@ -218,6 +221,7 @@ final class UsernameAndPINViewController: FormTableViewController {
         configuration: self.configuration,
         homeAddress: self.homeAddress,
         schoolOrWorkAddress: self.schoolOrWorkAddress,
+        cardType: self.cardType,
         fullName: self.fullName,
         email: self.email,
         username: self.usernameCell.textField.text!,

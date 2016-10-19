@@ -29,6 +29,7 @@ final class UserSummaryViewController: TableViewController {
     configuration: CardCreatorConfiguration,
     homeAddress: Address,
     schoolOrWorkAddress: Address?,
+    cardType: CardType,
     fullName: String,
     email: String,
     username: String,
@@ -124,10 +125,21 @@ final class UserSummaryViewController: TableViewController {
     headerLabel.textColor = UIColor.darkGrayColor()
     headerLabel.textAlignment = .Center
     
-    headerLabel.text = NSLocalizedString(
-      "Review your information before creating your library card.",
-      comment: "Description to tell a user to either review and confirm, or go back and make changes to their information.")
-    
+    switch self.cardType {
+    case .Temporary:
+      headerLabel.text = NSLocalizedString(
+        "We were not able to verify your address, so we have issued you a temporary card. Please visit your local " +
+        "NYPL branch within 30 days to receive a standard card.",
+        comment: "A message telling the user she'll get a 30-day library card")
+    case .Standard:
+      headerLabel.text = NSLocalizedString(
+        "Your address will result in a standard\n three-year ebook-only library card.",
+        comment: "A message telling the user she'll get a 3-year library card")
+    default:
+      headerLabel.text = NSLocalizedString(
+        "Review your information before creating your library card.",
+        comment: "Description to tell a user to either review and confirm, or go back and make changes to their information.")
+    }
     //GODO update this
     self.tableView.estimatedRowHeight = 120
     self.tableView.allowsSelection = false
