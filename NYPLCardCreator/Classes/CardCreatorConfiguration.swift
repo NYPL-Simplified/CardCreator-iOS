@@ -15,14 +15,14 @@ import Foundation
   public let requestTimeoutInterval: NSTimeInterval
   /// This will always be called on the main thread. It will only be called in the event
   /// of a successful registration.
-  let completionHandler: (username: String, PIN: String) -> Void
+  let completionHandler: (username: String, PIN: String, userInitiated: Bool) -> Void
   
   public init(
     endpointURL: NSURL,
     endpointUsername: String,
     endpointPassword: String,
     requestTimeoutInterval: NSTimeInterval,
-    completionHandler: (username: String, PIN: String) -> Void)
+    completionHandler: (username: String, PIN: String, userInitiated: Bool) -> Void)
   {
     self.endpointURL = endpointURL
     self.endpointUsername = endpointUsername
