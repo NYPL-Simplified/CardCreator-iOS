@@ -5,6 +5,7 @@ import UIKit
 final class UserCredentialsViewController: TableViewController {
   private var cells: [UITableViewCell]
   private let headerLabel: UILabel
+  private let cardType: CardType
   
   private let configuration: CardCreatorConfiguration
   private let session: AuthenticatingSession
@@ -21,7 +22,8 @@ final class UserCredentialsViewController: TableViewController {
     configuration: CardCreatorConfiguration,
     username: String,
     barcode: String?,
-    pin: String)
+    pin: String,
+    cardType: CardType)
   {
     self.configuration = configuration
     self.session = AuthenticatingSession(configuration: configuration)
@@ -29,6 +31,7 @@ final class UserCredentialsViewController: TableViewController {
     self.username = username
     self.barcode = barcode
     self.pin = pin
+    self.cardType = cardType
     
     self.headerLabel = UILabel()
     
@@ -53,8 +56,8 @@ final class UserCredentialsViewController: TableViewController {
     
     self.navigationItem.rightBarButtonItem =
       UIBarButtonItem(title: NSLocalizedString(
-        "Open Catalog",
-        comment: "A title for a button that send the user back to the main app to view the ebook catalog"),
+        "Done",
+        comment: "A title for a button that sends the user back to wherever the card creator was started from"),
                       style: .Plain,
                       target: self,
                       action: #selector(openCatalog))
@@ -71,14 +74,27 @@ final class UserCredentialsViewController: TableViewController {
       "Review",
       comment: "A title for a screen letting the user know they can review the information they have entered")
     
+    switch self.cardType {
+    case .Temporary:
+      headerLabel.text = NSLocalizedString(
+        "We were not able to verify your residential address, so we have issued you a temporary card. Please visit your local " +
+        "NYPL branch within 30 days to receive a standard card.",
+        comment: "A message telling the user she'll get a 30-day library card")
+    case .Standard:
+      headerLabel.text = NSLocalizedString(
+        "Your address will result in a standard\n three-year ebook-only library card." +
+        "Be sure to keep your username and PIN in a safe location.",
+        comment: "A message telling the user she'll get a 3-year library card")
+    default:
+      headerLabel.text = NSLocalizedString(
+        "Your digital library card has been created. Be sure to keep your username and PIN in a safe location.",
+        comment: "Title describing to the user that they have successfully created a card and can save their information for their records.")
+    }
+    
     headerLabel.numberOfLines = 0
     headerLabel.lineBreakMode = .ByWordWrapping
     headerLabel.textColor = UIColor.darkGrayColor()
     headerLabel.textAlignment = .Center
-    
-    headerLabel.text = NSLocalizedString(
-      "Your digital library card has been created. Be sure to keep your username and PIN in a safe location.",
-      comment: "Title describing to the user that they have successfully created a card and can save their information for their records.")
     
     self.tableView.estimatedRowHeight = 120
     self.tableView.allowsSelection = false
