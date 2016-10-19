@@ -62,10 +62,14 @@ final class UserSummaryViewController: TableViewController {
       self.altAddressCell.address = address
     }
     
-    self.fullNameCell = SummaryCell(section: "Full Name", cellText: self.fullName)
-    self.emailCell = SummaryCell(section: "Email", cellText: self.email)
-    self.usernameCell = SummaryCell(section: "Username", cellText: self.username)
-    self.pinCell = SummaryCell(section: "Pin", cellText: self.pin)
+    self.fullNameCell = SummaryCell(section: NSLocalizedString("Full Name", comment: "Title of the section for the user's full name"),
+                                    cellText: self.fullName)
+    self.emailCell = SummaryCell(section: NSLocalizedString("Email", comment: "Title of the section for the user's email"),
+                                 cellText: self.email)
+    self.usernameCell = SummaryCell(section: NSLocalizedString("Username", comment: "Title of the section for the user's chosen username"),
+                                    cellText: self.username)
+    self.pinCell = SummaryCell(section: NSLocalizedString("Pin", comment: "Title of the section for the user's PIN number"),
+                               cellText: self.pin)
 
     self.cells = [
       self.homeAddressCell,
@@ -176,23 +180,13 @@ final class UserSummaryViewController: TableViewController {
   }
   
   func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//    if self.cells[indexPath.section] is SummaryAddressCell {
-//      return UITableViewAutomaticDimension
-//    } else {
-//      return 20
-//    }
-    
     return UITableViewAutomaticDimension
-
   }
-  
-//  func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//    return self.sectionHeaderTitles[section]
-//  }
   
   // MARK: -
   
   @objc private func createPatron() {
+    self.navigationItem.rightBarButtonItem?.enabled = false
     self.navigationController?.view.userInteractionEnabled = false
     self.navigationItem.titleView =
       ActivityTitleView(title:
@@ -233,6 +227,7 @@ final class UserSummaryViewController: TableViewController {
             style: .Default,
             handler: nil))
           self.presentViewController(alertController, animated: true, completion: nil)
+          self.navigationItem.rightBarButtonItem?.enabled = true
           return
         }
         func showErrorAlert() {
@@ -247,30 +242,22 @@ final class UserSummaryViewController: TableViewController {
             style: .Default,
             handler: nil))
           self.presentViewController(alertController, animated: true, completion: nil)
+          self.navigationItem.rightBarButtonItem?.enabled = true
         }
         if (response as! NSHTTPURLResponse).statusCode != 200 || data == nil {
           showErrorAlert()
           return
         }
-        let alertController = UIAlertController(
-          title: NSLocalizedString(
-            "Card Created Successfully",
-            comment: "An alert title telling the user their card has been created"),
-          message: NSLocalizedString(
-            "You have been issued a digital library card! Be sure to keep your username and PIN in a safe location.",
-            comment: "An alert message telling the user they received a library card"),
-          preferredStyle: .Alert)
-        alertController.addAction(UIAlertAction(
-          title: NSLocalizedString(
-            "Sign In",
-            comment: "An alert action the user may select to sign in with their new library card"),
-          style: .Default,
-          handler: { _ in
-            self.configuration.completionHandler(
-              username: self.username,
-              PIN: self.pin)
-        }))
-        self.presentViewController(alertController, animated: true, completion: nil)
+        
+        let JSONObject = try? NSJSONSerialization.JSONObjectWithData(data!, options: []) as! [String: AnyObject]
+        let barcode = JSONObject?["barcode"] as? String
+        
+        self.navigationController?.pushViewController(
+          UserCredentialsViewController(configuration: self.configuration,
+            username: self.username,
+            barcode: barcode,
+            pin: self.pin),
+        animated: true)
       }
     }
     

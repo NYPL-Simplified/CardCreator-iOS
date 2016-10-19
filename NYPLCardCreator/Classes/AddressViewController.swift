@@ -283,26 +283,6 @@ final class AddressViewController: FormTableViewController {
             addressStep: self.addressStep,
             alternativeAddressesAndCardTypes: addressTuples)
           self.navigationController?.pushViewController(viewController, animated: true)
-//          let alertViewController = UIAlertController(
-//            title: NSLocalizedString(
-//              "Multiple Matching Addresses",
-//              comment: "An alert title telling the user we've found multiple matching addresses"),
-//            message: NSLocalizedString(
-//              ("The address you entered matches more than one location. Please choose the correct address "
-//                + "from the list of addresses on the following screen."),
-//              comment: "An alert message telling the user to pick the correct address"),
-//            preferredStyle: .Alert)
-//          alertViewController.addAction(UIAlertAction(
-//            title: NSLocalizedString("OK", comment: ""),
-//            style: .Default,
-//            handler: { _ in
-//              let viewController = AlternativeAddressesViewController(
-//                configuration: self.configuration,
-//                addressStep: self.addressStep,
-//                alternativeAddressesAndCardTypes: addressTuples)
-//              self.navigationController?.pushViewController(viewController, animated: true)
-//          }))
-//          self.presentViewController(alertViewController, animated: true, completion: nil)
         case .UnrecognizedAddress:
           let alertController = UIAlertController(
             title: NSLocalizedString(

@@ -5,7 +5,7 @@ final class SummaryCell: UITableViewCell {
   
   let sectionLabel, cellLabel: UILabel
   
-  init(section: String, cellText: String) {
+  init(section: String, cellText: String?) {
     self.sectionLabel = UILabel()
     self.cellLabel = UILabel()
     
