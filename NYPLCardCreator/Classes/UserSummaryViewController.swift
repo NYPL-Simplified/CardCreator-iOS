@@ -116,6 +116,9 @@ final class UserSummaryViewController: TableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    self.tableView.backgroundColor = UIColor.groupTableViewBackgroundColor()
+    
     self.title = NSLocalizedString(
       "Review",
       comment: "A title for a screen letting the user know they can review the information they have entered")
