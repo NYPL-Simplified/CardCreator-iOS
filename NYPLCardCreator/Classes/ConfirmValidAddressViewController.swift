@@ -45,15 +45,15 @@ final class ConfirmValidAddressViewController: TableViewController {
     switch self.addressStep {
     case .Home:
       headerLabel.text = NSLocalizedString(
-        "Confirm your home address, or go \nback to make changes.",
+        "Confirm your home address, or go back to make changes.",
         comment: "Description meant to inform user to review their entered information")
     case .School:
       headerLabel.text = NSLocalizedString(
-        "Confirm your school address, or go \nback to make changes.",
+        "Confirm your school address, or go back to make changes.",
         comment: "Description meant to inform user to review their entered information")
     case .Work:
       headerLabel.text = NSLocalizedString(
-        "Confirm your work address, or go \nback to make changes.",
+        "Confirm your work address, or go back to make changes.",
         comment: "Description meant to inform user to review their entered information")
     }
     

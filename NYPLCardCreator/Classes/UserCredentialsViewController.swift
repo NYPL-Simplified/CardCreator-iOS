@@ -71,8 +71,8 @@ final class UserCredentialsViewController: TableViewController {
     self.tableView.backgroundColor = UIColor.groupTableViewBackgroundColor()
 
     self.title = NSLocalizedString(
-      "Review",
-      comment: "A title for a screen letting the user know they can review the information they have entered")
+      "Your Card Information",
+      comment: "A title for a screen informing the user of their library card's information")
     
     switch self.cardType {
     case .Temporary:
@@ -82,8 +82,8 @@ final class UserCredentialsViewController: TableViewController {
         comment: "A message telling the user she'll get a 30-day library card")
     case .Standard:
       headerLabel.text = NSLocalizedString(
-        "Your address will result in a standard\n three-year ebook-only library card." +
-        "Be sure to keep your username and PIN in a safe location.",
+        "Your address will result in a standard three-year ebook-only library card." +
+        " Be sure to keep your username and PIN in a safe location.",
         comment: "A message telling the user she'll get a 3-year library card")
     default:
       headerLabel.text = NSLocalizedString(
@@ -116,12 +116,6 @@ final class UserCredentialsViewController: TableViewController {
   private func prepareTableViewCells() {
     for cell in self.cells {
       cell.backgroundColor = UIColor.clearColor()
-
-//GODO is this used in regular summary class?
-//      if let labelledTextViewCell = cell as? LabelledTextViewCell {
-//        labelledTextViewCell.selectionStyle = .None
-//        labelledTextViewCell.textField.allowsEditingTextAttributes = false
-//      }
     }
   }
   

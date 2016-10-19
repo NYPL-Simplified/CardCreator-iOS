@@ -4,7 +4,6 @@ import UIKit
 /// submitting the request to create a library card.
 final class UserSummaryViewController: TableViewController {
   private var cells: [UITableViewCell]
-//  private var sectionHeaderTitles: [String]
   private let headerLabel: UILabel
   
   private let configuration: CardCreatorConfiguration
