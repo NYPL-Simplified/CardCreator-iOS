@@ -34,7 +34,7 @@ final class SummaryAddressCell: UITableViewCell {
     
     self.contentView.backgroundColor = UIColor.clearColor()
     
-    let font = UIFont(name: "AvenirNext-Regular", size: 18)
+//    let font = UIFont(name: "AvenirNext-Regular", size: 18)
     
     //GODO style labels
     self.sectionLabel.text = section
@@ -42,11 +42,11 @@ final class SummaryAddressCell: UITableViewCell {
     self.sectionLabel.textColor = UIColor.darkGrayColor()
     self.sectionLabel.font = UIFont(name: "AvenirNext-Regular", size: 14)
     
-    self.street1Label.font = font
-    self.street2Label.font = font
-    self.cityLabel.font = font
-    self.regionLabel.font = font
-    self.zipLabel.font = font
+//    self.street1Label.font = font
+//    self.street2Label.font = font
+//    self.cityLabel.font = font
+//    self.regionLabel.font = font
+//    self.zipLabel.font = font
     
     self.contentView.addSubview(self.sectionLabel)
     self.sectionLabel.autoPinEdgeToSuperviewMargin(.Left)
