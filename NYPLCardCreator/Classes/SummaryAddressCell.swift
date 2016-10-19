@@ -21,7 +21,7 @@ final class SummaryAddressCell: UITableViewCell {
       self.zipLabel.text = newValue?.zip
     }
   }
-  //GODO ready to test this
+  
   init(section: String, style: UITableViewCellStyle, reuseIdentifier: String?) {
     self.sectionLabel = UILabel()
     self.street1Label = UILabel()
@@ -34,24 +34,17 @@ final class SummaryAddressCell: UITableViewCell {
     
     self.contentView.backgroundColor = UIColor.clearColor()
     
-//    let font = UIFont(name: "AvenirNext-Regular", size: 18)
-    
-    //GODO style labels
+    //Style labels
     self.sectionLabel.text = section
     self.sectionLabel.text  = self.sectionLabel.text?.uppercaseString
     self.sectionLabel.textColor = UIColor.darkGrayColor()
     self.sectionLabel.font = UIFont(name: "AvenirNext-Regular", size: 14)
     
-//    self.street1Label.font = font
-//    self.street2Label.font = font
-//    self.cityLabel.font = font
-//    self.regionLabel.font = font
-//    self.zipLabel.font = font
-    
     self.contentView.addSubview(self.sectionLabel)
     self.sectionLabel.autoPinEdgeToSuperviewMargin(.Left)
     self.sectionLabel.autoPinEdgeToSuperviewMargin(.Right)
-    //GODO kluge
+    
+    //Top section
     if (section == "Home Address") {
     self.sectionLabel.autoPinEdgeToSuperviewEdge(.Top, withInset: 2)
     } else {

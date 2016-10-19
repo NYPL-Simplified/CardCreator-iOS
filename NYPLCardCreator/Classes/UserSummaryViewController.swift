@@ -37,17 +37,7 @@ final class UserSummaryViewController: TableViewController {
   {
     self.configuration = configuration
     self.session = AuthenticatingSession(configuration: configuration)
-    
-    //GODO ready to test
-    self.homeAddressCell = SummaryAddressCell(section: "Home Address", style: .Default, reuseIdentifier: nil)
-    self.altAddressCell = SummaryAddressCell(section: "School or Work Address", style: .Default, reuseIdentifier: nil)
 
-    
-//    self.fullNameCell = UITableViewCell(style: .Default, reuseIdentifier: nil)
-//    self.emailCell = UITableViewCell(style: .Default, reuseIdentifier: nil)
-//    self.usernameCell = UITableViewCell(style: .Default, reuseIdentifier: nil)
-//    self.pinCell = UITableViewCell(style: .Default, reuseIdentifier: nil)
-    
     self.homeAddress = homeAddress
     self.schoolOrWorkAddress = schoolOrWorkAddress
     self.cardType = cardType
@@ -56,6 +46,17 @@ final class UserSummaryViewController: TableViewController {
     self.username = username
     self.pin = pin
     
+    self.headerLabel = UILabel()
+    
+    self.homeAddressCell = SummaryAddressCell(section: NSLocalizedString(
+      "Home Address",
+      comment: "Title of the section for the user's home address"),
+                                              style: .Default, reuseIdentifier: nil)
+    self.altAddressCell = SummaryAddressCell(section: NSLocalizedString(
+      "School or Work Address",
+      comment: "Title of the section for the user's possible work or school address"),
+                                             style: .Default, reuseIdentifier: nil)
+  
     self.homeAddressCell.address = self.homeAddress
     if let address = self.schoolOrWorkAddress {
       self.altAddressCell.address = address
@@ -65,12 +66,6 @@ final class UserSummaryViewController: TableViewController {
     self.emailCell = SummaryCell(section: "Email", cellText: self.email)
     self.usernameCell = SummaryCell(section: "Username", cellText: self.username)
     self.pinCell = SummaryCell(section: "Pin", cellText: self.pin)
-    
-    
-//    self.fullNameCell.textLabel?.text = self.fullName
-//    self.emailCell.textLabel?.text = self.email
-//    self.usernameCell.textLabel?.text = self.username
-//    self.pinCell.textLabel?.text = self.pin
 
     self.cells = [
       self.homeAddressCell,
@@ -79,28 +74,13 @@ final class UserSummaryViewController: TableViewController {
       self.usernameCell,
       self.pinCell
     ]
-    //GODO make localized
-//    self.sectionHeaderTitles = [
-//      "Home Address",
-//      "Full Name",
-//      "Email",
-//      "Username",
-//      "Pin"
-//    ]
 
     if (self.schoolOrWorkAddress != nil) {
       self.cells.insert(self.altAddressCell, atIndex: 1)
-//      let headerString = NSLocalizedString(
-//        "School or Work Address",
-//        comment: "A title to describe an address that represents either the home or work of the user")
-//      self.sectionHeaderTitles.insert(headerString, atIndex: 1)
     }
     
-    
-    
-    self.headerLabel = UILabel()
-    
     super.init(style: .Plain)
+    
     self.tableView.separatorStyle = .None
     
     self.navigationItem.rightBarButtonItem =
@@ -143,7 +123,7 @@ final class UserSummaryViewController: TableViewController {
         "Review your information before creating your library card.",
         comment: "Description to tell a user to either review and confirm, or go back and make changes to their information.")
     }
-    //GODO update this
+
     self.tableView.estimatedRowHeight = 120
     self.tableView.allowsSelection = false
     self.tableView.tableHeaderView = headerLabel

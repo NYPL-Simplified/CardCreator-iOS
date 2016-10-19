@@ -16,11 +16,9 @@ final class SummaryCell: UITableViewCell {
     self.sectionLabel.text = section
     self.cellLabel.text = cellText
     
-    //GODO style with different font/sizes
     self.sectionLabel.text  = self.sectionLabel.text?.uppercaseString
     self.sectionLabel.textColor = UIColor.darkGrayColor()
     self.sectionLabel.font = UIFont(name: "AvenirNext-Regular", size: 14)
-//    self.cellLabel.font = UIFont(name: "AvenirNext-Regular", size: 18)
     
     self.contentView.addSubview(self.sectionLabel)
     self.sectionLabel.autoPinEdgeToSuperviewMargin(.Left)
