@@ -113,6 +113,11 @@ final class UserCredentialsViewController: TableViewController {
     self.tableView.tableHeaderView = self.headerLabel
   }
   
+  override func viewDidAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    self.configuration.completionHandler(username: self.username, PIN: self.pin, userInitiated: false)
+  }
+  
   private func prepareTableViewCells() {
     for cell in self.cells {
       cell.backgroundColor = UIColor.clearColor()
@@ -148,6 +153,6 @@ final class UserCredentialsViewController: TableViewController {
   // MARK: -
   
   @objc private func openCatalog() {
-    self.configuration.completionHandler(username: self.username, PIN: self.pin)
+    self.configuration.completionHandler(username: self.username, PIN: self.pin, userInitiated: true)
   }
 }
