@@ -62,7 +62,16 @@ final class UserCredentialsViewController: TableViewController {
                       target: self,
                       action: #selector(openCatalog))
     
+    NSNotificationCenter.defaultCenter().addObserver(self,
+                                                     selector: #selector(signInFinished),
+                                                     name: "NYPLSettingsAccountsSignInFinishedNotification",
+                                                     object: nil)
+    
     self.prepareTableViewCells()
+  }
+  
+  deinit {
+    NSNotificationCenter.defaultCenter().removeObserver(self)
   }
   
   override func viewDidLoad() {
@@ -116,6 +125,7 @@ final class UserCredentialsViewController: TableViewController {
   override func viewDidAppear(animated: Bool) {
     super.viewWillAppear(animated)
     self.configuration.completionHandler(username: self.username, PIN: self.pin, userInitiated: false)
+    self.navigationItem.rightBarButtonItem?.enabled = false
   }
   
   private func prepareTableViewCells() {
@@ -154,5 +164,9 @@ final class UserCredentialsViewController: TableViewController {
   
   @objc private func openCatalog() {
     self.configuration.completionHandler(username: self.username, PIN: self.pin, userInitiated: true)
+  }
+  
+  @objc func signInFinished() {
+    self.navigationItem.rightBarButtonItem?.enabled = true
   }
 }

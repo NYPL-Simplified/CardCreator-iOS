@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
       endpointUsername: "test_key",
       endpointPassword: "test_secret",
       requestTimeoutInterval: 20.0)
-    { (username, PIN) in
+    { (username, PIN, initiated) in
         self.window?.rootViewController?.dismissViewControllerAnimated(true, completion: nil)
         let alertController = UIAlertController(
           title: "Sign-Up Successful",
