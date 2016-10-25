@@ -4,12 +4,16 @@ final class NameAndEmailViewController: FormTableViewController {
   
   private let configuration: CardCreatorConfiguration
   
+  private let cardType: CardType
   private let fullNameCell: LabelledTextViewCell
   private let emailCell: LabelledTextViewCell
   private let homeAddress: Address
   private let schoolOrWorkAddress: Address?
   
-  init(configuration: CardCreatorConfiguration, homeAddress: Address, schoolOrWorkAddress: Address?) {
+  init(configuration: CardCreatorConfiguration,
+       homeAddress: Address,
+       schoolOrWorkAddress: Address?,
+       cardType: CardType) {
     self.configuration = configuration
     self.fullNameCell = LabelledTextViewCell(
       title: NSLocalizedString("Full Name", comment: "The text field title for the full name of a user"),
@@ -20,6 +24,7 @@ final class NameAndEmailViewController: FormTableViewController {
     
     self.homeAddress = homeAddress
     self.schoolOrWorkAddress = schoolOrWorkAddress
+    self.cardType = cardType
     
     super.init(
       cells: [
@@ -72,15 +77,29 @@ final class NameAndEmailViewController: FormTableViewController {
         configuration: self.configuration,
         homeAddress: self.homeAddress,
         schoolOrWorkAddress: self.schoolOrWorkAddress,
+        cardType: self.cardType,
         fullName: self.fullNameCell.textField.text!,
         email: self.emailCell.textField.text!),
       animated: true)
   }
   
+  private func emailIsValid() -> Bool {
+    let emailRegEx = ".+@.+\\..+"
+    let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+    return emailTest.evaluateWithObject(self.emailCell.textField.text!)
+  }
+  
   @objc private func textFieldDidChange() {
-    self.navigationItem.rightBarButtonItem?.enabled =
-      (self.fullNameCell.textField.text?.characters.count > 0
-        && self.emailCell.textField.text?.characters.count > 0
-        && self.emailCell.textField.text!.rangeOfString("@") != nil)
+    if (self.emailIsValid()) {
+        //Color-coding email can be reintroduced if required
+        //self.emailCell.textField.textColor = UIColor.greenColor()
+      self.navigationItem.rightBarButtonItem?.enabled =
+        self.fullNameCell.textField.text?.characters.count > 0
+    } else {
+      if (self.emailCell.textField.isFirstResponder()) {
+        //self.emailCell.textField.textColor = UIColor.redColor()
+      }
+      self.navigationItem.rightBarButtonItem?.enabled = false
+    }
   }
 }
