@@ -1,28 +1,4 @@
 import UIKit
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 
 final class NameAndEmailViewController: FormTableViewController {
   
@@ -117,8 +93,12 @@ final class NameAndEmailViewController: FormTableViewController {
     if (self.emailIsValid()) {
         //Color-coding email can be reintroduced if required
         //self.emailCell.textField.textColor = UIColor.greenColor()
-      self.navigationItem.rightBarButtonItem?.isEnabled =
-        self.fullNameCell.textField.text?.characters.count > 0
+      if let count = self.fullNameCell.textField.text?.characters.count {
+        self.navigationItem.rightBarButtonItem?.isEnabled = count > 0
+      } else {
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
+      }
+      
     } else {
       if (self.emailCell.textField.isFirstResponder) {
         //self.emailCell.textField.textColor = UIColor.redColor()

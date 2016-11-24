@@ -1,28 +1,4 @@
 import UIKit
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 
 /// This class is used for allowing the user to enter an address.
 final class AddressViewController: FormTableViewController {
@@ -208,11 +184,19 @@ final class AddressViewController: FormTableViewController {
   }
   
   @objc fileprivate func textFieldDidChange() {
+    guard let street1CellTextCount = self.street1Cell.textField.text?.characters.count,
+          let cityCellTextCount = self.cityCell.textField.text?.characters.count,
+          let regionCellTextCount = self.regionCell.textField.text?.characters.count,
+          let zipCellTextCount = self.zipCell.textField.text?.characters.count else {
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
+        return
+    }
+    
     self.navigationItem.rightBarButtonItem?.isEnabled =
-      (self.street1Cell.textField.text?.characters.count > 0
-        && self.cityCell.textField.text?.characters.count > 0
-        && self.regionCell.textField.text?.characters.count > 0
-        && self.zipCell.textField.text?.characters.count > 0
+      (street1CellTextCount > 0
+        && cityCellTextCount > 0
+        && regionCellTextCount > 0
+        && zipCellTextCount > 0
         && self.isValidZIPCode(self.zipCell.textField.text!))
   }
   

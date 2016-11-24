@@ -1,28 +1,4 @@
 import UIKit
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l >= r
-  default:
-    return !(lhs < rhs)
-  }
-}
-
 
 /// This class is used to allow the user to enter their desired username and PIN.
 final class UsernameAndPINViewController: FormTableViewController {
@@ -233,9 +209,13 @@ final class UsernameAndPINViewController: FormTableViewController {
   }
 
   @objc fileprivate func textFieldDidChange() {
-    self.navigationItem.rightBarButtonItem?.isEnabled =
-      (self.usernameCell.textField.text?.characters.count >= 5
-        && self.pinCell.textField.text?.characters.count == 4)
+    
+    guard let usernameTextCount = self.usernameCell.textField.text?.characters.count,
+          let pinCellTextCount = self.pinCell.textField.text?.characters.count else {
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
+        return
+    }
+    self.navigationItem.rightBarButtonItem?.isEnabled = (usernameTextCount >= 5 && pinCellTextCount == 4)
   }
   
   fileprivate func moveToFinalReview() {
