@@ -4,8 +4,8 @@ import UIKit
 /// The first step in the card registration flow.
 final class IntroductionViewController: UIViewController {
   
-  private let configuration: CardCreatorConfiguration
-  private let descriptionLabel: UILabel
+  fileprivate let configuration: CardCreatorConfiguration
+  fileprivate let descriptionLabel: UILabel
 
   public init(configuration: CardCreatorConfiguration) {
     self.configuration = configuration
@@ -23,12 +23,12 @@ final class IntroductionViewController: UIViewController {
     
     self.title = NSLocalizedString("Sign Up", comment: "A title welcoming the user to library card sign up")
     
-    self.view.backgroundColor = UIColor.whiteColor()
+    self.view.backgroundColor = UIColor.white
     
     self.view.addSubview(self.descriptionLabel)
     self.descriptionLabel.autoPinEdgesToSuperviewMargins()
-    self.descriptionLabel.textColor = UIColor.darkGrayColor()
-    self.descriptionLabel.textAlignment = .Center
+    self.descriptionLabel.textColor = UIColor.darkGray
+    self.descriptionLabel.textAlignment = .center
     self.descriptionLabel.numberOfLines = 0
     self.descriptionLabel.text =
       NSLocalizedString(
@@ -39,12 +39,12 @@ final class IntroductionViewController: UIViewController {
     
     self.navigationItem.rightBarButtonItem = UIBarButtonItem(
       title: NSLocalizedString("Next", comment: "A title for a button that goes to the next screen"),
-      style: .Plain,
+      style: .plain,
       target: self,
       action: #selector(didSelectNext))
   }
   
-  @objc private func didSelectNext() {
+  @objc fileprivate func didSelectNext() {
     let alertController = UIAlertController(
       title: NSLocalizedString(
         "Age Verification",
@@ -52,26 +52,26 @@ final class IntroductionViewController: UIViewController {
       message: NSLocalizedString(
         "You must be 13 years of age or older to sign up for a library card. How old are you?",
         comment: "An alert message telling the user they must be at least 13 years old and asking how old they are"),
-      preferredStyle: .Alert)
+      preferredStyle: .alert)
     alertController.addAction(UIAlertAction(
       title: NSLocalizedString("Under 13", comment: "A button title indicating an age range"),
-      style: .Default,
+      style: .default,
       handler: { _ in self.didSelectUnder13()}))
     alertController.addAction(UIAlertAction(
       title: NSLocalizedString("13 or Older", comment: "A button title indicating an age range"),
-      style: .Default,
+      style: .default,
       handler: { _ in self.didSelect13OrOlder()}))
-    self.presentViewController(alertController, animated: true, completion: nil)
+    self.present(alertController, animated: true, completion: nil)
   }
   
   
-  private func didSelect13OrOlder() {
+  fileprivate func didSelect13OrOlder() {
     self.navigationController?.pushViewController(
       LocationViewController(configuration: self.configuration),
       animated: true)
   }
   
-  private func didSelectUnder13() {
+  fileprivate func didSelectUnder13() {
     let alertController = UIAlertController(
       title: NSLocalizedString(
         "Age Restriction",
@@ -79,11 +79,11 @@ final class IntroductionViewController: UIViewController {
       message: NSLocalizedString(
         "You are not old enough to sign up for a library card.",
         comment: "An alert message telling the user are not old enough to sign up for a library card"),
-      preferredStyle: .Alert)
+      preferredStyle: .alert)
     alertController.addAction(UIAlertAction(
       title: NSLocalizedString("OK", comment: ""),
-      style: .Default,
+      style: .default,
       handler: nil))
-    self.presentViewController(alertController, animated: true, completion: nil)
+    self.present(alertController, animated: true, completion: nil)
   }
 }

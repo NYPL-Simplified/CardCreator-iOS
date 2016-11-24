@@ -9,7 +9,7 @@ struct Address {
   
   /// Takes a JSON object of the form retured from the server (where "state" is mapped
   /// to the `region` property).
-  static func addressWithJSONObject(object: AnyObject) -> Address? {
+  static func addressWithJSONObject(_ object: Any) -> Address? {
     guard
       let address = object as? [String: AnyObject],
       let street1 = address["line_1"] as? String,

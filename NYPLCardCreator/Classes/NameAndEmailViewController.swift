@@ -1,14 +1,38 @@
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 final class NameAndEmailViewController: FormTableViewController {
   
-  private let configuration: CardCreatorConfiguration
+  fileprivate let configuration: CardCreatorConfiguration
   
-  private let cardType: CardType
-  private let fullNameCell: LabelledTextViewCell
-  private let emailCell: LabelledTextViewCell
-  private let homeAddress: Address
-  private let schoolOrWorkAddress: Address?
+  fileprivate let cardType: CardType
+  fileprivate let fullNameCell: LabelledTextViewCell
+  fileprivate let emailCell: LabelledTextViewCell
+  fileprivate let homeAddress: Address
+  fileprivate let schoolOrWorkAddress: Address?
   
   init(configuration: CardCreatorConfiguration,
        homeAddress: Address,
@@ -32,7 +56,7 @@ final class NameAndEmailViewController: FormTableViewController {
         self.emailCell
       ])
     
-    self.navigationItem.rightBarButtonItem?.enabled = false
+    self.navigationItem.rightBarButtonItem?.isEnabled = false
     
     self.prepareTableViewCells()
   }
@@ -49,23 +73,23 @@ final class NameAndEmailViewController: FormTableViewController {
       comment: "A title for a screen asking the user for their personal information")
   }
   
-  private func prepareTableViewCells() {
+  fileprivate func prepareTableViewCells() {
     for cell in self.cells {
       if let labelledTextViewCell = cell as? LabelledTextViewCell {
-        labelledTextViewCell.selectionStyle = .None
+        labelledTextViewCell.selectionStyle = .none
         labelledTextViewCell.textField.delegate = self
         labelledTextViewCell.textField.addTarget(self,
                                                  action: #selector(textFieldDidChange),
-                                                 forControlEvents: .EditingChanged)
+                                                 for: .editingChanged)
       }
     }
     
-    self.fullNameCell.textField.keyboardType = .Alphabet
-    self.fullNameCell.textField.autocapitalizationType = .Words
+    self.fullNameCell.textField.keyboardType = .alphabet
+    self.fullNameCell.textField.autocapitalizationType = .words
     
-    self.emailCell.textField.keyboardType = .EmailAddress
-    self.emailCell.textField.autocapitalizationType = .None
-    self.emailCell.textField.autocorrectionType = .No
+    self.emailCell.textField.keyboardType = .emailAddress
+    self.emailCell.textField.autocapitalizationType = .none
+    self.emailCell.textField.autocorrectionType = .no
   }
   
   // MARK: -
@@ -83,23 +107,23 @@ final class NameAndEmailViewController: FormTableViewController {
       animated: true)
   }
   
-  private func emailIsValid() -> Bool {
+  fileprivate func emailIsValid() -> Bool {
     let emailRegEx = ".+@.+\\..+"
     let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-    return emailTest.evaluateWithObject(self.emailCell.textField.text!)
+    return emailTest.evaluate(with: self.emailCell.textField.text!)
   }
   
-  @objc private func textFieldDidChange() {
+  @objc fileprivate func textFieldDidChange() {
     if (self.emailIsValid()) {
         //Color-coding email can be reintroduced if required
         //self.emailCell.textField.textColor = UIColor.greenColor()
-      self.navigationItem.rightBarButtonItem?.enabled =
+      self.navigationItem.rightBarButtonItem?.isEnabled =
         self.fullNameCell.textField.text?.characters.count > 0
     } else {
-      if (self.emailCell.textField.isFirstResponder()) {
+      if (self.emailCell.textField.isFirstResponder) {
         //self.emailCell.textField.textColor = UIColor.redColor()
       }
-      self.navigationItem.rightBarButtonItem?.enabled = false
+      self.navigationItem.rightBarButtonItem?.isEnabled = false
     }
   }
 }

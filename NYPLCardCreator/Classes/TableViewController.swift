@@ -15,7 +15,7 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
   var clearsSelectedOnViewWillAppear = true
   
   init(style: UITableViewStyle) {
-    self.tableView = UITableView(frame: CGRectZero, style: style)
+    self.tableView = UITableView(frame: CGRect.zero, style: style)
     super.init(nibName: nil, bundle: nil)
     self.tableView.dataSource = self
     self.tableView.delegate = self
@@ -28,10 +28,10 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
   
   // MARK: UIView
   
-  override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
     if self.clearsSelectedOnViewWillAppear {
       if let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow {
-        self.tableView.deselectRowAtIndexPath(indexPathForSelectedRow, animated: true)
+        self.tableView.deselectRow(at: indexPathForSelectedRow, animated: true)
       }
     }
   }
@@ -45,12 +45,12 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
   // MARK: UITableViewDataSource
   
   /// This should be overridden in all subclasses.
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return 0
   }
   
   /// This should be overridden in all subclasses.
-  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     return UITableViewCell()
   }
 }

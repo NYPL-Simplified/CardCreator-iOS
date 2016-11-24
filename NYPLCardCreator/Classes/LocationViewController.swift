@@ -3,13 +3,13 @@ import UIKit
 /// The second step in the card registration flow.
 final class LocationViewController: UIViewController {
   
-  private let configuration: CardCreatorConfiguration
+  fileprivate let configuration: CardCreatorConfiguration
   
-  private let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
-  private var observers: [NSObjectProtocol] = []
-  private let resultLabel = UILabel()
-  private var placemarkQuery: PlacemarkQuery? = nil
-  private var viewDidAppearPreviously: Bool = false
+  fileprivate let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+  fileprivate var observers: [NSObjectProtocol] = []
+  fileprivate let resultLabel = UILabel()
+  fileprivate var placemarkQuery: PlacemarkQuery? = nil
+  fileprivate var viewDidAppearPreviously: Bool = false
 
   init(configuration: CardCreatorConfiguration) {
     self.configuration = configuration
@@ -23,7 +23,7 @@ final class LocationViewController: UIViewController {
   
   deinit {
     for observer in self.observers {
-      NSNotificationCenter.defaultCenter().removeObserver(observer)
+      NotificationCenter.default.removeObserver(observer)
     }
   }
   
@@ -38,44 +38,44 @@ final class LocationViewController: UIViewController {
       "Location",
       comment: "A title for a button that goes to the previous 'Location Check' screen")
     let backButton = UIBarButtonItem(title: backButtonText,
-                                     style: .Bordered,
+                                     style: .bordered,
                                      target: nil,
                                      action: nil)
     self.navigationItem.backBarButtonItem = backButton
     
-    self.view.backgroundColor = UIColor.whiteColor()
+    self.view.backgroundColor = UIColor.white
     
     self.view.addSubview(self.activityIndicatorView)
     self.activityIndicatorView.autoCenterInSuperview()
     
     self.view.addSubview(self.resultLabel)
-    self.resultLabel.hidden = true
+    self.resultLabel.isHidden = true
     self.resultLabel.autoPinEdgesToSuperviewMargins()
     self.resultLabel.numberOfLines = 0
-    self.resultLabel.textColor = UIColor.darkGrayColor()
-    self.resultLabel.textAlignment = .Center
+    self.resultLabel.textColor = UIColor.darkGray
+    self.resultLabel.textAlignment = .center
     
     self.navigationItem.rightBarButtonItem =
       UIBarButtonItem(title: NSLocalizedString("Next", comment: "A title for a button that goes to the next screen"),
-                      style: .Plain,
+                      style: .plain,
                       target: self,
                       action: #selector(didSelectNext))
-    self.navigationItem.rightBarButtonItem?.enabled = false
+    self.navigationItem.rightBarButtonItem?.isEnabled = false
    
     // We need to check again in case the user has gone to Settings to enable location services.
     self.observers.append(
-      NSNotificationCenter.defaultCenter().addObserverForName(
-        UIApplicationDidBecomeActiveNotification,
+      NotificationCenter.default.addObserver(
+        forName: NSNotification.Name.UIApplicationDidBecomeActive,
         object: nil,
-        queue: NSOperationQueue.mainQueue(),
-        usingBlock: { _ in
-          if !(self.navigationItem.rightBarButtonItem?.enabled)! {
+        queue: OperationQueue.main,
+        using: { _ in
+          if !(self.navigationItem.rightBarButtonItem?.isEnabled)! {
             // FIXME: Temporarily disabled due to being called during another location check.
             // self.checkLocation()
           }}))
   }
   
-  override func viewDidAppear(animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
     if self.viewDidAppearPreviously {
       return
     }
@@ -83,30 +83,30 @@ final class LocationViewController: UIViewController {
     self.checkLocation()
   }
   
-  @objc private func didSelectNext() {
+  @objc fileprivate func didSelectNext() {
     self.navigationController?.pushViewController(
       AddressViewController(
         configuration: self.configuration,
-        addressStep: .Home),
+        addressStep: .home),
       animated: true)
   }
   
-  private func checkLocation() {
-    self.resultLabel.hidden = true
+  fileprivate func checkLocation() {
+    self.resultLabel.isHidden = true
     self.activityIndicatorView.startAnimating()
     self.placemarkQuery = PlacemarkQuery()
     self.placemarkQuery!.startWithHandler { result in
-      self.resultLabel.hidden = false
+      self.resultLabel.isHidden = false
       self.activityIndicatorView.stopAnimating()
       switch result {
-      case let .ErrorAlertController(alertController):
+      case let .errorAlertController(alertController):
         self.resultLabel.text = NSLocalizedString(
           "Your location could not be determined. Please try again later.",
           comment: "A label title informing the user that their location could not be determined")
-        self.presentViewController(alertController, animated: true, completion: nil)
-      case let .Placemark(placemark):
+        self.present(alertController, animated: true, completion: nil)
+      case let .placemark(placemark):
         if placemark.administrativeArea == "NY" {
-          self.navigationItem.rightBarButtonItem?.enabled = true
+          self.navigationItem.rightBarButtonItem?.isEnabled = true
           self.resultLabel.text = NSLocalizedString(
             "We have successfully determined that you are in New York!",
             comment: "A label title informing the user that their location is acceptable")

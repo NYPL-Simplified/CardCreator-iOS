@@ -6,23 +6,23 @@ import Foundation
   /// The base URL for all API requests, e.g. the base URL for
   /// "http://qa.patrons.librarysimplified.org/v1/validate/username" is
   /// "http://qa.patrons.librarysimplified.org/v1".
-  public let endpointURL: NSURL
+  public let endpointURL: URL
   /// The username to be provided via basic authentication to the API endpoint.
   public let endpointUsername: String
   /// The password to be provided via basic authentication to the API endpoint.
   public let endpointPassword: String
   /// The timeout to use for all requests to the API endpoint.
-  public let requestTimeoutInterval: NSTimeInterval
+  public let requestTimeoutInterval: TimeInterval
   /// This will always be called on the main thread. It will only be called in the event
   /// of a successful registration.
-  let completionHandler: (username: String, PIN: String, userInitiated: Bool) -> Void
+  let completionHandler: (_ username: String, _ PIN: String, _ userInitiated: Bool) -> Void
   
   public init(
-    endpointURL: NSURL,
+    endpointURL: URL,
     endpointUsername: String,
     endpointPassword: String,
-    requestTimeoutInterval: NSTimeInterval,
-    completionHandler: (username: String, PIN: String, userInitiated: Bool) -> Void)
+    requestTimeoutInterval: TimeInterval,
+    completionHandler: @escaping (_ username: String, _ PIN: String, _ userInitiated: Bool) -> Void)
   {
     self.endpointURL = endpointURL
     self.endpointUsername = endpointUsername

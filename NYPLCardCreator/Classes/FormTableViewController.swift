@@ -11,21 +11,21 @@ class FormTableViewController: TableViewController, UITextFieldDelegate {
   
   init(cells: [UITableViewCell]) {
     self.cells = cells
-    super.init(style: .Grouped)
+    super.init(style: .grouped)
     
     self.navigationItem.rightBarButtonItem =
       UIBarButtonItem(title: NSLocalizedString("Next", comment: "A title for a button that goes to the next screen"),
-                      style: .Plain,
+                      style: .plain,
                       target: self,
                       action: #selector(didSelectNext))
   }
 
   /// Returns a `UIToolbar` with a "Return" button that advances to the next text field.
   func returnToolbar() -> UIToolbar {
-    let flexibleSpaceBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+    let flexibleSpaceBarButtonItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
     let nextBarButtonItem = UIBarButtonItem(
       title: NSLocalizedString("Return", comment: "The title of the button that goes to the next line in a form"),
-      style: .Plain,
+      style: .plain,
       target: self,
       action: #selector(advanceToNextTextField))
     
@@ -36,18 +36,18 @@ class FormTableViewController: TableViewController, UITextFieldDelegate {
     return toolbar
   }
   
-  @objc private func advanceToNextTextField() {
+  @objc fileprivate func advanceToNextTextField() {
     var firstResponser: LabelledTextViewCell? = nil
     
     for cell in self.cells {
       if let labelledTextViewCell = cell as? LabelledTextViewCell {
         // Skip fields that are not enabled, e.g. the region field when entering school
         // or work addresses.
-        if firstResponser != nil && labelledTextViewCell.textField.userInteractionEnabled {
+        if firstResponser != nil && labelledTextViewCell.textField.isUserInteractionEnabled {
           labelledTextViewCell.textField.becomeFirstResponder()
           return
         }
-        if labelledTextViewCell.textField.isFirstResponder() {
+        if labelledTextViewCell.textField.isFirstResponder {
           firstResponser = labelledTextViewCell
         }
       }
@@ -58,21 +58,21 @@ class FormTableViewController: TableViewController, UITextFieldDelegate {
   
   // MARK: UITableViewDataSource
   
-  override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return self.cells.count
   }
   
-  func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+  func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
     return 1
   }
   
-  override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     return self.cells[indexPath.row]
   }
   
   // MARK: UITextFieldDelegate
   
-  @objc func textFieldShouldReturn(textField: UITextField) -> Bool {
+  @objc func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     self.advanceToNextTextField()
     return true
   }

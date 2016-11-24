@@ -3,26 +3,26 @@ import UIKit
 /// This class is used for summarizing the user's details before
 /// submitting the request to create a library card.
 final class UserSummaryViewController: TableViewController {
-  private var cells: [UITableViewCell]
-  private let headerLabel: UILabel
+  fileprivate var cells: [UITableViewCell]
+  fileprivate let headerLabel: UILabel
   
-  private let configuration: CardCreatorConfiguration
-  private let session: AuthenticatingSession
+  fileprivate let configuration: CardCreatorConfiguration
+  fileprivate let session: AuthenticatingSession
   
-  private let homeAddressCell: SummaryAddressCell
-  private let altAddressCell: SummaryAddressCell
-  private let cardType: CardType
-  private let fullNameCell: UITableViewCell
-  private let emailCell: UITableViewCell
-  private let usernameCell: UITableViewCell
-  private let pinCell: UITableViewCell
+  fileprivate let homeAddressCell: SummaryAddressCell
+  fileprivate let altAddressCell: SummaryAddressCell
+  fileprivate let cardType: CardType
+  fileprivate let fullNameCell: UITableViewCell
+  fileprivate let emailCell: UITableViewCell
+  fileprivate let usernameCell: UITableViewCell
+  fileprivate let pinCell: UITableViewCell
   
-  private let homeAddress: Address
-  private let schoolOrWorkAddress: Address?
-  private let fullName: String
-  private let email: String
-  private let username: String
-  private let pin: String
+  fileprivate let homeAddress: Address
+  fileprivate let schoolOrWorkAddress: Address?
+  fileprivate let fullName: String
+  fileprivate let email: String
+  fileprivate let username: String
+  fileprivate let pin: String
   
   init(
     configuration: CardCreatorConfiguration,
@@ -50,11 +50,11 @@ final class UserSummaryViewController: TableViewController {
     self.homeAddressCell = SummaryAddressCell(section: NSLocalizedString(
       "Home Address",
       comment: "Title of the section for the user's home address"),
-                                              style: .Default, reuseIdentifier: nil)
+                                              style: .default, reuseIdentifier: nil)
     self.altAddressCell = SummaryAddressCell(section: NSLocalizedString(
       "School or Work Address",
       comment: "Title of the section for the user's possible work or school address"),
-                                             style: .Default, reuseIdentifier: nil)
+                                             style: .default, reuseIdentifier: nil)
   
     self.homeAddressCell.address = self.homeAddress
     if let address = self.schoolOrWorkAddress {
@@ -79,18 +79,18 @@ final class UserSummaryViewController: TableViewController {
     ]
 
     if (self.schoolOrWorkAddress != nil) {
-      self.cells.insert(self.altAddressCell, atIndex: 1)
+      self.cells.insert(self.altAddressCell, at: 1)
     }
     
-    super.init(style: .Plain)
+    super.init(style: .plain)
     
-    self.tableView.separatorStyle = .None
+    self.tableView.separatorStyle = .none
     
     self.navigationItem.rightBarButtonItem =
       UIBarButtonItem(title: NSLocalizedString(
         "Create Card",
         comment: "A title for a button that submits the user's information to create a library card"),
-                      style: .Plain,
+                      style: .plain,
                       target: self,
                       action: #selector(createPatron))
 
@@ -100,16 +100,16 @@ final class UserSummaryViewController: TableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    self.tableView.backgroundColor = UIColor.groupTableViewBackgroundColor()
+    self.tableView.backgroundColor = UIColor.groupTableViewBackground
     
     self.title = NSLocalizedString(
       "Review",
       comment: "A title for a screen letting the user know they can review the information they have entered")
     
     headerLabel.numberOfLines = 0
-    headerLabel.lineBreakMode = .ByWordWrapping
-    headerLabel.textColor = UIColor.darkGrayColor()
-    headerLabel.textAlignment = .Center
+    headerLabel.lineBreakMode = .byWordWrapping
+    headerLabel.textColor = UIColor.darkGray
+    headerLabel.textAlignment = .center
     
     headerLabel.text = NSLocalizedString(
       "Before creating your card, please review and go back to make changes if necessary.",
@@ -123,22 +123,22 @@ final class UserSummaryViewController: TableViewController {
   override func viewDidLayoutSubviews() {
     let origin_x = self.tableView.tableHeaderView!.frame.origin.x
     let origin_y = self.tableView.tableHeaderView!.frame.origin.y
-    let size = self.tableView.tableHeaderView!.sizeThatFits(CGSizeMake(self.view.bounds.width, CGFloat.max))
+    let size = self.tableView.tableHeaderView!.sizeThatFits(CGSize(width: self.view.bounds.width, height: CGFloat.greatestFiniteMagnitude))
     
     let adjustedWidth = (size.width > CGFloat(375)) ? CGFloat(375.0) : size.width
     let padding = CGFloat(30.0)
-    self.headerLabel.frame = CGRectMake(origin_x, origin_y, adjustedWidth, size.height + padding)
+    self.headerLabel.frame = CGRect(x: origin_x, y: origin_y, width: adjustedWidth, height: size.height + padding)
     
     self.tableView.tableHeaderView = self.headerLabel
   }
   
-  private func prepareTableViewCells() {
+  fileprivate func prepareTableViewCells() {
     for cell in self.cells {
-      cell.backgroundColor = UIColor.clearColor()
-      self.tableView.separatorStyle = .None
+      cell.backgroundColor = UIColor.clear
+      self.tableView.separatorStyle = .none
       
       if let labelledTextViewCell = cell as? LabelledTextViewCell {
-        labelledTextViewCell.selectionStyle = .None
+        labelledTextViewCell.selectionStyle = .none
         labelledTextViewCell.textField.allowsEditingTextAttributes = false
       }
     }
@@ -146,75 +146,75 @@ final class UserSummaryViewController: TableViewController {
   
   // MARK: UITableViewDataSource
   
-  override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return 1
   }
   
-  func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+  func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
     return self.cells.count
   }
   
-  override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     return self.cells[indexPath.section]
   }
   
-  func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return 0
   }
   
-  func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
     return 0
   }
   
-  func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+  func tableView(_ tableView: UITableView, heightForRowAtIndexPath indexPath: IndexPath) -> CGFloat {
     return UITableViewAutomaticDimension
   }
   
   // MARK: -
   
-  @objc private func createPatron() {
-    self.navigationItem.rightBarButtonItem?.enabled = false
-    self.navigationController?.view.userInteractionEnabled = false
+  @objc fileprivate func createPatron() {
+    self.navigationItem.rightBarButtonItem?.isEnabled = false
+    self.navigationController?.view.isUserInteractionEnabled = false
     self.navigationItem.titleView =
       ActivityTitleView(title:
         NSLocalizedString(
           "Creating Card",
           comment: "A title telling the user their card is currently being created"))
-    let request = NSMutableURLRequest(URL: self.configuration.endpointURL.URLByAppendingPathComponent("create_patron"))
+    var request = URLRequest.init(url: self.configuration.endpointURL.appendingPathComponent("create_patron"))
     let schoolOrWorkAddressOrNull: AnyObject = {
       if let schoolOrWorkAddress = self.schoolOrWorkAddress {
-        return schoolOrWorkAddress.JSONObject()
+        return schoolOrWorkAddress.JSONObject() as AnyObject
       } else {
         return NSNull()
       }
     }()
     let JSONObject: [String: AnyObject] = [
-      "name": self.fullName,
-      "email": self.email,
-      "address": self.homeAddress.JSONObject(),
-      "username": self.username,
-      "pin": self.pin,
+      "name": self.fullName as AnyObject,
+      "email": self.email as AnyObject,
+      "address": self.homeAddress.JSONObject() as AnyObject,
+      "username": self.username as AnyObject,
+      "pin": self.pin as AnyObject,
       "work_or_school_address": schoolOrWorkAddressOrNull
     ]
-    request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(JSONObject, options: [.PrettyPrinted])
-    request.HTTPMethod = "POST"
+    request.httpBody = try! JSONSerialization.data(withJSONObject: JSONObject, options: [.prettyPrinted])
+    request.httpMethod = "POST"
     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
     request.timeoutInterval = self.configuration.requestTimeoutInterval
     let task = self.session.dataTaskWithRequest(request) { (data, response, error) in
-      NSOperationQueue.mainQueue().addOperationWithBlock {
-        self.navigationController?.view.userInteractionEnabled = true
+      OperationQueue.main.addOperation {
+        self.navigationController?.view.isUserInteractionEnabled = true
         self.navigationItem.titleView = nil
         if let error = error {
           let alertController = UIAlertController(
             title: NSLocalizedString("Error", comment: "The title for an error alert"),
             message: error.localizedDescription,
-            preferredStyle: .Alert)
+            preferredStyle: .alert)
           alertController.addAction(UIAlertAction(
             title: NSLocalizedString("OK", comment: ""),
-            style: .Default,
+            style: .default,
             handler: nil))
-          self.presentViewController(alertController, animated: true, completion: nil)
-          self.navigationItem.rightBarButtonItem?.enabled = true
+          self.present(alertController, animated: true, completion: nil)
+          self.navigationItem.rightBarButtonItem?.isEnabled = true
           return
         }
         func showErrorAlert() {
@@ -223,20 +223,20 @@ final class UserSummaryViewController: TableViewController {
             message: NSLocalizedString(
               "A server error occurred during card creation. Please try again later.",
               comment: "An alert message explaining an error and telling the user to try again later"),
-            preferredStyle: .Alert)
+            preferredStyle: .alert)
           alertController.addAction(UIAlertAction(
             title: NSLocalizedString("OK", comment: ""),
-            style: .Default,
+            style: .default,
             handler: nil))
-          self.presentViewController(alertController, animated: true, completion: nil)
-          self.navigationItem.rightBarButtonItem?.enabled = true
+          self.present(alertController, animated: true, completion: nil)
+          self.navigationItem.rightBarButtonItem?.isEnabled = true
         }
-        if (response as! NSHTTPURLResponse).statusCode != 200 || data == nil {
+        if (response as! HTTPURLResponse).statusCode != 200 || data == nil {
           showErrorAlert()
           return
         }
         
-        let JSONObject = try? NSJSONSerialization.JSONObjectWithData(data!, options: []) as! [String: AnyObject]
+        let JSONObject = try? JSONSerialization.jsonObject(with: data!, options: []) as! [String: AnyObject]
         let barcode = JSONObject?["barcode"] as? String
         
         self.navigationController?.pushViewController(

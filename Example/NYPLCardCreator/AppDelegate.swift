@@ -7,39 +7,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate
   var window: UIWindow?
   
   func application(
-    application: UIApplication,
-    didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?)
+    _ application: UIApplication,
+    didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?)
     -> Bool
   {
-    self.window = UIWindow.init(frame: UIScreen.mainScreen().bounds)
+    self.window = UIWindow.init(frame: UIScreen.main.bounds)
     self.window?.rootViewController = UIViewController()
-    self.window?.rootViewController?.view.backgroundColor = UIColor.whiteColor()
-    self.window?.tintAdjustmentMode = .Normal;
+    self.window?.rootViewController?.view.backgroundColor = UIColor.white
+    self.window?.tintAdjustmentMode = .normal;
     self.window?.makeKeyAndVisible()
     
     let configuration = CardCreatorConfiguration(
-      endpointURL: NSURL(string: "http://qa.patrons.librarysimplified.org/v1")!,
+      endpointURL: URL(string: "http://qa.patrons.librarysimplified.org/v1")!,
       endpointUsername: "test_key",
       endpointPassword: "test_secret",
       requestTimeoutInterval: 20.0)
     { (username, PIN, initiated) in
-        self.window?.rootViewController?.dismissViewControllerAnimated(true, completion: nil)
+        self.window?.rootViewController?.dismiss(animated: true, completion: nil)
         let alertController = UIAlertController(
           title: "Sign-Up Successful",
           message: "Username: \(username)\nPIN: \(PIN)\nThe app would now log the user in automatically.",
-          preferredStyle: .Alert)
+          preferredStyle: .alert)
         alertController.addAction(UIAlertAction(
           title: "OK",
-          style: .Default,
+          style: .default,
           handler: nil))
-        self.window?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
+        self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
     }
     
     let initialViewController = CardCreator.initialNavigationControllerWithConfiguration(configuration)
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(NSEC_PER_SEC)), dispatch_get_main_queue()) {
-      initialViewController.modalPresentationStyle = .FormSheet
-      self.window?.rootViewController?.presentViewController(initialViewController, animated: true, completion: nil)
+    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(NSEC_PER_SEC)) / Double(NSEC_PER_SEC)) {
+      initialViewController.modalPresentationStyle = .formSheet
+      self.window?.rootViewController?.present(initialViewController, animated: true, completion: nil)
     }
     
     return true

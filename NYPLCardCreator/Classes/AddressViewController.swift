@@ -1,18 +1,42 @@
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 /// This class is used for allowing the user to enter an address.
 final class AddressViewController: FormTableViewController {
   
-  private let configuration: CardCreatorConfiguration
+  fileprivate let configuration: CardCreatorConfiguration
   
-  private let addressStep: AddressStep
-  private let street1Cell: LabelledTextViewCell
-  private let street2Cell: LabelledTextViewCell
-  private let cityCell: LabelledTextViewCell
-  private let regionCell: LabelledTextViewCell
-  private let zipCell: LabelledTextViewCell
+  fileprivate let addressStep: AddressStep
+  fileprivate let street1Cell: LabelledTextViewCell
+  fileprivate let street2Cell: LabelledTextViewCell
+  fileprivate let cityCell: LabelledTextViewCell
+  fileprivate let regionCell: LabelledTextViewCell
+  fileprivate let zipCell: LabelledTextViewCell
   
-  private let session: AuthenticatingSession
+  fileprivate let session: AuthenticatingSession
   
   init(configuration: CardCreatorConfiguration, addressStep: AddressStep) {
     self.configuration = configuration
@@ -44,7 +68,7 @@ final class AddressViewController: FormTableViewController {
         self.zipCell
       ])
     
-    self.navigationItem.rightBarButtonItem?.enabled = false
+    self.navigationItem.rightBarButtonItem?.isEnabled = false
     self.prepareTableViewCells()
   }
   
@@ -60,64 +84,64 @@ final class AddressViewController: FormTableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     switch self.addressStep {
-    case .Home:
+    case .home:
       self.title = NSLocalizedString(
         "Home Address",
         comment: "A title for a screen asking the user for their home address")
-    case .School:
+    case .school:
       self.title = NSLocalizedString(
         "School Address",
         comment: "A title for a screen asking the user for their school address")
-    case .Work:
+    case .work:
       self.title = NSLocalizedString(
         "Work Address",
         comment: "A title for a screen asking the user for their work address")
     }
   }
   
-  private func prepareTableViewCells() {
+  fileprivate func prepareTableViewCells() {
     for cell in self.cells {
       if let labelledTextViewCell = cell as? LabelledTextViewCell {
-        labelledTextViewCell.selectionStyle = .None
+        labelledTextViewCell.selectionStyle = .none
         labelledTextViewCell.textField.delegate = self
         labelledTextViewCell.textField.addTarget(self,
                                                  action: #selector(textFieldDidChange),
-                                                 forControlEvents: .EditingChanged)
+                                                 for: .editingChanged)
       }
     }
     
-    self.street1Cell.textField.keyboardType = .Alphabet
-    self.street1Cell.textField.autocapitalizationType = .Words
+    self.street1Cell.textField.keyboardType = .alphabet
+    self.street1Cell.textField.autocapitalizationType = .words
     
-    self.street2Cell.textField.keyboardType = .Alphabet
-    self.street2Cell.textField.autocapitalizationType = .Words
+    self.street2Cell.textField.keyboardType = .alphabet
+    self.street2Cell.textField.autocapitalizationType = .words
     
-    self.cityCell.textField.keyboardType = .Alphabet
-    self.cityCell.textField.autocapitalizationType = .Words
+    self.cityCell.textField.keyboardType = .alphabet
+    self.cityCell.textField.autocapitalizationType = .words
     
-    self.regionCell.textField.keyboardType = .Alphabet
+    self.regionCell.textField.keyboardType = .alphabet
     
     switch self.addressStep {
-    case .Home:
+    case .home:
       break
-    case .School:
+    case .school:
       fallthrough
-    case .Work:
-      self.regionCell.textField.userInteractionEnabled = false
+    case .work:
+      self.regionCell.textField.isUserInteractionEnabled = false
       self.regionCell.textField.text = "New York"
-      self.regionCell.textField.textColor = UIColor.grayColor()
+      self.regionCell.textField.textColor = UIColor.gray
     }
     
-    self.zipCell.textField.keyboardType = .NumberPad
+    self.zipCell.textField.keyboardType = .numberPad
     self.zipCell.textField.inputAccessoryView = self.returnToolbar()
     self.zipCell.textField.addTarget(self,
                                      action: #selector(zipTextFieldDidChange),
-                                     forControlEvents: .AllEditingEvents)
+                                     for: .allEditingEvents)
   }
   
   // MARK: UITextFieldDelegate
   
-  @objc func textField(textField: UITextField,
+  @objc func textField(_ textField: UITextField,
                        shouldChangeCharactersInRange range: NSRange,
                                                      replacementString string: String) -> Bool
   {
@@ -125,7 +149,7 @@ final class AddressViewController: FormTableViewController {
     if textField == self.zipCell.textField {
       if let text = textField.text {
         return self.isPossibleStartOfValidZIPCode(
-          (text as NSString).stringByReplacingCharactersInRange(range, withString: string))
+          (text as NSString).replacingCharacters(in: range, with: string))
       } else {
         return self.isPossibleStartOfValidZIPCode(string)
       }
@@ -141,8 +165,8 @@ final class AddressViewController: FormTableViewController {
     self.submit()
   }
   
-  private func isPossibleStartOfValidZIPCode(string: String) -> Bool {
-    if string.containsString("-") {
+  fileprivate func isPossibleStartOfValidZIPCode(_ string: String) -> Bool {
+    if string.contains("-") {
       if string.characters.count > 10 {
         return false
       }
@@ -167,24 +191,24 @@ final class AddressViewController: FormTableViewController {
     return true
   }
   
-  private func isValidZIPCode(string: String) -> Bool {
+  fileprivate func isValidZIPCode(_ string: String) -> Bool {
     return isPossibleStartOfValidZIPCode(string) && (string.characters.count == 5 || string.characters.count == 10)
   }
   
-  @objc private func zipTextFieldDidChange() {
+  @objc fileprivate func zipTextFieldDidChange() {
     if let text = self.zipCell.textField.text {
-      if text.characters.count > 5 && !text.containsString("-") {
-        let index = text.startIndex.advancedBy(5)
-        self.zipCell.textField.text = text.substringToIndex(index) + "-" + text.substringFromIndex(index)
-      } else if text.characters.count == 6 && text.containsString("-") {
-        self.zipCell.textField.text = text.stringByReplacingOccurrencesOfString("-", withString: "")
+      if text.characters.count > 5 && !text.contains("-") {
+        let index = text.characters.index(text.startIndex, offsetBy: 5)
+        self.zipCell.textField.text = text.substring(to: index) + "-" + text.substring(from: index)
+      } else if text.characters.count == 6 && text.contains("-") {
+        self.zipCell.textField.text = text.replacingOccurrences(of: "-", with: "")
       }
       self.textFieldDidChange()
     }
   }
   
-  @objc private func textFieldDidChange() {
-    self.navigationItem.rightBarButtonItem?.enabled =
+  @objc fileprivate func textFieldDidChange() {
+    self.navigationItem.rightBarButtonItem?.isEnabled =
       (self.street1Cell.textField.text?.characters.count > 0
         && self.cityCell.textField.text?.characters.count > 0
         && self.regionCell.textField.text?.characters.count > 0
@@ -192,12 +216,12 @@ final class AddressViewController: FormTableViewController {
         && self.isValidZIPCode(self.zipCell.textField.text!))
   }
   
-  private func currentAddress() -> Address? {
+  fileprivate func currentAddress() -> Address? {
     guard let
       street1 = self.street1Cell.textField.text,
-      city = self.cityCell.textField.text,
-      region = self.regionCell.textField.text,
-      zip = self.zipCell.textField.text
+      let city = self.cityCell.textField.text,
+      let region = self.regionCell.textField.text,
+      let zip = self.zipCell.textField.text
       else
     {
       return nil
@@ -206,47 +230,46 @@ final class AddressViewController: FormTableViewController {
     return Address(street1: street1, street2: self.street2Cell.textField.text, city: city, region: region, zip: zip)
   }
   
-  private func submit() {
-    self.navigationController?.view.userInteractionEnabled = false
+  fileprivate func submit() {
+    self.navigationController?.view.isUserInteractionEnabled = false
     self.navigationItem.titleView =
       ActivityTitleView(title:
         NSLocalizedString(
           "Validating Address",
           comment: "A title telling the user their address is currently being validated"))
-    let request = NSMutableURLRequest(
-      URL: self.configuration.endpointURL.URLByAppendingPathComponent("validate/address"))
+    var request = URLRequest.init(url: self.configuration.endpointURL.appendingPathComponent("validate/address"))
     let isSchoolOrWorkAddress: Bool = {
       switch self.addressStep {
-      case .Home:
+      case .home:
         return false
-      case .School:
+      case .school:
         return true
-      case .Work:
+      case .work:
         return true
       }
     }()
     let JSONObject: [String: AnyObject] = [
-      "address": self.currentAddress()!.JSONObject(),
-      "is_work_or_school_address": isSchoolOrWorkAddress
+      "address": self.currentAddress()!.JSONObject() as AnyObject,
+      "is_work_or_school_address": isSchoolOrWorkAddress as AnyObject
     ]
-    request.HTTPBody = try! NSJSONSerialization.dataWithJSONObject(JSONObject, options: [.PrettyPrinted])
-    request.HTTPMethod = "POST"
+    request.httpBody = try! JSONSerialization.data(withJSONObject: JSONObject, options: [.prettyPrinted])
+    request.httpMethod = "POST"
     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
     request.timeoutInterval = self.configuration.requestTimeoutInterval
     let task = self.session.dataTaskWithRequest(request) { (data, response, error) in
-      NSOperationQueue.mainQueue().addOperationWithBlock {
-        self.navigationController?.view.userInteractionEnabled = true
+      OperationQueue.main.addOperation {
+        self.navigationController?.view.isUserInteractionEnabled = true
         self.navigationItem.titleView = nil
         if let error = error {
           let alertController = UIAlertController(
             title: NSLocalizedString("Error", comment: "The title for an error alert"),
             message: error.localizedDescription,
-            preferredStyle: .Alert)
+            preferredStyle: .alert)
           alertController.addAction(UIAlertAction(
             title: NSLocalizedString("OK", comment: ""),
-            style: .Default,
+            style: .default,
             handler: nil))
-          self.presentViewController(alertController, animated: true, completion: nil)
+          self.present(alertController, animated: true, completion: nil)
           return
         }
         func showErrorAlert() {
@@ -255,14 +278,14 @@ final class AddressViewController: FormTableViewController {
             message: NSLocalizedString(
               "A server error occurred during address validation. Please try again later.",
               comment: "An alert message explaining an error and telling the user to try again later"),
-            preferredStyle: .Alert)
+            preferredStyle: .alert)
           alertController.addAction(UIAlertAction(
             title: NSLocalizedString("OK", comment: ""),
-            style: .Default,
+            style: .default,
             handler: nil))
-          self.presentViewController(alertController, animated: true, completion: nil)
+          self.present(alertController, animated: true, completion: nil)
         }
-        if (response as! NSHTTPURLResponse).statusCode != 200 || data == nil {
+        if (response as! HTTPURLResponse).statusCode != 200 || data == nil {
           showErrorAlert()
           return
         }
@@ -271,19 +294,19 @@ final class AddressViewController: FormTableViewController {
           return
         }
         switch validateAddressResponse {
-        case let .ValidAddress(_, address, cardType):
+        case let .validAddress(_, address, cardType):
             let viewController = ConfirmValidAddressViewController(
                 configuration: self.configuration,
                 addressStep: self.addressStep,
                 validAddressAndCardType: (address, cardType))
             self.navigationController?.pushViewController(viewController, animated: true)
-        case let .AlternativeAddresses(_, addressTuples):
+        case let .alternativeAddresses(_, addressTuples):
           let viewController = AlternativeAddressesViewController(
             configuration: self.configuration,
             addressStep: self.addressStep,
             alternativeAddressesAndCardTypes: addressTuples)
           self.navigationController?.pushViewController(viewController, animated: true)
-        case .UnrecognizedAddress:
+        case .unrecognizedAddress:
           let alertController = UIAlertController(
             title: NSLocalizedString(
               "Unrecognized Address",
@@ -291,12 +314,12 @@ final class AddressViewController: FormTableViewController {
             message: NSLocalizedString(
               "Your address could not be verified. Please try another address.",
               comment: "An alert message telling the user their address was not recognized by the server"),
-            preferredStyle: .Alert)
+            preferredStyle: .alert)
           alertController.addAction(UIAlertAction(
             title: NSLocalizedString("OK", comment: ""),
-            style: .Default,
+            style: .default,
             handler: nil))
-          self.presentViewController(alertController, animated: true, completion: nil)
+          self.present(alertController, animated: true, completion: nil)
         }
       }
     }
