@@ -18,9 +18,9 @@ final class AuthenticatingSession {
   /// authentication with the API endpoint.
   func dataTaskWithRequest(
     _ request: URLRequest,
-    completionHandler: @escaping (Data?, URLResponse?, NSError?) -> Void) -> URLSessionDataTask
+    completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask
   {
-    return self.URLSession.dataTask(with: request, completionHandler: completionHandler as! (Data?, URLResponse?, Error?) -> Void)
+    return self.URLSession.dataTask(with: request, completionHandler: completionHandler)
   }
   
   /// As with an `NSURLSession`, this or `finishTasksAndInvalidate` must be called else
