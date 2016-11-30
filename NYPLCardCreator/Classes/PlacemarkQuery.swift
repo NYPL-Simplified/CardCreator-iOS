@@ -99,7 +99,7 @@ final class PlacemarkQuery: NSObject, CLLocationManagerDelegate {
     // The last element is always the most recent.
     let latestLocation = locations.last!
     let fiveMinutesAgo = Date(timeIntervalSinceNow: -300)
-    if latestLocation.timestamp == (latestLocation.timestamp as NSDate).laterDate(fiveMinutesAgo) {
+    if (latestLocation.timestamp as Date) > fiveMinutesAgo {
       self.receivedRecentLocation = true
       self.locationManager.stopUpdatingLocation()
       self.geocoder.reverseGeocodeLocation(locations.last!) { (placemarks: [CLPlacemark]?, error) in
