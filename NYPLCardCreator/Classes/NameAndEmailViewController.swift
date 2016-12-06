@@ -21,7 +21,7 @@ final class NameAndEmailViewController: FormTableViewController {
       title: NSLocalizedString("First Name", comment: "The text field title for the first name of a user"),
       placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
     self.middleInitialCell = LabelledTextViewCell(
-      title: NSLocalizedString("Middle Initial", comment: "The text field title for the middle initial of a user"),
+      title: NSLocalizedString("Middle", comment: "The text field title for the middle name of a user"),
       placeholder: NSLocalizedString("Optional", comment: "A placeholder for a required text field"))
     self.lastNameCell = LabelledTextViewCell(
       title: NSLocalizedString("Last Name", comment: "The text field title for the last name of a user"),
