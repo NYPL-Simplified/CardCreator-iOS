@@ -5,7 +5,9 @@ final class NameAndEmailViewController: FormTableViewController {
   fileprivate let configuration: CardCreatorConfiguration
   
   fileprivate let cardType: CardType
-  fileprivate let fullNameCell: LabelledTextViewCell
+  fileprivate let firstNameCell: LabelledTextViewCell
+  fileprivate let middleInitialCell: LabelledTextViewCell
+  fileprivate let lastNameCell: LabelledTextViewCell
   fileprivate let emailCell: LabelledTextViewCell
   fileprivate let homeAddress: Address
   fileprivate let schoolOrWorkAddress: Address?
@@ -15,8 +17,14 @@ final class NameAndEmailViewController: FormTableViewController {
        schoolOrWorkAddress: Address?,
        cardType: CardType) {
     self.configuration = configuration
-    self.fullNameCell = LabelledTextViewCell(
-      title: NSLocalizedString("Full Name", comment: "The text field title for the full name of a user"),
+    self.firstNameCell = LabelledTextViewCell(
+      title: NSLocalizedString("First Name", comment: "The text field title for the first name of a user"),
+      placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
+    self.middleInitialCell = LabelledTextViewCell(
+      title: NSLocalizedString("Middle Initial", comment: "The text field title for the middle initial of a user"),
+      placeholder: NSLocalizedString("Optional", comment: "A placeholder for a required text field"))
+    self.lastNameCell = LabelledTextViewCell(
+      title: NSLocalizedString("Last Name", comment: "The text field title for the last name of a user"),
       placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
     self.emailCell = LabelledTextViewCell(
       title: NSLocalizedString("Email", comment: "A text field title for a user's email address"),
@@ -28,7 +36,9 @@ final class NameAndEmailViewController: FormTableViewController {
     
     super.init(
       cells: [
-        self.fullNameCell,
+        self.firstNameCell,
+        self.middleInitialCell,
+        self.lastNameCell,
         self.emailCell
       ])
     
@@ -60,8 +70,12 @@ final class NameAndEmailViewController: FormTableViewController {
       }
     }
     
-    self.fullNameCell.textField.keyboardType = .alphabet
-    self.fullNameCell.textField.autocapitalizationType = .words
+    self.firstNameCell.textField.keyboardType = .alphabet
+    self.firstNameCell.textField.autocapitalizationType = .words
+    self.middleInitialCell.textField.keyboardType = .alphabet
+    self.middleInitialCell.textField.autocapitalizationType = .words
+    self.lastNameCell.textField.keyboardType = .alphabet
+    self.lastNameCell.textField.autocapitalizationType = .words
     
     self.emailCell.textField.keyboardType = .emailAddress
     self.emailCell.textField.autocapitalizationType = .none
@@ -72,13 +86,22 @@ final class NameAndEmailViewController: FormTableViewController {
   
   @objc override func didSelectNext() {
     self.view.endEditing(false)
+    
+    var fullName: String
+    if self.middleInitialCell.textField.text!.isEmpty {
+      fullName = self.firstNameCell.textField.text! + " " + self.lastNameCell.textField.text!
+    } else {
+      fullName = self.firstNameCell.textField.text! + " " + "\(self.middleInitialCell.textField.text!) " +
+        self.lastNameCell.textField.text!
+    }
+    
     self.navigationController?.pushViewController(
       UsernameAndPINViewController(
         configuration: self.configuration,
         homeAddress: self.homeAddress,
         schoolOrWorkAddress: self.schoolOrWorkAddress,
         cardType: self.cardType,
-        fullName: self.fullNameCell.textField.text!,
+        fullName: fullName,
         email: self.emailCell.textField.text!),
       animated: true)
   }
@@ -89,20 +112,18 @@ final class NameAndEmailViewController: FormTableViewController {
     return emailTest.evaluate(with: self.emailCell.textField.text!)
   }
   
+  fileprivate func namesAreValid() -> Bool {
+    return !self.firstNameCell.textField.text!.isEmpty && !self.lastNameCell.textField.text!.isEmpty
+  }
+  
   @objc fileprivate func textFieldDidChange() {
     if (self.emailIsValid()) {
-        //Color-coding email can be reintroduced if required
-        //self.emailCell.textField.textColor = UIColor.greenColor()
-      if let count = self.fullNameCell.textField.text?.characters.count {
-        self.navigationItem.rightBarButtonItem?.isEnabled = count > 0
+      if namesAreValid() {
+        self.navigationItem.rightBarButtonItem?.isEnabled = true
       } else {
         self.navigationItem.rightBarButtonItem?.isEnabled = false
       }
-      
     } else {
-      if (self.emailCell.textField.isFirstResponder) {
-        //self.emailCell.textField.textColor = UIColor.redColor()
-      }
       self.navigationItem.rightBarButtonItem?.isEnabled = false
     }
   }
