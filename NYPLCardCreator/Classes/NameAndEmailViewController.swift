@@ -89,10 +89,10 @@ final class NameAndEmailViewController: FormTableViewController {
     
     var fullName: String
     if self.middleInitialCell.textField.text!.isEmpty {
-      fullName = self.firstNameCell.textField.text! + " " + self.lastNameCell.textField.text!
+      fullName = self.lastNameCell.textField.text! + ", " + self.firstNameCell.textField.text!
     } else {
-      fullName = self.firstNameCell.textField.text! + " " + "\(self.middleInitialCell.textField.text!) " +
-        self.lastNameCell.textField.text!
+      fullName = self.lastNameCell.textField.text! + ", " + "\(self.firstNameCell.textField.text!) " +
+        self.middleInitialCell.textField.text!
     }
     
     self.navigationController?.pushViewController(
