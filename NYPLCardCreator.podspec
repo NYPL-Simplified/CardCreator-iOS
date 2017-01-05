@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'NYPLCardCreator'
-  s.version          = '0.1.0'
+  s.version          = '1.0.0'
   s.summary          = 'A client and drop-in GUI for NYPL\'s RESTful card creator API'
 
 # This description is used to generate tags and improve search results.
