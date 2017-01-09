@@ -19,12 +19,13 @@ import Foundation
   
   public init(
     endpointURL: URL,
+    endpointVersion: String,
     endpointUsername: String,
     endpointPassword: String,
     requestTimeoutInterval: TimeInterval,
     completionHandler: @escaping (_ username: String, _ PIN: String, _ userInitiated: Bool) -> Void)
   {
-    self.endpointURL = endpointURL
+    self.endpointURL = endpointURL.appendingPathComponent(endpointVersion)!
     self.endpointUsername = endpointUsername
     self.endpointPassword = endpointPassword
     self.requestTimeoutInterval = requestTimeoutInterval
