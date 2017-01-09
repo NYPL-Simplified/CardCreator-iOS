@@ -7,6 +7,8 @@ import Foundation
   /// "http://qa.patrons.librarysimplified.org/v1/validate/username" is
   /// "http://qa.patrons.librarysimplified.org/v1".
   public let endpointURL: URL
+  /// The version will be appended to the endpointURL
+  public let endpointVersion: String
   /// The username to be provided via basic authentication to the API endpoint.
   public let endpointUsername: String
   /// The password to be provided via basic authentication to the API endpoint.
@@ -19,12 +21,14 @@ import Foundation
   
   public init(
     endpointURL: URL,
+    endpointVersion: String,
     endpointUsername: String,
     endpointPassword: String,
     requestTimeoutInterval: TimeInterval,
     completionHandler: @escaping (_ username: String, _ PIN: String, _ userInitiated: Bool) -> Void)
   {
     self.endpointURL = endpointURL
+    self.endpointVersion = endpointVersion
     self.endpointUsername = endpointUsername
     self.endpointPassword = endpointPassword
     self.requestTimeoutInterval = requestTimeoutInterval
