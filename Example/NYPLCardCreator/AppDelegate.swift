@@ -18,7 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     self.window?.makeKeyAndVisible()
     
     let configuration = CardCreatorConfiguration(
-      endpointURL: URL(string: "http://qa.patrons.librarysimplified.org/v1")!,
+      endpointURL: URL(string: "http://qa.patrons.librarysimplified.org/")!,
+      endpointVersion: "v1",
       endpointUsername: "test_key",
       endpointPassword: "test_secret",
       requestTimeoutInterval: 20.0)
