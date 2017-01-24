@@ -73,6 +73,7 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
       }
     } else {
       cell.textLabel?.text = NSLocalizedString("I agree to the terms of the End User License Agreement", comment: "Statement that the user will check if they agree to the terms of the agreement.")
+      cell.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
       cell.textLabel?.numberOfLines = 2
     }
     setCheckmark(false, forCell: cell)
@@ -137,7 +138,7 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
       button.setTitle(NSLocalizedString("End User License Agreement", comment: "Title of button for EULA"), for: .normal)
       button.setTitleColor(UIColor.blue, for: .normal)
       button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
-      button.addTarget(self, action: #selector(eulaPressed(sender:)), for: .touchUpInside)
+      button.addTarget(self, action: #selector(eulaPressed(_:)), for: .touchUpInside)
       button.autoAlignAxis(toSuperviewAxis: .vertical)
       button.autoPinEdge(toSuperviewEdge: .top, withInset: 8)
       button.autoPinEdges(toSuperviewMarginsExcludingEdge: .top)
@@ -184,7 +185,7 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
   
   // MARK: -
   
-  @objc fileprivate func eulaPressed(sender: Any) {
+  @objc fileprivate func eulaPressed(_ sender: Any) {
     let vc = RemoteHTMLViewController(URL: URL.init(string: "http://www.librarysimplified.org/EULA.html")!, title: "EULA", failureMessage: nil)
     self.navigationController?.pushViewController(vc, animated: true)
   }
