@@ -2,21 +2,29 @@ import UIKit
 
 final class NameAndEmailViewController: FormTableViewController {
   
-  private let configuration: CardCreatorConfiguration
+  fileprivate let configuration: CardCreatorConfiguration
   
-  private let cardType: CardType
-  private let fullNameCell: LabelledTextViewCell
-  private let emailCell: LabelledTextViewCell
-  private let homeAddress: Address
-  private let schoolOrWorkAddress: Address?
+  fileprivate let cardType: CardType
+  fileprivate let firstNameCell: LabelledTextViewCell
+  fileprivate let middleInitialCell: LabelledTextViewCell
+  fileprivate let lastNameCell: LabelledTextViewCell
+  fileprivate let emailCell: LabelledTextViewCell
+  fileprivate let homeAddress: Address
+  fileprivate let schoolOrWorkAddress: Address?
   
   init(configuration: CardCreatorConfiguration,
        homeAddress: Address,
        schoolOrWorkAddress: Address?,
        cardType: CardType) {
     self.configuration = configuration
-    self.fullNameCell = LabelledTextViewCell(
-      title: NSLocalizedString("Full Name", comment: "The text field title for the full name of a user"),
+    self.firstNameCell = LabelledTextViewCell(
+      title: NSLocalizedString("First Name", comment: "The text field title for the first name of a user"),
+      placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
+    self.middleInitialCell = LabelledTextViewCell(
+      title: NSLocalizedString("Middle", comment: "The text field title for the middle name of a user"),
+      placeholder: NSLocalizedString("Optional", comment: "A placeholder for a required text field"))
+    self.lastNameCell = LabelledTextViewCell(
+      title: NSLocalizedString("Last Name", comment: "The text field title for the last name of a user"),
       placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
     self.emailCell = LabelledTextViewCell(
       title: NSLocalizedString("Email", comment: "A text field title for a user's email address"),
@@ -28,11 +36,13 @@ final class NameAndEmailViewController: FormTableViewController {
     
     super.init(
       cells: [
-        self.fullNameCell,
+        self.firstNameCell,
+        self.middleInitialCell,
+        self.lastNameCell,
         self.emailCell
       ])
     
-    self.navigationItem.rightBarButtonItem?.enabled = false
+    self.navigationItem.rightBarButtonItem?.isEnabled = false
     
     self.prepareTableViewCells()
   }
@@ -49,57 +59,72 @@ final class NameAndEmailViewController: FormTableViewController {
       comment: "A title for a screen asking the user for their personal information")
   }
   
-  private func prepareTableViewCells() {
+  fileprivate func prepareTableViewCells() {
     for cell in self.cells {
       if let labelledTextViewCell = cell as? LabelledTextViewCell {
-        labelledTextViewCell.selectionStyle = .None
+        labelledTextViewCell.selectionStyle = .none
         labelledTextViewCell.textField.delegate = self
         labelledTextViewCell.textField.addTarget(self,
                                                  action: #selector(textFieldDidChange),
-                                                 forControlEvents: .EditingChanged)
+                                                 for: .editingChanged)
       }
     }
     
-    self.fullNameCell.textField.keyboardType = .Alphabet
-    self.fullNameCell.textField.autocapitalizationType = .Words
+    self.firstNameCell.textField.keyboardType = .alphabet
+    self.firstNameCell.textField.autocapitalizationType = .words
+    self.middleInitialCell.textField.keyboardType = .alphabet
+    self.middleInitialCell.textField.autocapitalizationType = .words
+    self.lastNameCell.textField.keyboardType = .alphabet
+    self.lastNameCell.textField.autocapitalizationType = .words
     
-    self.emailCell.textField.keyboardType = .EmailAddress
-    self.emailCell.textField.autocapitalizationType = .None
-    self.emailCell.textField.autocorrectionType = .No
+    self.emailCell.textField.keyboardType = .emailAddress
+    self.emailCell.textField.autocapitalizationType = .none
+    self.emailCell.textField.autocorrectionType = .no
   }
   
   // MARK: -
   
   @objc override func didSelectNext() {
     self.view.endEditing(false)
+    
+    var fullName: String
+    if self.middleInitialCell.textField.text!.isEmpty {
+      fullName = self.lastNameCell.textField.text! + ", " + self.firstNameCell.textField.text!
+    } else {
+      fullName = self.lastNameCell.textField.text! + ", " + self.firstNameCell.textField.text! + " " + 
+        self.middleInitialCell.textField.text!
+    }
+    
     self.navigationController?.pushViewController(
       UsernameAndPINViewController(
         configuration: self.configuration,
         homeAddress: self.homeAddress,
         schoolOrWorkAddress: self.schoolOrWorkAddress,
         cardType: self.cardType,
-        fullName: self.fullNameCell.textField.text!,
+        fullName: fullName,
         email: self.emailCell.textField.text!),
       animated: true)
   }
   
-  private func emailIsValid() -> Bool {
+  fileprivate func emailIsValid() -> Bool {
     let emailRegEx = ".+@.+\\..+"
     let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-    return emailTest.evaluateWithObject(self.emailCell.textField.text!)
+    return emailTest.evaluate(with: self.emailCell.textField.text!)
   }
   
-  @objc private func textFieldDidChange() {
+  fileprivate func namesAreValid() -> Bool {
+    return !self.firstNameCell.textField.text!.isEmpty && !self.lastNameCell.textField.text!.isEmpty
+  }
+  
+  @objc fileprivate func textFieldDidChange() {
     if (self.emailIsValid()) {
-        //Color-coding email can be reintroduced if required
-        //self.emailCell.textField.textColor = UIColor.greenColor()
-      self.navigationItem.rightBarButtonItem?.enabled =
-        self.fullNameCell.textField.text?.characters.count > 0
-    } else {
-      if (self.emailCell.textField.isFirstResponder()) {
-        //self.emailCell.textField.textColor = UIColor.redColor()
+      if namesAreValid() {
+        self.navigationItem.rightBarButtonItem?.isEnabled = true
+      } else {
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
       }
-      self.navigationItem.rightBarButtonItem?.enabled = false
+    } else {
+      self.navigationItem.rightBarButtonItem?.isEnabled = false
     }
   }
 }

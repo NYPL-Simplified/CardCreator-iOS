@@ -3,7 +3,7 @@
 /// The exact implications of a particular card type on the registration flow are
 /// somewhat subtle. Consult the API documentation for more information.
 enum CardType {
-  case None
-  case Temporary
-  case Standard
+  case none
+  case temporary
+  case standard
 }

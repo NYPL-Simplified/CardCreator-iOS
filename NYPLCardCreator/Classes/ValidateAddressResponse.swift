@@ -2,31 +2,31 @@ import Foundation
 
 final class ValidateAddressResponse {  
   enum Response {
-    case ValidAddress(message: String, address: Address, cardType: CardType)
-    case AlternativeAddresses(message: String, addressTuples: [(Address, CardType)])
-    case UnrecognizedAddress(message: String)
+    case validAddress(message: String, address: Address, cardType: CardType)
+    case alternativeAddresses(message: String, addressTuples: [(Address, CardType)])
+    case unrecognizedAddress(message: String)
   }
   
-  class func responseWithData(data: NSData) -> Response? {
+  class func responseWithData(_ data: Data) -> Response? {
     guard
-      let JSONObject = try? NSJSONSerialization.JSONObjectWithData(data, options: []) as! [String: AnyObject],
+      let JSONObject = try? JSONSerialization.jsonObject(with: data, options: []) as! [String: AnyObject],
       let type = JSONObject["type"] as? String,
       let message = JSONObject["message"] as? String
       else { return nil }
     
     switch type {
     case "valid-address":
-      var cardType = CardType.None
+      var cardType = CardType.none
       if JSONObject["card_type"] as? String == "temporary" {
-        cardType = .Temporary
+        cardType = .temporary
       } else if JSONObject["card_type"] as? String == "standard" {
-        cardType = .Standard
+        cardType = .standard
       }
       guard
         let addressObject = JSONObject["address"],
         let address = Address.addressWithJSONObject(addressObject)
         else { return nil }
-      return Response.ValidAddress(message: message, address: address, cardType: cardType)
+      return Response.validAddress(message: message, address: address, cardType: cardType)
     case "alternate-addresses":
       guard let addressContainingObjects = JSONObject["addresses"] as? [AnyObject] else { return nil }
       let addressTuples = addressContainingObjects.flatMap({(object: AnyObject) -> (Address, CardType)? in
@@ -36,17 +36,17 @@ final class ValidateAddressResponse {
           let address = Address.addressWithJSONObject(addressJSON)
           else { return nil }
         let cardTypeString = JSONObject["card_type"] as? String
-        var cardType = CardType.None
+        var cardType = CardType.none
         if cardTypeString == "temporary" {
-          cardType = .Temporary
+          cardType = .temporary
         } else if cardTypeString == "standard" {
-          cardType = .Standard
+          cardType = .standard
         }
         return (address, cardType)
       })
-      return Response.AlternativeAddresses(message: message, addressTuples: addressTuples)
+      return Response.alternativeAddresses(message: message, addressTuples: addressTuples)
     case "unrecognized-address":
-      return Response.UnrecognizedAddress(message: message)
+      return Response.unrecognizedAddress(message: message)
     default:
       break
     }

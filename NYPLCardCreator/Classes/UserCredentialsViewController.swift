@@ -3,20 +3,20 @@ import UIKit
 /// This class is used for summarizing the user's registered credentials
 /// after successfully creating a library card.
 final class UserCredentialsViewController: TableViewController {
-  private var cells: [UITableViewCell]
-  private let headerLabel: UILabel
-  private let cardType: CardType
+  fileprivate var cells: [UITableViewCell]
+  fileprivate let headerLabel: UILabel
+  fileprivate let cardType: CardType
   
-  private let configuration: CardCreatorConfiguration
-  private let session: AuthenticatingSession
+  fileprivate let configuration: CardCreatorConfiguration
+  fileprivate let session: AuthenticatingSession
   
-  private let usernameCell: UITableViewCell
-  private let barcodeCell: UITableViewCell
-  private let pinCell: UITableViewCell
+  fileprivate let usernameCell: UITableViewCell
+  fileprivate let barcodeCell: UITableViewCell
+  fileprivate let pinCell: UITableViewCell
   
-  private let username: String
-  private let barcode: String?
-  private let pin: String
+  fileprivate let username: String
+  fileprivate let barcode: String?
+  fileprivate let pin: String
   
   init(
     configuration: CardCreatorConfiguration,
@@ -48,9 +48,9 @@ final class UserCredentialsViewController: TableViewController {
       self.pinCell
     ]
     
-    super.init(style: .Plain)
+    super.init(style: .plain)
     
-    self.tableView.separatorStyle = .None
+    self.tableView.separatorStyle = .none
     
     self.navigationItem.hidesBackButton = true
     
@@ -58,38 +58,33 @@ final class UserCredentialsViewController: TableViewController {
       UIBarButtonItem(title: NSLocalizedString(
         "Done",
         comment: "A title for a button that sends the user back to wherever the card creator was started from"),
-                      style: .Plain,
+                      style: .plain,
                       target: self,
                       action: #selector(openCatalog))
-    
-    NSNotificationCenter.defaultCenter().addObserver(self,
-                                                     selector: #selector(signInFinished),
-                                                     name: "NYPLSettingsAccountsSignInFinishedNotification",
-                                                     object: nil)
     
     self.prepareTableViewCells()
   }
   
   deinit {
-    NSNotificationCenter.defaultCenter().removeObserver(self)
+    NotificationCenter.default.removeObserver(self)
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    self.tableView.backgroundColor = UIColor.groupTableViewBackgroundColor()
+    self.tableView.backgroundColor = UIColor.groupTableViewBackground
 
     self.title = NSLocalizedString(
       "Your Card Information",
       comment: "A title for a screen informing the user of their library card's information")
     
     switch self.cardType {
-    case .Temporary:
+    case .temporary:
       headerLabel.text = NSLocalizedString(
         "We were not able to verify your residential address, so we have issued you a temporary card. Please visit your local " +
         "NYPL branch within 30 days to receive a standard card.",
         comment: "A message telling the user she'll get a 30-day library card")
-    case .Standard:
+    case .standard:
       headerLabel.text = NSLocalizedString(
         "Your address will result in a standard three-year ebook-only library card." +
         " Be sure to keep your username and PIN in a safe location.",
@@ -101,9 +96,9 @@ final class UserCredentialsViewController: TableViewController {
     }
     
     headerLabel.numberOfLines = 0
-    headerLabel.lineBreakMode = .ByWordWrapping
-    headerLabel.textColor = UIColor.darkGrayColor()
-    headerLabel.textAlignment = .Center
+    headerLabel.lineBreakMode = .byWordWrapping
+    headerLabel.textColor = UIColor.darkGray
+    headerLabel.textAlignment = .center
     
     self.tableView.estimatedRowHeight = 120
     self.tableView.allowsSelection = false
@@ -113,60 +108,55 @@ final class UserCredentialsViewController: TableViewController {
   override func viewDidLayoutSubviews() {
     let origin_x = self.tableView.tableHeaderView!.frame.origin.x
     let origin_y = self.tableView.tableHeaderView!.frame.origin.y
-    let size = self.tableView.tableHeaderView!.sizeThatFits(CGSizeMake(self.view.bounds.width, CGFloat.max))
+    let size = self.tableView.tableHeaderView!.sizeThatFits(CGSize(width: self.view.bounds.width, height: CGFloat.greatestFiniteMagnitude))
     
     let adjustedWidth = (size.width > CGFloat(375)) ? CGFloat(375.0) : size.width
     let padding = CGFloat(30.0)
-    self.headerLabel.frame = CGRectMake(origin_x, origin_y, adjustedWidth, size.height + padding)
+    self.headerLabel.frame = CGRect(x: origin_x, y: origin_y, width: adjustedWidth, height: size.height + padding)
     
     self.tableView.tableHeaderView = self.headerLabel
   }
   
-  override func viewDidAppear(animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    self.configuration.completionHandler(username: self.username, PIN: self.pin, userInitiated: false)
-    self.navigationItem.rightBarButtonItem?.enabled = false
+    self.configuration.completionHandler(self.username, self.pin, false)
   }
   
-  private func prepareTableViewCells() {
+  fileprivate func prepareTableViewCells() {
     for cell in self.cells {
-      cell.backgroundColor = UIColor.clearColor()
+      cell.backgroundColor = UIColor.clear
     }
   }
   
   // MARK: UITableViewDataSource
   
-  override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return 1
   }
   
-  func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+  func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
     return self.cells.count
   }
   
-  override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     return self.cells[indexPath.section]
   }
   
-  func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return 0
   }
   
-  func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+  func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
     return 0
   }
   
-  func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+  func tableView(_ tableView: UITableView, heightForRowAtIndexPath indexPath: IndexPath) -> CGFloat {
     return UITableViewAutomaticDimension
   }
   
   // MARK: -
   
-  @objc private func openCatalog() {
-    self.configuration.completionHandler(username: self.username, PIN: self.pin, userInitiated: true)
-  }
-  
-  @objc func signInFinished() {
-    self.navigationItem.rightBarButtonItem?.enabled = true
+  @objc fileprivate func openCatalog() {
+    self.configuration.completionHandler(self.username, self.pin, true)
   }
 }

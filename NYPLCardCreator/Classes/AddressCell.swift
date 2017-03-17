@@ -5,7 +5,7 @@ final class AddressCell: UITableViewCell {
   
   let street1Label, street2Label, cityLabel, regionLabel, zipLabel: UILabel
   
-  private var addressValue: Address?
+  fileprivate var addressValue: Address?
   var address: Address? {
     get {
       return self.addressValue
@@ -32,28 +32,28 @@ final class AddressCell: UITableViewCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
     self.contentView.addSubview(self.street1Label)
-    self.street1Label.autoPinEdgesToSuperviewMarginsExcludingEdge(.Bottom)
+    self.street1Label.autoPinEdges(toSuperviewMarginsExcludingEdge: .bottom)
     
     self.contentView.addSubview(self.street2Label)
-    self.street2Label.autoPinEdgeToSuperviewMargin(.Left)
-    self.street2Label.autoPinEdgeToSuperviewMargin(.Right)
-    self.street2Label.autoPinEdge(.Top, toEdge: .Bottom, ofView: self.street1Label)
+    self.street2Label.autoPinEdge(toSuperviewMargin: .left)
+    self.street2Label.autoPinEdge(toSuperviewMargin: .right)
+    self.street2Label.autoPinEdge(.top, to: .bottom, of: self.street1Label)
     
     self.contentView.addSubview(self.cityLabel)
     self.contentView.addSubview(self.regionLabel)
     self.contentView.addSubview(self.zipLabel)
 
-    self.cityLabel.autoPinEdgeToSuperviewMargin(.Left)
-    self.cityLabel.autoPinEdge(.Top, toEdge: .Bottom, ofView: self.street2Label)
-    self.cityLabel.autoPinEdge(.Right, toEdge: .Left, ofView: self.regionLabel)
-    self.cityLabel.autoPinEdgeToSuperviewMargin(.Bottom)
+    self.cityLabel.autoPinEdge(toSuperviewMargin: .left)
+    self.cityLabel.autoPinEdge(.top, to: .bottom, of: self.street2Label)
+    self.cityLabel.autoPinEdge(.right, to: .left, of: self.regionLabel)
+    self.cityLabel.autoPinEdge(toSuperviewMargin: .bottom)
     
-    self.regionLabel.autoPinEdge(.Top, toEdge: .Bottom, ofView: self.street2Label)
-    self.regionLabel.autoPinEdgeToSuperviewMargin(.Bottom)
+    self.regionLabel.autoPinEdge(.top, to: .bottom, of: self.street2Label)
+    self.regionLabel.autoPinEdge(toSuperviewMargin: .bottom)
     
-    self.zipLabel.autoPinEdge(.Left, toEdge: .Right, ofView: self.regionLabel)
-    self.zipLabel.autoPinEdge(.Top, toEdge: .Bottom, ofView: self.street2Label)
-    self.zipLabel.autoPinEdgeToSuperviewMargin(.Bottom)
+    self.zipLabel.autoPinEdge(.left, to: .right, of: self.regionLabel)
+    self.zipLabel.autoPinEdge(.top, to: .bottom, of: self.street2Label)
+    self.zipLabel.autoPinEdge(toSuperviewMargin: .bottom)
   }
   
   @available(*, unavailable)

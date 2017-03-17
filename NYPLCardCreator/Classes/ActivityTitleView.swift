@@ -6,31 +6,31 @@ import UIKit
 final class ActivityTitleView: UIView {
   
   init(title: String) {
-    super.init(frame: CGRectZero)
+    super.init(frame: CGRect.zero)
     
     let padding: CGFloat = 5.0
     
-    let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+    let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     activityIndicatorView.startAnimating()
     self.addSubview(activityIndicatorView)
-    activityIndicatorView.autoPinEdgesToSuperviewEdgesWithInsets(UIEdgeInsetsZero, excludingEdge: .Right)
+    activityIndicatorView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets.zero, excludingEdge: .right)
     
     let titleLabel = UILabel()
     titleLabel.text = title
-    titleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+    titleLabel.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline)
     titleLabel.sizeToFit()
     self.addSubview(titleLabel)
-    titleLabel.autoPinEdge(.Left, toEdge: .Right, ofView: activityIndicatorView, withOffset: padding)
-    titleLabel.autoPinEdgeToSuperviewEdge(.Top)
-    titleLabel.autoPinEdgeToSuperviewEdge(.Bottom)
+    titleLabel.autoPinEdge(.left, to: .right, of: activityIndicatorView, withOffset: padding)
+    titleLabel.autoPinEdge(toSuperviewEdge: .top)
+    titleLabel.autoPinEdge(toSuperviewEdge: .bottom)
     
     // This view is used to keep the title label centered as in Apple's Settings application.
     let rightPaddingView = UIView(frame:activityIndicatorView.bounds)
     self.addSubview(rightPaddingView)
-    rightPaddingView.autoPinEdgesToSuperviewEdgesWithInsets(UIEdgeInsetsZero, excludingEdge: .Left)
-    rightPaddingView.autoPinEdge(.Left, toEdge: .Right, ofView: titleLabel, withOffset: padding)
+    rightPaddingView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets.zero, excludingEdge: .left)
+    rightPaddingView.autoPinEdge(.left, to: .right, of: titleLabel, withOffset: padding)
     
-    self.frame.size = self.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
+    self.frame.size = self.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
   }
   
   required init?(coder aDecoder: NSCoder) {

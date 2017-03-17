@@ -3,13 +3,13 @@ import UIKit
 /// This class is a tiny version of `NSURLSession` that will automatically handle
 /// authentication with the API endpoint using basic authentication.
 final class AuthenticatingSession {
-  private let delegate: Delegate
-  private let URLSession: NSURLSession
+  fileprivate let delegate: Delegate
+  fileprivate let URLSession: Foundation.URLSession
   
   init(configuration: CardCreatorConfiguration) {
     self.delegate = Delegate(username: configuration.endpointUsername, password: configuration.endpointPassword)
-    self.URLSession = NSURLSession(
-      configuration: NSURLSessionConfiguration.ephemeralSessionConfiguration(),
+    self.URLSession = Foundation.URLSession(
+      configuration: URLSessionConfiguration.ephemeral,
       delegate: self.delegate,
       delegateQueue: nil)
   }
@@ -17,10 +17,10 @@ final class AuthenticatingSession {
   /// Functionally equivalent to the `NSURLSession` method with the addition of automatic
   /// authentication with the API endpoint.
   func dataTaskWithRequest(
-    request: NSURLRequest,
-    completionHandler: (NSData?, NSURLResponse?, NSError?) -> Void) -> NSURLSessionDataTask
+    _ request: URLRequest,
+    completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask
   {
-    return self.URLSession.dataTaskWithRequest(request, completionHandler: completionHandler)
+    return self.URLSession.dataTask(with: request, completionHandler: completionHandler)
   }
   
   /// As with an `NSURLSession`, this or `finishTasksAndInvalidate` must be called else
@@ -35,9 +35,9 @@ final class AuthenticatingSession {
     self.URLSession.finishTasksAndInvalidate()
   }
   
-  private class Delegate: NSObject, NSURLSessionDelegate {
-    private let username: String
-    private let password: String
+  fileprivate class Delegate: NSObject, URLSessionDelegate {
+    fileprivate let username: String
+    fileprivate let password: String
     
     init(username: String, password: String) {
       self.username = username
@@ -47,22 +47,22 @@ final class AuthenticatingSession {
     // TODO: This needs to be declared @objc for reasons I cannot understand. This was
     // discovered only after much pain. I would like an answer.
     @objc func URLSession(
-      session: NSURLSession,
-      task: NSURLSessionTask,
-      didReceiveChallenge challenge: NSURLAuthenticationChallenge,
-                          completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential?) -> Void)
+      _ session: Foundation.URLSession,
+      task: URLSessionTask,
+      didReceiveChallenge challenge: URLAuthenticationChallenge,
+                          completionHandler: (Foundation.URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
     {
       if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic {
         if challenge.previousFailureCount > 0 {
-          completionHandler(.PerformDefaultHandling, nil)
+          completionHandler(.performDefaultHandling, nil)
         } else {
-          completionHandler(.UseCredential, NSURLCredential(
+          completionHandler(.useCredential, URLCredential(
             user: self.username,
             password: self.password,
-            persistence: .ForSession))
+            persistence: .forSession))
         }
       } else {
-        completionHandler(.RejectProtectionSpace, nil)
+        completionHandler(.rejectProtectionSpace, nil)
       }
     }
   }

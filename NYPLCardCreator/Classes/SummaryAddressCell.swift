@@ -5,7 +5,7 @@ final class SummaryAddressCell: UITableViewCell {
   
   let sectionLabel, street1Label, street2Label, cityLabel, regionLabel, zipLabel: UILabel
   
-  private var addressValue: Address?
+  fileprivate var addressValue: Address?
   var address: Address? {
     get {
       return self.addressValue
@@ -32,50 +32,50 @@ final class SummaryAddressCell: UITableViewCell {
     
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
-    self.contentView.backgroundColor = UIColor.clearColor()
+    self.contentView.backgroundColor = UIColor.clear
     
     //Style labels
     self.sectionLabel.text = section
-    self.sectionLabel.text  = self.sectionLabel.text?.uppercaseString
-    self.sectionLabel.textColor = UIColor.darkGrayColor()
+    self.sectionLabel.text  = self.sectionLabel.text?.uppercased()
+    self.sectionLabel.textColor = UIColor.darkGray
     self.sectionLabel.font = UIFont(name: "AvenirNext-Regular", size: 14)
     
     self.contentView.addSubview(self.sectionLabel)
-    self.sectionLabel.autoPinEdgeToSuperviewMargin(.Left)
-    self.sectionLabel.autoPinEdgeToSuperviewMargin(.Right)
+    self.sectionLabel.autoPinEdge(toSuperviewMargin: .left)
+    self.sectionLabel.autoPinEdge(toSuperviewMargin: .right)
     
     //Top section
     if (section == "Home Address") {
-    self.sectionLabel.autoPinEdgeToSuperviewEdge(.Top, withInset: 2)
+    self.sectionLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 2)
     } else {
-      self.sectionLabel.autoPinEdgeToSuperviewEdge(.Top, withInset: 12)
+      self.sectionLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 12)
     }
     
     self.contentView.addSubview(self.street1Label)
-    self.street1Label.autoPinEdgeToSuperviewMargin(.Left)
-    self.street1Label.autoPinEdgeToSuperviewMargin(.Right)
-    self.street1Label.autoPinEdge(.Top, toEdge: .Bottom, ofView: self.sectionLabel, withOffset: 2)
+    self.street1Label.autoPinEdge(toSuperviewMargin: .left)
+    self.street1Label.autoPinEdge(toSuperviewMargin: .right)
+    self.street1Label.autoPinEdge(.top, to: .bottom, of: self.sectionLabel, withOffset: 2)
     
     self.contentView.addSubview(self.street2Label)
-    self.street2Label.autoPinEdgeToSuperviewMargin(.Left)
-    self.street2Label.autoPinEdgeToSuperviewMargin(.Right)
-    self.street2Label.autoPinEdge(.Top, toEdge: .Bottom, ofView: self.street1Label)
+    self.street2Label.autoPinEdge(toSuperviewMargin: .left)
+    self.street2Label.autoPinEdge(toSuperviewMargin: .right)
+    self.street2Label.autoPinEdge(.top, to: .bottom, of: self.street1Label)
     
     self.contentView.addSubview(self.cityLabel)
     self.contentView.addSubview(self.regionLabel)
     self.contentView.addSubview(self.zipLabel)
     
-    self.cityLabel.autoPinEdgeToSuperviewMargin(.Left)
-    self.cityLabel.autoPinEdge(.Top, toEdge: .Bottom, ofView: self.street2Label)
-    self.cityLabel.autoPinEdge(.Right, toEdge: .Left, ofView: self.regionLabel)
-    self.cityLabel.autoPinEdgeToSuperviewEdge(.Bottom)
+    self.cityLabel.autoPinEdge(toSuperviewMargin: .left)
+    self.cityLabel.autoPinEdge(.top, to: .bottom, of: self.street2Label)
+    self.cityLabel.autoPinEdge(.right, to: .left, of: self.regionLabel)
+    self.cityLabel.autoPinEdge(toSuperviewEdge: .bottom)
     
-    self.regionLabel.autoPinEdge(.Top, toEdge: .Bottom, ofView: self.street2Label)
-    self.regionLabel.autoPinEdgeToSuperviewEdge(.Bottom)
+    self.regionLabel.autoPinEdge(.top, to: .bottom, of: self.street2Label)
+    self.regionLabel.autoPinEdge(toSuperviewEdge: .bottom)
     
-    self.zipLabel.autoPinEdge(.Left, toEdge: .Right, ofView: self.regionLabel)
-    self.zipLabel.autoPinEdge(.Top, toEdge: .Bottom, ofView: self.street2Label)
-    self.zipLabel.autoPinEdgeToSuperviewEdge(.Bottom)
+    self.zipLabel.autoPinEdge(.left, to: .right, of: self.regionLabel)
+    self.zipLabel.autoPinEdge(.top, to: .bottom, of: self.street2Label)
+    self.zipLabel.autoPinEdge(toSuperviewEdge: .bottom)
   }
   
   @available(*, unavailable)

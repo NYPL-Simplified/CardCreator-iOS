@@ -12,30 +12,30 @@ final class LabelledTextViewCell: UITableViewCell
     self.label = UILabel()
     self.textField = UITextField()
     
-    super.init(style: .Default, reuseIdentifier: reuseIdentifier)
+    super.init(style: .default, reuseIdentifier: reuseIdentifier)
     
-    if NSProcessInfo().isOperatingSystemAtLeastVersion(
-      NSOperatingSystemVersion(majorVersion: 9, minorVersion: 0, patchVersion: 0))
+    if ProcessInfo().isOperatingSystemAtLeast(
+      OperatingSystemVersion(majorVersion: 9, minorVersion: 0, patchVersion: 0))
     {
-      self.label.autoSetDimension(.Width, toSize: 100)
+      self.label.autoSetDimension(.width, toSize: 100)
     } else {
       // The above method does not work correctly on iOS 8 so we do this instead.
       self.label.text = "Temporary"
-      let labelSize = self.label.sizeThatFits(CGSizeMake(100, CGFloat.max))
-      self.label.frame = CGRectMake(0, 0, labelSize.width, labelSize.height)
+      let labelSize = self.label.sizeThatFits(CGSize(width: 100, height: CGFloat.greatestFiniteMagnitude))
+      self.label.frame = CGRect(x: 0, y: 0, width: labelSize.width, height: labelSize.height)
       self.label.text = nil
     }
     
     self.textField.leftView = label
-    self.textField.leftViewMode = .Always
+    self.textField.leftViewMode = .always
     self.addSubview(self.textField)
-    self.textField.autoPinEdgeToSuperviewEdge(.Left, withInset: 15)
-    self.textField.autoPinEdgeToSuperviewEdge(.Right, withInset: 15)
+    self.textField.autoPinEdge(toSuperviewEdge: .left, withInset: 15)
+    self.textField.autoPinEdge(toSuperviewEdge: .right, withInset: 15)
     self.textField.autoCenterInSuperview()
   }
   
   convenience init(title: String?, placeholder: String?) {
-    self.init(style: .Default, reuseIdentifier: nil)
+    self.init(style: .default, reuseIdentifier: nil)
     self.label.text = title
     self.textField.placeholder = placeholder
   }

@@ -2,24 +2,24 @@ import Foundation
 
 final class ValidateUsernameResponse {
   enum Response {
-    case InvalidUsername
-    case UnavailableUsername
-    case AvailableUsername
+    case invalidUsername
+    case unavailableUsername
+    case availableUsername
   }
   
-  class func responseWithData(data: NSData) -> Response? {
+  class func responseWithData(_ data: Data) -> Response? {
     guard
-      let JSONObject = try? NSJSONSerialization.JSONObjectWithData(data, options: []) as! [String: AnyObject],
+      let JSONObject = try? JSONSerialization.jsonObject(with: data, options: []) as! [String: AnyObject],
       let type = JSONObject["type"] as? String
       else { return nil }
     
     switch type {
     case "invalid-username":
-      return .InvalidUsername
+      return .invalidUsername
     case "unavailable-username":
-      return .UnavailableUsername
+      return .unavailableUsername
     case "available-username":
-      return .AvailableUsername
+      return .availableUsername
     default:
       break
     }

@@ -3,29 +3,29 @@ import UIKit
 /// This represents the user's progress in the registration flow.
 enum AddressStep {
   /// The user is currently entering their home address.
-  case Home
+  case home
   /// The user is currently entering their school address (and has previously entered
   /// the given home address).
-  case School(homeAddress: Address)
+  case school(homeAddress: Address)
   /// The user is currently entering their work address (and has previously entered
   /// the given home address).
-  case Work(homeAddress: Address)
+  case work(homeAddress: Address)
   
   /// Returns the previously entered home address (if any).
   var homeAddress: Address? {
     get {
       switch self {
-      case .Home:
+      case .home:
         return nil
-      case let .School(homeAddress):
+      case let .school(homeAddress):
         return homeAddress
-      case let .Work(homeAddress):
+      case let .work(homeAddress):
         return homeAddress
       }
     }
   }
   
-  private func pairWithAppendedAddress(address: Address) -> (Address, Address?) {
+  fileprivate func pairWithAppendedAddress(_ address: Address) -> (Address, Address?) {
     if let homeAddress = self.homeAddress {
       return (homeAddress, address)
     } else {
@@ -37,46 +37,46 @@ enum AddressStep {
   /// been validated, and the `CardType` implied by the validated address, continue with the
   /// registration flow as appropriate.
   func continueFlowWithValidAddress(
-    configuration: CardCreatorConfiguration,
+    _ configuration: CardCreatorConfiguration,
     viewController: UIViewController,
     address: Address,
     cardType: CardType)
   {
     switch cardType {
-    case .None:
+    case .none:
       switch self {
-      case .Home:
+      case .home:
         let alertController = UIAlertController(
           title: NSLocalizedString("Out-of-State Address", comment: ""),
           message: NSLocalizedString(
             ("Since you do not live in New York, you must work or attend school in New York to qualify for a "
               + "library card."),
             comment: "A message informing the user what they must assert given that they live outside NY"),
-          preferredStyle: .Alert)
+          preferredStyle: .alert)
         alertController.addAction(UIAlertAction(
           title: NSLocalizedString("I Work in New York", comment: ""),
-          style: .Default,
+          style: .default,
           handler: {_ in
             viewController.navigationController?.pushViewController(
-              AddressViewController(configuration: configuration, addressStep: .Work(homeAddress: address)),
+              AddressViewController(configuration: configuration, addressStep: .work(homeAddress: address)),
               animated: true)
         }))
         alertController.addAction(UIAlertAction(
           title: NSLocalizedString("I Attend School in New York", comment: ""),
-          style: .Default,
+          style: .default,
           handler: {_ in
             viewController.navigationController?.pushViewController(
-              AddressViewController(configuration: configuration, addressStep: .School(homeAddress: address)),
+              AddressViewController(configuration: configuration, addressStep: .school(homeAddress: address)),
               animated: true)
         }))
         alertController.addAction(UIAlertAction(
           title: NSLocalizedString("Edit Home Address", comment: ""),
-          style: .Cancel,
+          style: .cancel,
           handler: {_ in
-          viewController.navigationController?.popViewControllerAnimated(true)
+          viewController.navigationController?.popViewController(animated: true)
         }))
-        viewController.presentViewController(alertController, animated: true, completion: nil)
-      case .School:
+        viewController.present(alertController, animated: true, completion: nil)
+      case .school:
         let alertController = UIAlertController(
           title: NSLocalizedString(
             "Card Denied",
@@ -84,13 +84,13 @@ enum AddressStep {
           message: NSLocalizedString(
             "You cannot receive a library card because your school address does not appear to be in New York.",
             comment: "An alert title telling the user they cannot receive a library card"),
-          preferredStyle: .Alert)
+          preferredStyle: .alert)
         alertController.addAction(UIAlertAction(
           title: NSLocalizedString("OK", comment: ""),
-          style: .Default,
+          style: .default,
           handler: nil))
-        viewController.presentViewController(alertController, animated: true, completion: nil)
-      case .Work:
+        viewController.present(alertController, animated: true, completion: nil)
+      case .work:
         let alertController = UIAlertController(
           title: NSLocalizedString(
             "Card Denied",
@@ -98,14 +98,14 @@ enum AddressStep {
           message: NSLocalizedString(
             "You cannot receive a library card because your work address does not appear to be in New York.",
             comment: "An alert title telling the user they cannot receive a library card"),
-          preferredStyle: .Alert)
+          preferredStyle: .alert)
         alertController.addAction(UIAlertAction(
           title: NSLocalizedString("OK", comment: ""),
-          style: .Default,
+          style: .default,
           handler: nil))
-        viewController.presentViewController(alertController, animated: true, completion: nil)
+        viewController.present(alertController, animated: true, completion: nil)
       }
-    case .Temporary:
+    case .temporary:
       let (homeAddress, schoolOrWorkAddress) = self.pairWithAppendedAddress(address)
       let nameAndEmailViewController = NameAndEmailViewController(
         configuration: configuration,
@@ -113,7 +113,7 @@ enum AddressStep {
         schoolOrWorkAddress: schoolOrWorkAddress,
         cardType: cardType)
       viewController.navigationController?.pushViewController(nameAndEmailViewController, animated: true)
-    case .Standard:
+    case .standard:
       let (homeAddress, schoolOrWorkAddress) = self.pairWithAppendedAddress(address)
       let nameAndEmailViewController = NameAndEmailViewController(
         configuration: configuration,
