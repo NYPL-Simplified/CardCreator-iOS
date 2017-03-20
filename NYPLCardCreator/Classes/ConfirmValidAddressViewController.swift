@@ -58,7 +58,6 @@ final class ConfirmValidAddressViewController: TableViewController {
     }
     
     self.tableView.allowsSelection = false
-    self.tableView.tableHeaderView = self.headerLabel
     
     self.navigationItem.rightBarButtonItem =
       UIBarButtonItem(title: NSLocalizedString(
@@ -69,18 +68,6 @@ final class ConfirmValidAddressViewController: TableViewController {
                       action: #selector(addressConfirmed))
   }
   
-  override func viewDidLayoutSubviews() {
-    let origin_x = self.tableView.tableHeaderView!.frame.origin.x
-    let origin_y = self.tableView.tableHeaderView!.frame.origin.y
-    let size = self.tableView.tableHeaderView!.sizeThatFits(CGSize(width: self.view.bounds.width, height: CGFloat.greatestFiniteMagnitude))
-    
-    let adjustedWidth = (size.width > CGFloat(375)) ? CGFloat(375.0) : size.width
-    let padding = CGFloat(30.0)
-    self.headerLabel.frame = CGRect(x: origin_x, y: origin_y, width: adjustedWidth, height: size.height + padding)
-    
-    self.tableView.tableHeaderView = self.headerLabel
-  }
-  
   // MARK: UITableViewDataSource
   
   func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
@@ -89,6 +76,24 @@ final class ConfirmValidAddressViewController: TableViewController {
   
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return 1
+  }
+  
+  func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+    return 44
+  }
+  
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    return UITableViewAutomaticDimension
+  }
+  
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let containerView = UIView()
+    containerView.addSubview(self.headerLabel)
+    self.headerLabel.autoPinEdge(toSuperviewMargin: .left)
+    self.headerLabel.autoPinEdge(toSuperviewMargin: .right)
+    self.headerLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 20)
+    self.headerLabel.autoPinEdge(toSuperviewEdge: .bottom, withInset: 20)
+    return containerView
   }
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
