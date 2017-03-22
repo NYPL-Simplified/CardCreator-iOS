@@ -16,6 +16,8 @@ import Foundation
   /// This will always be called on the main thread. It will only be called in the event
   /// of a successful registration.
   let completionHandler: (_ username: String, _ PIN: String, _ userInitiated: Bool) -> Void
+  /// Saves in-progress data entered by User/Patron
+  var user: UserInfo
   
   public init(
     endpointURL: URL,
@@ -30,6 +32,20 @@ import Foundation
     self.endpointPassword = endpointPassword
     self.requestTimeoutInterval = requestTimeoutInterval
     self.completionHandler = completionHandler
+    self.user = UserInfo()
     super.init()
   }
+}
+
+final class UserInfo {
+  var homeAddress: Address?
+  var workAddress: Address?
+  var schoolAddress: Address?
+  
+  var firstName: String?
+  var middleName: String?
+  var lastName: String?
+  var email: String?
+  
+  var username: String?
 }

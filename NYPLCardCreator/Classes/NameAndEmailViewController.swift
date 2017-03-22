@@ -45,6 +45,7 @@ final class NameAndEmailViewController: FormTableViewController {
     self.navigationItem.rightBarButtonItem?.isEnabled = false
     
     self.prepareTableViewCells()
+    self.checkToPrefillForm()
   }
   
   @available(*, unavailable)
@@ -82,7 +83,29 @@ final class NameAndEmailViewController: FormTableViewController {
     self.emailCell.textField.autocorrectionType = .no
   }
   
+  func checkToPrefillForm() {
+    let user = self.configuration.user
+    if let firstName = user.firstName {
+      self.firstNameCell.textField.text = firstName
+      self.middleInitialCell.textField.text = user.middleName
+      self.lastNameCell.textField.text = user.lastName
+      self.emailCell.textField.text = user.email
+      textFieldDidChange()
+    }
+  }
+  
   // MARK: -
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    if isMovingFromParentViewController {
+      let user = self.configuration.user
+      user.firstName = self.firstNameCell.textField.text
+      user.middleName = self.middleInitialCell.textField.text
+      user.lastName = self.lastNameCell.textField.text
+      user.email = self.emailCell.textField.text
+    }
+  }
   
   @objc override func didSelectNext() {
     self.view.endEditing(false)

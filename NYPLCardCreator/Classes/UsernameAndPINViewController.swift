@@ -48,6 +48,7 @@ final class UsernameAndPINViewController: FormTableViewController {
     self.navigationItem.rightBarButtonItem?.isEnabled = false
     
     self.prepareTableViewCells()
+    self.checkToPrefillForm()
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -78,6 +79,21 @@ final class UsernameAndPINViewController: FormTableViewController {
     
     self.pinCell.textField.keyboardType = .numberPad
     self.pinCell.textField.inputAccessoryView = self.returnToolbar()
+  }
+  
+  func checkToPrefillForm() {
+    let user = self.configuration.user
+    if let username = user.username {
+      self.usernameCell.textField.text = username
+      textFieldDidChange()
+    }
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    if isMovingFromParentViewController {
+      self.configuration.user.username = self.usernameCell.textField.text
+    }
   }
   
   // MARK: UITableViewDataSource
