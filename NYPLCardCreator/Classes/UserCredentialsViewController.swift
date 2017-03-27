@@ -5,7 +5,7 @@ import UIKit
 final class UserCredentialsViewController: TableViewController {
   fileprivate var cells: [UITableViewCell]
   fileprivate let headerLabel: UILabel
-  fileprivate var activityView: UIView
+  fileprivate var activityView: ActivityTitleView
   fileprivate let cardType: CardType
   
   fileprivate let configuration: CardCreatorConfiguration
@@ -35,7 +35,11 @@ final class UserCredentialsViewController: TableViewController {
     self.cardType = cardType
     
     self.headerLabel = UILabel()
-    self.activityView = UIView()
+    self.activityView = ActivityTitleView(title:
+      NSLocalizedString(
+        "Signing In...",
+        comment: "A title telling the user that the app is busy signing in with the new account that was just created."))
+    self.activityView.isHidden = true
     
     self.usernameCell = SummaryCell(section: NSLocalizedString("Username", comment: "Title of the section for the user's chosen username"),
                                     cellText: self.username)
@@ -114,11 +118,8 @@ final class UserCredentialsViewController: TableViewController {
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-//    self.configuration.completionHandler(self.username, self.pin, false)
-    self.activityView = ActivityTitleView(title:
-      NSLocalizedString(
-      "Signing In...",
-      comment: "A title telling the user that the app is busy signing in with the new account that was just created."))
+    self.configuration.completionHandler(self.username, self.pin, false)
+    self.activityView.isHidden = false
   }
   
   fileprivate func prepareTableViewCells() {
@@ -165,10 +166,8 @@ final class UserCredentialsViewController: TableViewController {
     let containerView = UIView()
     containerView.addSubview(self.headerLabel)
     containerView.addSubview(self.activityView)
-    self.activityView.autoPinEdge(toSuperviewMargin: .left)
-    self.activityView.autoPinEdge(toSuperviewMargin: .right)
+    self.activityView.autoAlignAxis(toSuperviewAxis: .vertical)
     self.activityView.autoPinEdge(toSuperviewEdge: .top, withInset: 16)
-//    self.activityView.autoPinEdge(.bottom, to: .bottom, of: self.activityView, withOffset: 8)
     self.headerLabel.autoPinEdge(toSuperviewMargin: .left)
     self.headerLabel.autoPinEdge(toSuperviewMargin: .right)
     self.headerLabel.autoPinEdge(.top, to: .bottom, of: self.activityView, withOffset: 16)
