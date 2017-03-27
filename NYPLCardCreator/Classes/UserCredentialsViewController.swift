@@ -5,6 +5,7 @@ import UIKit
 final class UserCredentialsViewController: TableViewController {
   fileprivate var cells: [UITableViewCell]
   fileprivate let headerLabel: UILabel
+  fileprivate var activityView: UIView
   fileprivate let cardType: CardType
   
   fileprivate let configuration: CardCreatorConfiguration
@@ -34,6 +35,7 @@ final class UserCredentialsViewController: TableViewController {
     self.cardType = cardType
     
     self.headerLabel = UILabel()
+    self.activityView = UIView()
     
     self.usernameCell = SummaryCell(section: NSLocalizedString("Username", comment: "Title of the section for the user's chosen username"),
                                     cellText: self.username)
@@ -61,6 +63,12 @@ final class UserCredentialsViewController: TableViewController {
                       style: .plain,
                       target: self,
                       action: #selector(openCatalog))
+    
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(UserCredentialsViewController.signInFinished),
+      name: NSNotification.Name(rawValue: "NYPLSettingsAccountsSignInFinishedNotification"),
+      object: nil)
     
     self.prepareTableViewCells()
   }
@@ -102,30 +110,25 @@ final class UserCredentialsViewController: TableViewController {
     
     self.tableView.estimatedRowHeight = 120
     self.tableView.allowsSelection = false
-    self.tableView.tableHeaderView = headerLabel
-  }
-  
-  override func viewDidLayoutSubviews() {
-    let origin_x = self.tableView.tableHeaderView!.frame.origin.x
-    let origin_y = self.tableView.tableHeaderView!.frame.origin.y
-    let size = self.tableView.tableHeaderView!.sizeThatFits(CGSize(width: self.view.bounds.width, height: CGFloat.greatestFiniteMagnitude))
-    
-    let adjustedWidth = (size.width > CGFloat(375)) ? CGFloat(375.0) : size.width
-    let padding = CGFloat(30.0)
-    self.headerLabel.frame = CGRect(x: origin_x, y: origin_y, width: adjustedWidth, height: size.height + padding)
-    
-    self.tableView.tableHeaderView = self.headerLabel
   }
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    self.configuration.completionHandler(self.username, self.pin, false)
+//    self.configuration.completionHandler(self.username, self.pin, false)
+    self.activityView = ActivityTitleView(title:
+      NSLocalizedString(
+      "Signing In...",
+      comment: "A title telling the user that the app is busy signing in with the new account that was just created."))
   }
   
   fileprivate func prepareTableViewCells() {
     for cell in self.cells {
       cell.backgroundColor = UIColor.clear
     }
+  }
+
+  @objc fileprivate func signInFinished() {
+    self.navigationItem.titleView = nil
   }
   
   // MARK: UITableViewDataSource
@@ -142,8 +145,35 @@ final class UserCredentialsViewController: TableViewController {
     return self.cells[indexPath.section]
   }
   
+  func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+    if section == 0 {
+      return 44
+    } else {
+      return 0
+    }
+  }
+  
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return 0
+    if section == 0 {
+      return UITableViewAutomaticDimension
+    } else {
+      return 0
+    }
+  }
+  
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let containerView = UIView()
+    containerView.addSubview(self.headerLabel)
+    containerView.addSubview(self.activityView)
+    self.activityView.autoPinEdge(toSuperviewMargin: .left)
+    self.activityView.autoPinEdge(toSuperviewMargin: .right)
+    self.activityView.autoPinEdge(toSuperviewEdge: .top, withInset: 16)
+//    self.activityView.autoPinEdge(.bottom, to: .bottom, of: self.activityView, withOffset: 8)
+    self.headerLabel.autoPinEdge(toSuperviewMargin: .left)
+    self.headerLabel.autoPinEdge(toSuperviewMargin: .right)
+    self.headerLabel.autoPinEdge(.top, to: .bottom, of: self.activityView, withOffset: 16)
+    self.headerLabel.autoPinEdge(toSuperviewEdge: .bottom, withInset: 20)
+    return containerView
   }
   
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
