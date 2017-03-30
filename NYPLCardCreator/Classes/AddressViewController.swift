@@ -46,6 +46,7 @@ final class AddressViewController: FormTableViewController {
     
     self.navigationItem.rightBarButtonItem?.isEnabled = false
     self.prepareTableViewCells()
+    self.checkToPrefillForm()
   }
   
   @available(*, unavailable)
@@ -115,6 +116,32 @@ final class AddressViewController: FormTableViewController {
                                      for: .allEditingEvents)
   }
   
+  func checkToPrefillForm() {
+    switch self.addressStep {
+    case .home:
+      if let address = self.configuration.user.homeAddress {
+        self.preFillFormWithAddress(address)
+      }
+    case .work:
+      if let address = self.configuration.user.workAddress {
+        self.preFillFormWithAddress(address)
+      }
+    case .school:
+      if let address = self.configuration.user.schoolAddress {
+        self.preFillFormWithAddress(address)
+      }
+    }
+  }
+  
+  func preFillFormWithAddress(_ address: Address) {
+    self.street1Cell.textField.text = address.street1
+    self.street2Cell.textField.text = address.street2
+    self.cityCell.textField.text = address.city
+    self.regionCell.textField.text = address.region
+    self.zipCell.textField.text = address.zip
+    textFieldDidChange()
+  }
+  
   // MARK: UITextFieldDelegate
   
   @objc func textField(_ textField: UITextField,
@@ -135,6 +162,20 @@ final class AddressViewController: FormTableViewController {
   }
   
   // MARK: -
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    if isMovingFromParentViewController {
+      switch self.addressStep {
+      case .home:
+        self.configuration.user.homeAddress = self.currentAddress()
+      case .work:
+        self.configuration.user.workAddress = self.currentAddress()
+      case .school:
+        self.configuration.user.schoolAddress = self.currentAddress()
+      }
+    }
+  }
   
   @objc override func didSelectNext() {
     self.view.endEditing(false)
