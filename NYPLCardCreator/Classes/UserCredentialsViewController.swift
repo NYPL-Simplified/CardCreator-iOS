@@ -114,12 +114,23 @@ final class UserCredentialsViewController: TableViewController {
     
     self.tableView.estimatedRowHeight = 120
     self.tableView.allowsSelection = false
+    
+    NotificationCenter.default.addObserver(self, selector: #selector(self.endSignIn), name: Notification.Name.init("NYPLSettingsAccountsSignInFinishedNotification"), object: nil)
   }
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.configuration.completionHandler(self.username, self.pin, false)
     self.activityView.isHidden = false
+  }
+  
+  func endSignIn() {
+    UIView.transition(with: self.activityView,
+                      duration: 0.5,
+                      options: .transitionCrossDissolve,
+                      animations: {
+                        self.activityView.isHidden = true
+    }, completion: nil)
   }
   
   fileprivate func prepareTableViewCells() {
