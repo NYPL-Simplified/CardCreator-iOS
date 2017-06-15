@@ -5,7 +5,6 @@ import UIKit
 final class UserCredentialsViewController: TableViewController {
   fileprivate var cells: [UITableViewCell]
   fileprivate let headerLabel: UILabel
-  fileprivate var activityView: ActivityTitleView
   fileprivate let cardType: CardType
   
   fileprivate let configuration: CardCreatorConfiguration
@@ -35,12 +34,6 @@ final class UserCredentialsViewController: TableViewController {
     self.cardType = cardType
     
     self.headerLabel = UILabel()
-    self.activityView = ActivityTitleView(title:
-      NSLocalizedString(
-        "Signing In...",
-        comment: "A title telling the user that the app is busy signing in with the new account that was just created."))
-    self.activityView.isHidden = true
-    
     self.usernameCell = SummaryCell(section: NSLocalizedString("Username", comment: "Title of the section for the user's chosen username"),
                                     cellText: self.username)
     self.barcodeCell = SummaryCell(section: NSLocalizedString("Barcode", comment: "Title of the section for the user's assigned barcode after they register"),
@@ -67,12 +60,6 @@ final class UserCredentialsViewController: TableViewController {
                       style: .plain,
                       target: self,
                       action: #selector(openCatalog))
-    
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(UserCredentialsViewController.signInFinished),
-      name: NSNotification.Name(rawValue: "NYPLSettingsAccountsSignInFinishedNotification"),
-      object: nil)
     
     self.prepareTableViewCells()
   }
@@ -119,17 +106,12 @@ final class UserCredentialsViewController: TableViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.configuration.completionHandler(self.username, self.pin, false)
-    self.activityView.isHidden = false
   }
   
   fileprivate func prepareTableViewCells() {
     for cell in self.cells {
       cell.backgroundColor = UIColor.clear
     }
-  }
-
-  @objc fileprivate func signInFinished() {
-    self.navigationItem.titleView = nil
   }
   
   // MARK: UITableViewDataSource
@@ -165,12 +147,9 @@ final class UserCredentialsViewController: TableViewController {
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let containerView = UIView()
     containerView.addSubview(self.headerLabel)
-    containerView.addSubview(self.activityView)
-    self.activityView.autoAlignAxis(toSuperviewAxis: .vertical)
-    self.activityView.autoPinEdge(toSuperviewEdge: .top, withInset: 16)
     self.headerLabel.autoPinEdge(toSuperviewMargin: .left)
     self.headerLabel.autoPinEdge(toSuperviewMargin: .right)
-    self.headerLabel.autoPinEdge(.top, to: .bottom, of: self.activityView, withOffset: 16)
+    self.headerLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 16)
     self.headerLabel.autoPinEdge(toSuperviewEdge: .bottom, withInset: 20)
     return containerView
   }
