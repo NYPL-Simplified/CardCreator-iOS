@@ -81,6 +81,13 @@ final class NameAndEmailViewController: FormTableViewController {
     self.emailCell.textField.keyboardType = .emailAddress
     self.emailCell.textField.autocapitalizationType = .none
     self.emailCell.textField.autocorrectionType = .no
+
+    if #available(iOS 10.0, *) {
+      self.firstNameCell.textField.textContentType     = .givenName
+      self.middleInitialCell.textField.textContentType = .middleName
+      self.lastNameCell.textField.textContentType      = .familyName
+      self.emailCell.textField.textContentType         = .emailAddress
+    }
   }
   
   func checkToPrefillForm() {
