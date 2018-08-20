@@ -38,7 +38,7 @@ final class LocationViewController: UIViewController {
       "Location",
       comment: "A title for a button that goes to the previous 'Location Check' screen")
     let backButton = UIBarButtonItem(title: backButtonText,
-                                     style: .bordered,
+                                     style: .plain,
                                      target: nil,
                                      action: nil)
     self.navigationItem.backBarButtonItem = backButton
