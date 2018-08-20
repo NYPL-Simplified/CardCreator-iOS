@@ -29,7 +29,7 @@ final class ValidateAddressResponse {
       return Response.validAddress(message: message, address: address, cardType: cardType)
     case "alternate-addresses":
       guard let addressContainingObjects = JSONObject["addresses"] as? [AnyObject] else { return nil }
-      let addressTuples = addressContainingObjects.flatMap({(object: AnyObject) -> (Address, CardType)? in
+      let addressTuples = addressContainingObjects.compactMap({(object: AnyObject) -> (Address, CardType)? in
         guard
           let JSONObject = object as? [String: AnyObject],
           let addressJSON = JSONObject["address"] as? [String: AnyObject],
