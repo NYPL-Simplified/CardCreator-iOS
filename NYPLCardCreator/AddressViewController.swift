@@ -224,7 +224,7 @@ final class AddressViewController: FormTableViewController {
     if let text = self.zipCell.textField.text {
       if text.count > 5 && !text.contains("-") {
         let index = text.index(text.startIndex, offsetBy: 5)
-        self.zipCell.textField.text = text.substring(to: index) + "-" + text.substring(from: index)
+        self.zipCell.textField.text = text.prefix(upTo: index) + "-" + text.suffix(from: index)
       } else if text.count == 6 && text.contains("-") {
         self.zipCell.textField.text = text.replacingOccurrences(of: "-", with: "")
       }
