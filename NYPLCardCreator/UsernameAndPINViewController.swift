@@ -117,9 +117,9 @@ final class UsernameAndPINViewController: FormTableViewController {
       if let _ = string.rangeOfCharacter(from: CharacterSet.alphanumerics.inverted) {
         return false
       } else if let text = textField.text {
-        return text.characters.count - range.length + string.characters.count <= 25
+        return text.count - range.length + string.count <= 25
       } else {
-        return string.characters.count <= 25
+        return string.count <= 25
       }
     }
     
@@ -127,9 +127,9 @@ final class UsernameAndPINViewController: FormTableViewController {
       if let _ = string.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) {
         return false
       } else if let text = textField.text {
-        return text.characters.count - range.length + string.characters.count <= 4
+        return text.count - range.length + string.count <= 4
       } else {
-        return string.characters.count <= 4
+        return string.count <= 4
       }
     }
     
@@ -226,8 +226,8 @@ final class UsernameAndPINViewController: FormTableViewController {
 
   @objc fileprivate func textFieldDidChange() {
     
-    guard let usernameTextCount = self.usernameCell.textField.text?.characters.count,
-          let pinCellTextCount = self.pinCell.textField.text?.characters.count else {
+    guard let usernameTextCount = self.usernameCell.textField.text?.count,
+          let pinCellTextCount = self.pinCell.textField.text?.count else {
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         return
     }
