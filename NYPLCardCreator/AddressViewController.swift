@@ -192,16 +192,16 @@ final class AddressViewController: FormTableViewController {
   
   fileprivate func isPossibleStartOfValidZIPCode(_ string: String) -> Bool {
     if string.contains("-") {
-      if string.characters.count > 10 {
+      if string.count > 10 {
         return false
       }
     } else {
-      if string.characters.count > 9 {
+      if string.count > 9 {
         return false
       }
     }
     
-    for (i, c) in zip(0..<10, string.characters) {
+    for (i, c) in zip(0..<10, string) {
       if !(c >= "0" && c <= "9") {
         if i == 5 {
           if c != "-" {
@@ -217,15 +217,15 @@ final class AddressViewController: FormTableViewController {
   }
   
   fileprivate func isValidZIPCode(_ string: String) -> Bool {
-    return isPossibleStartOfValidZIPCode(string) && (string.characters.count == 5 || string.characters.count == 10)
+    return isPossibleStartOfValidZIPCode(string) && (string.count == 5 || string.count == 10)
   }
   
   @objc fileprivate func zipTextFieldDidChange() {
     if let text = self.zipCell.textField.text {
-      if text.characters.count > 5 && !text.contains("-") {
-        let index = text.characters.index(text.startIndex, offsetBy: 5)
-        self.zipCell.textField.text = text.substring(to: index) + "-" + text.substring(from: index)
-      } else if text.characters.count == 6 && text.contains("-") {
+      if text.count > 5 && !text.contains("-") {
+        let index = text.index(text.startIndex, offsetBy: 5)
+        self.zipCell.textField.text = text.prefix(upTo: index) + "-" + text.suffix(from: index)
+      } else if text.count == 6 && text.contains("-") {
         self.zipCell.textField.text = text.replacingOccurrences(of: "-", with: "")
       }
       self.textFieldDidChange()
@@ -233,10 +233,10 @@ final class AddressViewController: FormTableViewController {
   }
   
   @objc fileprivate func textFieldDidChange() {
-    guard let street1CellTextCount = self.street1Cell.textField.text?.characters.count,
-          let cityCellTextCount = self.cityCell.textField.text?.characters.count,
-          let regionCellTextCount = self.regionCell.textField.text?.characters.count,
-          let zipCellTextCount = self.zipCell.textField.text?.characters.count else {
+    guard let street1CellTextCount = self.street1Cell.textField.text?.count,
+          let cityCellTextCount = self.cityCell.textField.text?.count,
+          let regionCellTextCount = self.regionCell.textField.text?.count,
+          let zipCellTextCount = self.zipCell.textField.text?.count else {
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         return
     }

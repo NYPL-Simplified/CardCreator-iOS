@@ -107,7 +107,7 @@ final class ConfirmValidAddressViewController: TableViewController {
   
   // MARK: -
 
-  func addressConfirmed() {
+  @objc func addressConfirmed() {
     let (address, cardType) = self.validAddressAndCardType
     self.addressStep.continueFlowWithValidAddress(
       self.configuration,

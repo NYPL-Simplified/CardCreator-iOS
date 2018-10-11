@@ -80,7 +80,7 @@ class FormTableViewController: TableViewController, UITextFieldDelegate {
   // MARK: -
   
   /// Should be overridden in subclasses of `FormTableViewController`.
-  func didSelectNext() {
+  @objc func didSelectNext() {
     
   }
 }

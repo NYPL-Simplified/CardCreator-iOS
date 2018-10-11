@@ -169,7 +169,7 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
         setCheckmark(false, forCell: cell)
         self.tableView.deselectRow(at: altIndexPath, animated: true)
       }
-      let altCell = tableView.cellForRow(at: altIndexPath)
+      _ = tableView.cellForRow(at: altIndexPath)
     } else {
       self.eulaVerified = true
     }
