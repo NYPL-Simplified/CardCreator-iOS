@@ -2,7 +2,7 @@ import Foundation
 
 /// A `Configuration` instance is used by applications to set up a new card registration
 /// flow.
-@objc public final class CardCreatorConfiguration: NSObject {
+public final class CardCreatorConfiguration: NSObject {
   /// The base URL for all API requests, e.g. the base URL for
   /// "http://qa.patrons.librarysimplified.org/v1/validate/username" is
   /// "http://qa.patrons.librarysimplified.org/v1".
@@ -19,7 +19,7 @@ import Foundation
   /// Saves in-progress data entered by User/Patron
   var user: UserInfo
   
-  public init(
+  @objc public init(
     endpointURL: URL,
     endpointVersion: String,
     endpointUsername: String,
