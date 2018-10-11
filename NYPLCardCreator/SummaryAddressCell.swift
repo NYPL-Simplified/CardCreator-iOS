@@ -22,7 +22,7 @@ final class SummaryAddressCell: UITableViewCell {
     }
   }
   
-  init(section: String, style: UITableViewCellStyle, reuseIdentifier: String?) {
+  init(section: String, style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     self.sectionLabel = UILabel()
     self.street1Label = UILabel()
     self.street2Label = UILabel()

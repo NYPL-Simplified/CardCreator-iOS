@@ -91,7 +91,7 @@ final class UsernameAndPINViewController: FormTableViewController {
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    if isMovingFromParentViewController {
+    if isMovingFromParent {
       self.configuration.user.username = self.usernameCell.textField.text
     }
   }

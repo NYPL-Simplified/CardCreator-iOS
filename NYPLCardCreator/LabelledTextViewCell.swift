@@ -8,7 +8,7 @@ final class LabelledTextViewCell: UITableViewCell
   let label: UILabel
   let textField: UITextField
   
-  override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     self.label = UILabel()
     self.textField = UITextField()
     

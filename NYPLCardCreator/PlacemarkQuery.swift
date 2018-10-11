@@ -41,7 +41,7 @@ final class PlacemarkQuery: NSObject, CLLocationManagerDelegate {
           comment: "A title for a button that will open the Settings app"),
         style: .default,
         handler: {_ in
-          UIApplication.shared.openURL(URL(string:UIApplicationOpenSettingsURLString)!)
+          UIApplication.shared.openURL(URL(string:UIApplication.openSettingsURLString)!)
         }))
       alertController.addAction(UIAlertAction(
         title: NSLocalizedString("Cancel", comment: ""),

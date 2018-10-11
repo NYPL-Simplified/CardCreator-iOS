@@ -173,7 +173,7 @@ final class AddressViewController: FormTableViewController {
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    if isMovingFromParentViewController {
+    if isMovingFromParent {
       switch self.addressStep {
       case .home:
         self.configuration.user.homeAddress = self.currentAddress()
