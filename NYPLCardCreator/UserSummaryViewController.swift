@@ -147,7 +147,7 @@ final class UserSummaryViewController: TableViewController {
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     if section == 0 {
-      return UITableViewAutomaticDimension
+      return UITableView.automaticDimension
     } else {
       return 0
     }
@@ -180,7 +180,7 @@ final class UserSummaryViewController: TableViewController {
   }
   
   func tableView(_ tableView: UITableView, heightForRowAtIndexPath indexPath: IndexPath) -> CGFloat {
-    return UITableViewAutomaticDimension
+    return UITableView.automaticDimension
   }
   
   // MARK: -

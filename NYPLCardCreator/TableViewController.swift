@@ -14,7 +14,7 @@ class TableViewController: UIViewController, UITableViewDataSource, UITableViewD
   let tableView: UITableView
   var clearsSelectedOnViewWillAppear = true
   
-  init(style: UITableViewStyle) {
+  init(style: UITableView.Style) {
     self.tableView = UITableView(frame: CGRect.zero, style: style)
     super.init(nibName: nil, bundle: nil)
     self.tableView.dataSource = self

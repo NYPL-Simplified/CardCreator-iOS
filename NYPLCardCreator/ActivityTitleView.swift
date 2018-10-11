@@ -10,14 +10,14 @@ final class ActivityTitleView: UIView {
     
     let padding: CGFloat = 5.0
     
-    let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    let activityIndicatorView = UIActivityIndicatorView(style: .gray)
     activityIndicatorView.startAnimating()
     self.addSubview(activityIndicatorView)
     activityIndicatorView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets.zero, excludingEdge: .right)
     
     let titleLabel = UILabel()
     titleLabel.text = title
-    titleLabel.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline)
+    titleLabel.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.headline)
     titleLabel.sizeToFit()
     self.addSubview(titleLabel)
     titleLabel.autoPinEdge(.left, to: .right, of: activityIndicatorView, withOffset: padding)
@@ -30,7 +30,7 @@ final class ActivityTitleView: UIView {
     rightPaddingView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets.zero, excludingEdge: .left)
     rightPaddingView.autoPinEdge(.left, to: .right, of: titleLabel, withOffset: padding)
     
-    self.frame.size = self.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+    self.frame.size = self.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
   }
   
   required init?(coder aDecoder: NSCoder) {

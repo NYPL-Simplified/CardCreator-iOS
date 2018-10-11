@@ -105,7 +105,7 @@ final class NameAndEmailViewController: FormTableViewController {
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    if isMovingFromParentViewController {
+    if isMovingFromParent {
       let user = self.configuration.user
       user.firstName = self.firstNameCell.textField.text
       user.middleName = self.middleInitialCell.textField.text

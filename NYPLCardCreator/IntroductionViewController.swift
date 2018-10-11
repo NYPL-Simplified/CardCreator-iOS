@@ -48,7 +48,7 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
   
   fileprivate func setupCustomViews() {
     self.descriptionLabel.textColor = UIColor.darkGray
-    self.descriptionLabel.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
+    self.descriptionLabel.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body)
     self.descriptionLabel.numberOfLines = 0
     self.descriptionLabel.text =
       NSLocalizedString(
@@ -95,15 +95,15 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
   }
   
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return UITableViewAutomaticDimension
+    return UITableView.automaticDimension
   }
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return UITableViewAutomaticDimension
+    return UITableView.automaticDimension
   }
   
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return UITableViewAutomaticDimension
+    return UITableView.automaticDimension
   }
   
   func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {

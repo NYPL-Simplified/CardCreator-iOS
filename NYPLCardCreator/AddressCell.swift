@@ -22,7 +22,7 @@ final class AddressCell: UITableViewCell {
     }
   }
   
-  override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     self.street1Label = UILabel()
     self.street2Label = UILabel()
     self.cityLabel = UILabel()

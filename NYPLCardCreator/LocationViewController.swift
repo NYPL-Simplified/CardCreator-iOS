@@ -5,7 +5,7 @@ final class LocationViewController: UIViewController {
   
   fileprivate let configuration: CardCreatorConfiguration
   
-  fileprivate let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+  fileprivate let activityIndicatorView = UIActivityIndicatorView(style: .gray)
   fileprivate var observers: [NSObjectProtocol] = []
   fileprivate let resultLabel = UILabel()
   fileprivate var placemarkQuery: PlacemarkQuery? = nil
@@ -65,7 +65,7 @@ final class LocationViewController: UIViewController {
     // We need to check again in case the user has gone to Settings to enable location services.
     self.observers.append(
       NotificationCenter.default.addObserver(
-        forName: NSNotification.Name.UIApplicationDidBecomeActive,
+        forName: UIApplication.didBecomeActiveNotification,
         object: nil,
         queue: OperationQueue.main,
         using: { _ in
