@@ -133,34 +133,11 @@
 		14E61C5D20DD7C4800124E2B /* NYPLCardCreator */ = {
 			isa = PBXGroup;
 			children = (
-				14E61C5E20DD7C4800124E2B /* NYPLCardCreator.h */,
 				14E61C5F20DD7C4800124E2B /* Info.plist */,
-				146E47B020DD746300C8F97F /* ActivityTitleView.swift */,
-				146E47B420DD746300C8F97F /* Address.swift */,
-				146E47BE20DD746300C8F97F /* AddressCell.swift */,
-				146E47B520DD746300C8F97F /* AddressStep.swift */,
-				146E47C720DD746300C8F97F /* AddressViewController.swift */,
-				146E47C220DD746300C8F97F /* AlternativeAddressesViewController.swift */,
-				146E47B220DD746300C8F97F /* AuthenticatingSession.swift */,
-				146E47B620DD746300C8F97F /* CardCreator.swift */,
-				146E47BA20DD746300C8F97F /* CardCreatorConfiguration.swift */,
-				146E47BD20DD746300C8F97F /* CardType.swift */,
-				146E47C420DD746300C8F97F /* ConfirmValidAddressViewController.swift */,
-				146E47B120DD746300C8F97F /* FormTableViewController.swift */,
-				146E47C020DD746300C8F97F /* IntroductionViewController.swift */,
-				146E47BB20DD746300C8F97F /* LabelledTextViewCell.swift */,
-				146E47B720DD746300C8F97F /* LocationViewController.swift */,
-				146E47C920DD746300C8F97F /* NameAndEmailViewController.swift */,
-				146E47B920DD746300C8F97F /* PlacemarkQuery.swift */,
-				146E47C120DD746300C8F97F /* RemoteHTMLViewController.swift */,
-				146E47C820DD746300C8F97F /* SummaryAddressCell.swift */,
-				146E47B320DD746300C8F97F /* SummaryCell.swift */,
-				146E47BF20DD746300C8F97F /* TableViewController.swift */,
-				146E47C520DD746300C8F97F /* UserCredentialsViewController.swift */,
-				146E47BC20DD746300C8F97F /* UsernameAndPINViewController.swift */,
-				146E47C320DD746300C8F97F /* UserSummaryViewController.swift */,
-				146E47C620DD746300C8F97F /* ValidateAddressResponse.swift */,
-				146E47B820DD746300C8F97F /* ValidateUsernameResponse.swift */,
+				7382032924731A7E00BCFA89 /* Flow */,
+				7382032A24731A8D00BCFA89 /* ReusedUIComponents */,
+				7382032B24731A9800BCFA89 /* BusinessLogic */,
+				7382032C24731AA000BCFA89 /* Helpers */,
 			);
 			path = NYPLCardCreator;
 			sourceTree = "<group>";
@@ -203,6 +180,61 @@
 				2D6F7C381D90FB3A000B906A /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		7382032924731A7E00BCFA89 /* Flow */ = {
+			isa = PBXGroup;
+			children = (
+				146E47B620DD746300C8F97F /* CardCreator.swift */,
+				146E47C020DD746300C8F97F /* IntroductionViewController.swift */,
+				146E47B720DD746300C8F97F /* LocationViewController.swift */,
+				146E47C720DD746300C8F97F /* AddressViewController.swift */,
+				146E47C420DD746300C8F97F /* ConfirmValidAddressViewController.swift */,
+				146E47C220DD746300C8F97F /* AlternativeAddressesViewController.swift */,
+				146E47C920DD746300C8F97F /* NameAndEmailViewController.swift */,
+				146E47BC20DD746300C8F97F /* UsernameAndPINViewController.swift */,
+				146E47C320DD746300C8F97F /* UserSummaryViewController.swift */,
+				146E47C520DD746300C8F97F /* UserCredentialsViewController.swift */,
+			);
+			path = Flow;
+			sourceTree = "<group>";
+		};
+		7382032A24731A8D00BCFA89 /* ReusedUIComponents */ = {
+			isa = PBXGroup;
+			children = (
+				146E47B020DD746300C8F97F /* ActivityTitleView.swift */,
+				146E47BE20DD746300C8F97F /* AddressCell.swift */,
+				146E47B120DD746300C8F97F /* FormTableViewController.swift */,
+				146E47BB20DD746300C8F97F /* LabelledTextViewCell.swift */,
+				146E47C120DD746300C8F97F /* RemoteHTMLViewController.swift */,
+				146E47C820DD746300C8F97F /* SummaryAddressCell.swift */,
+				146E47B320DD746300C8F97F /* SummaryCell.swift */,
+				146E47BF20DD746300C8F97F /* TableViewController.swift */,
+			);
+			path = ReusedUIComponents;
+			sourceTree = "<group>";
+		};
+		7382032B24731A9800BCFA89 /* BusinessLogic */ = {
+			isa = PBXGroup;
+			children = (
+				146E47B520DD746300C8F97F /* AddressStep.swift */,
+				146E47BA20DD746300C8F97F /* CardCreatorConfiguration.swift */,
+				146E47B920DD746300C8F97F /* PlacemarkQuery.swift */,
+				146E47C620DD746300C8F97F /* ValidateAddressResponse.swift */,
+				146E47B820DD746300C8F97F /* ValidateUsernameResponse.swift */,
+			);
+			path = BusinessLogic;
+			sourceTree = "<group>";
+		};
+		7382032C24731AA000BCFA89 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				14E61C5E20DD7C4800124E2B /* NYPLCardCreator.h */,
+				146E47B420DD746300C8F97F /* Address.swift */,
+				146E47B220DD746300C8F97F /* AuthenticatingSession.swift */,
+				146E47BD20DD746300C8F97F /* CardType.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		9042A7DBE0CDD8162AA0E597 /* Frameworks */ = {
@@ -291,6 +323,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
