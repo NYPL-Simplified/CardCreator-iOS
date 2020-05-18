@@ -3,12 +3,12 @@ import UIKit
 /// This class is a tiny version of `NSURLSession` that will automatically handle
 /// authentication with the API endpoint using basic authentication.
 final class AuthenticatingSession {
-  fileprivate let delegate: Delegate
-  fileprivate let URLSession: Foundation.URLSession
+  private let delegate: Delegate
+  private let urlSession: Foundation.URLSession
   
   init(configuration: CardCreatorConfiguration) {
     self.delegate = Delegate(username: configuration.endpointUsername, password: configuration.endpointPassword)
-    self.URLSession = Foundation.URLSession(
+    self.urlSession = Foundation.URLSession(
       configuration: URLSessionConfiguration.ephemeral,
       delegate: self.delegate,
       delegateQueue: nil)
@@ -20,24 +20,26 @@ final class AuthenticatingSession {
     _ request: URLRequest,
     completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask
   {
-    return self.URLSession.dataTask(with: request, completionHandler: completionHandler)
+    return urlSession.dataTask(with: request, completionHandler: completionHandler)
   }
   
   /// As with an `NSURLSession`, this or `finishTasksAndInvalidate` must be called else
   /// resources will not be freed.
   func invalidateAndCancel() {
-    self.URLSession.invalidateAndCancel()
+    urlSession.invalidateAndCancel()
   }
 
   /// As with an `NSURLSession`, this or `invalidateAndCancel` must be called else
   /// resources will not be freed.
   func finishTasksAndInvalidate() {
-    self.URLSession.finishTasksAndInvalidate()
+    urlSession.finishTasksAndInvalidate()
   }
+
+  // MARK:-
   
-  fileprivate class Delegate: NSObject, URLSessionDelegate {
-    fileprivate let username: String
-    fileprivate let password: String
+  private class Delegate: NSObject, URLSessionDelegate {
+    private let username: String
+    private let password: String
     
     init(username: String, password: String) {
       self.username = username
