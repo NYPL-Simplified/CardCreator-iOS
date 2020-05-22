@@ -13,10 +13,10 @@ public enum Result<T> {
   case fail(Error)
 }
 
-let CardCreatorDomain = "org.nypl.cardcreator"
+public let ErrorDomain = "org.nypl.cardcreator"
 
 /// Error codes related to Card Creator functionality.
-@objc enum ErrorCode: Int {
+public enum ErrorCode: Int {
   case ignore = 0
 
   // business logic errors

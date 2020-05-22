@@ -26,7 +26,7 @@ public class JuvenileFlowCoordinator {
   /// If any of the calls fails, an error is returned in the completion handler.
   /// This error could be an application error or a system error (such as
   /// lack of connectivity). If it is an application error:
-  /// - the Error will be in the `CardCreatorDomain` domain;
+  /// - the Error will be in the `ErrorDomain` domain;
   /// - it will have one of the `ErrorCode` error codes;
   /// - it will contain a user-friendly error message in the NSError's
   /// `localizedDescription`.
@@ -38,7 +38,7 @@ public class JuvenileFlowCoordinator {
   public func startJuvenileFlow(parentBarcode: String,
                                 completion: @escaping (Result<UINavigationController>) -> Void) {
     guard let platformAPI = configuration.platformAPIInfo else {
-      let err = NSError(domain: CardCreatorDomain,
+      let err = NSError(domain: ErrorDomain,
                         code: ErrorCode.missingConfiguration.rawValue)
       OperationQueue.main.addOperation {
         completion(.fail(JuvenileFlowCoordinator.errorWithUserFriendlyMessage(amending: err)))
@@ -79,7 +79,7 @@ public class JuvenileFlowCoordinator {
   private func authenticate(using platformEndpoints: NYPLPlatformAPIInfo,
                             completion: @escaping (Result<ISSOToken>) -> Void) {
     guard let req = ISSORequest(using: platformEndpoints) else {
-      let err = NSError(domain: CardCreatorDomain,
+      let err = NSError(domain: ErrorDomain,
                         code: ErrorCode.jsonEncodingFail.rawValue)
       completion(.fail(err))
       return
@@ -96,7 +96,7 @@ public class JuvenileFlowCoordinator {
       let urlStrLog = req.url?.absoluteString ?? "missing URL from ISSO auth request"
 
       guard let data = data else {
-        let err = NSError(domain: CardCreatorDomain,
+        let err = NSError(domain: ErrorDomain,
                           code: ErrorCode.noData.rawValue,
                           userInfo: ["requestURL": urlStrLog])
         completion(.fail(err))
@@ -104,7 +104,7 @@ public class JuvenileFlowCoordinator {
       }
 
       guard let response = response as? HTTPURLResponse else {
-        let err = NSError(domain: CardCreatorDomain,
+        let err = NSError(domain: ErrorDomain,
                           code: ErrorCode.noHTTPResponse.rawValue,
                           userInfo: ["requestURL": urlStrLog])
         completion(.fail(err))
@@ -112,7 +112,7 @@ public class JuvenileFlowCoordinator {
       }
 
       guard (200...299).contains(response.statusCode) else {
-        let err = NSError(domain: CardCreatorDomain,
+        let err = NSError(domain: ErrorDomain,
                           code: ErrorCode.unsuccessfulHTTPStatusCode.rawValue,
                           userInfo: ["requestURL": urlStrLog, "response": response])
         completion(.fail(err))
@@ -120,7 +120,7 @@ public class JuvenileFlowCoordinator {
       }
 
       guard let token = ISSOToken.fromData(data) else {
-        let err = NSError(domain: CardCreatorDomain,
+        let err = NSError(domain: ErrorDomain,
                           code: ErrorCode.jsonDecodingFail.rawValue,
                           userInfo: ["requestURL": urlStrLog, "data": data])
         completion(.fail(err))
@@ -163,7 +163,7 @@ public class JuvenileFlowCoordinator {
       }
 
       guard let data = data else {
-        let err = NSError(domain: CardCreatorDomain,
+        let err = NSError(domain: ErrorDomain,
                           code: ErrorCode.noData.rawValue,
                           userInfo: ["requestURL": urlStr])
         completion(err)
@@ -171,17 +171,19 @@ public class JuvenileFlowCoordinator {
       }
 
       guard let response = response as? HTTPURLResponse else {
-        let err = NSError(domain: CardCreatorDomain,
+        let err = NSError(domain: ErrorDomain,
                           code: ErrorCode.noHTTPResponse.rawValue,
                           userInfo: ["requestURL": urlStr])
         completion(err)
         return
       }
 
+      // note: business logic errors related to ineligibility (e.g. "wrong
+      // ptype") will return a 2xx status code
       guard (200...299).contains(response.statusCode) else {
         let msg = NSLocalizedString("An error occurred while processing your request.", comment: "A generic error message regarding a low-level error")
-        let recoveryMsg = NSLocalizedString("Try signing out and back in and try again.", comment: "A error recovery suggestion")
-        let err = NSError(domain: CardCreatorDomain,
+        let recoveryMsg = NSLocalizedString("Try to sign out, sign back in, then try again.", comment: "A error recovery suggestion")
+        let err = NSError(domain: ErrorDomain,
                           code: ErrorCode.unsuccessfulHTTPStatusCode.rawValue,
                           userInfo: [
                             NSLocalizedDescriptionKey: msg,
@@ -193,7 +195,7 @@ public class JuvenileFlowCoordinator {
       }
 
       guard let eligibility = JuvenileCardCreationEligibility.fromData(data) else {
-        let err = NSError(domain: CardCreatorDomain,
+        let err = NSError(domain: ErrorDomain,
                           code: ErrorCode.jsonDecodingFail.rawValue,
                           userInfo: ["requestURL": urlStr, "data": data])
         completion(err)
@@ -201,7 +203,10 @@ public class JuvenileFlowCoordinator {
       }
 
       if eligibility.eligible == false {
-        let err = NSError(domain: CardCreatorDomain,
+        // NB: the server will return product-approved yet non-localized
+        // messages, but because of time constraints we are not going to
+        // localize those
+        let err = NSError(domain: ErrorDomain,
                           code: ErrorCode.ineligibleForJuvenileCardCreation.rawValue,
                           userInfo: [
                             NSLocalizedDescriptionKey: eligibility.userFriendlyMessage])
@@ -252,7 +257,7 @@ public class JuvenileFlowCoordinator {
     var comps = URLComponents(url: url, resolvingAgainstBaseURL: false)
     comps?.queryItems = [URLQueryItem(name: "barcode", value: parentBarcode)]
     guard let finalURL = comps?.url else {
-      let err = NSError(domain: CardCreatorDomain,
+      let err = NSError(domain: ErrorDomain,
                         code: ErrorCode.unableToCreateURL.rawValue,
                         userInfo: [
                           "urlString": comps?.debugDescription ?? url.debugDescription])
