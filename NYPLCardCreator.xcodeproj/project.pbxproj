@@ -43,6 +43,10 @@
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
+		7353354D246DBB8D000C2874 /* ResultErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7353354C246DBB8D000C2874 /* ResultErrors.swift */; };
+		738401032474974000236B0D /* ISSOToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738401022474974000236B0D /* ISSOToken.swift */; };
+		738401052475927F00236B0D /* JuvenileCardCreationEligibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738401042475927F00236B0D /* JuvenileCardCreationEligibility.swift */; };
+		73935214246CD0C200ACC0AB /* JuvenileFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73935213246CD0C200ACC0AB /* JuvenileFlowCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +111,10 @@
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../NYPLCardCreatorExample/AppDelegate.swift; sourceTree = "<group>"; };
 		607FACDC1AFB9204008FA782 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ../NYPLCardCreatorExample/Images.xcassets; sourceTree = "<group>"; };
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		7353354C246DBB8D000C2874 /* ResultErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultErrors.swift; sourceTree = "<group>"; };
+		738401022474974000236B0D /* ISSOToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISSOToken.swift; sourceTree = "<group>"; };
+		738401042475927F00236B0D /* JuvenileCardCreationEligibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuvenileCardCreationEligibility.swift; sourceTree = "<group>"; };
+		73935213246CD0C200ACC0AB /* JuvenileFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuvenileFlowCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,9 +227,12 @@
 			children = (
 				146E47B520DD746300C8F97F /* AddressStep.swift */,
 				146E47BA20DD746300C8F97F /* CardCreatorConfiguration.swift */,
+				73935213246CD0C200ACC0AB /* JuvenileFlowCoordinator.swift */,
 				146E47B920DD746300C8F97F /* PlacemarkQuery.swift */,
 				146E47C620DD746300C8F97F /* ValidateAddressResponse.swift */,
 				146E47B820DD746300C8F97F /* ValidateUsernameResponse.swift */,
+				738401022474974000236B0D /* ISSOToken.swift */,
+				738401042475927F00236B0D /* JuvenileCardCreationEligibility.swift */,
 			);
 			path = BusinessLogic;
 			sourceTree = "<group>";
@@ -233,6 +244,7 @@
 				146E47B420DD746300C8F97F /* Address.swift */,
 				146E47B220DD746300C8F97F /* AuthenticatingSession.swift */,
 				146E47BD20DD746300C8F97F /* CardType.swift */,
+				7353354C246DBB8D000C2874 /* ResultErrors.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -363,6 +375,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				738401052475927F00236B0D /* JuvenileCardCreationEligibility.swift in Sources */,
 				14E61C7020DD7C6200124E2B /* IntroductionViewController.swift in Sources */,
 				14E61C6F20DD7C6200124E2B /* RemoteHTMLViewController.swift in Sources */,
 				14E61C6C20DD7C6200124E2B /* ActivityTitleView.swift in Sources */,
@@ -370,11 +383,13 @@
 				14E61C7C20DD7C6200124E2B /* NameAndEmailViewController.swift in Sources */,
 				14E61C6A20DD7C6200124E2B /* CardCreator.swift in Sources */,
 				14E61C7420DD7C6200124E2B /* PlacemarkQuery.swift in Sources */,
+				73935214246CD0C200ACC0AB /* JuvenileFlowCoordinator.swift in Sources */,
 				14E61C7F20DD7C6200124E2B /* UsernameAndPINViewController.swift in Sources */,
 				14E61C7920DD7C6200124E2B /* AddressViewController.swift in Sources */,
 				14E61C7220DD7C6200124E2B /* SummaryCell.swift in Sources */,
 				14E61C8120DD7C6200124E2B /* LocationViewController.swift in Sources */,
 				14E61C7E20DD7C6200124E2B /* CardCreatorConfiguration.swift in Sources */,
+				7353354D246DBB8D000C2874 /* ResultErrors.swift in Sources */,
 				14E61C6E20DD7C6200124E2B /* ValidateUsernameResponse.swift in Sources */,
 				14E61C7B20DD7C6200124E2B /* AddressStep.swift in Sources */,
 				14E61C6920DD7C6200124E2B /* Address.swift in Sources */,
@@ -387,6 +402,7 @@
 				14E61C8020DD7C6200124E2B /* TableViewController.swift in Sources */,
 				14E61C7A20DD7C6200124E2B /* AuthenticatingSession.swift in Sources */,
 				14E61C6B20DD7C6200124E2B /* ConfirmValidAddressViewController.swift in Sources */,
+				738401032474974000236B0D /* ISSOToken.swift in Sources */,
 				14E61C7620DD7C6200124E2B /* UserSummaryViewController.swift in Sources */,
 				14E61C7520DD7C6200124E2B /* AddressCell.swift in Sources */,
 			);
@@ -564,7 +580,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -613,7 +629,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
