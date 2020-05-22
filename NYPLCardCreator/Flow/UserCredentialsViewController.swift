@@ -8,8 +8,7 @@ final class UserCredentialsViewController: TableViewController {
   fileprivate let cardType: CardType
   
   fileprivate let configuration: CardCreatorConfiguration
-  fileprivate let session: AuthenticatingSession
-  
+
   fileprivate let usernameCell: UITableViewCell
   fileprivate let barcodeCell: UITableViewCell
   fileprivate let pinCell: UITableViewCell
@@ -26,7 +25,6 @@ final class UserCredentialsViewController: TableViewController {
     cardType: CardType)
   {
     self.configuration = configuration
-    self.session = AuthenticatingSession(configuration: configuration)
     
     self.username = username
     self.barcode = barcode

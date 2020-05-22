@@ -186,7 +186,7 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
   // MARK: -
   
   @objc fileprivate func eulaPressed(_ sender: Any) {
-    let vc = RemoteHTMLViewController(URL: URL.init(string: "http://www.librarysimplified.org/EULA.html")!, title: "EULA", failureMessage: nil)
+    let vc = RemoteHTMLViewController(URL: URL.init(string: "https://www.librarysimplified.org/EULA")!, title: "EULA", failureMessage: nil)
     self.navigationController?.pushViewController(vc, animated: true)
   }
   
