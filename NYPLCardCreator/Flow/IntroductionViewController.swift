@@ -7,14 +7,14 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
   
   fileprivate let configuration: CardCreatorConfiguration
   fileprivate let descriptionLabel: UILabel
-  fileprivate var ageVerified: Bool
+  fileprivate var attestationVerified: Bool
   fileprivate var eulaVerified: Bool
   fileprivate var tableView: UITableView!
 
   public init(configuration: CardCreatorConfiguration) {
     self.configuration = configuration
     self.descriptionLabel = UILabel()
-    self.ageVerified = false
+    self.attestationVerified = false
     self.eulaVerified = false
     super.init(nibName: nil, bundle: nil)
   }
@@ -27,7 +27,7 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
   public override func viewDidLoad() {
     super.viewDidLoad()
     
-    self.title = NSLocalizedString("Sign Up", comment: "A title welcoming the user to library card sign up")
+    self.title = configuration.localizedStrings.welcomeTitle
     self.view.backgroundColor = UIColor.white
     
     self.tableView = UITableView.init(frame: view.frame, style: .grouped)
@@ -47,16 +47,14 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
   }
   
   fileprivate func setupCustomViews() {
-    self.descriptionLabel.textColor = UIColor.darkGray
+    if #available(iOS 13.0, *) {
+      self.descriptionLabel.textColor = UIColor.label
+    } else {
+      self.descriptionLabel.textColor = UIColor.gray
+    }
     self.descriptionLabel.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body)
     self.descriptionLabel.numberOfLines = 0
-    self.descriptionLabel.text =
-      NSLocalizedString(
-        ("To get a digital library card from the New York Public Library, you must live, work, "
-          + "or attend school in New York State. You must also be at least 13 years of age and be "
-          + "physically present in New York at the time of sign-up. "
-          + "\n\nYou must be at least 13 years of age.\nHow old are you?"),
-        comment: "A description of what is required to get a library card")
+    self.descriptionLabel.text = configuration.localizedStrings.featureRequirements
   }
   
   // MARK: - TableView Delegate Methods
@@ -65,16 +63,17 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
     let cell = UITableViewCell()
 
     if (indexPath.section == 0) {
-      switch indexPath.row {
-      case 0:
-        cell.textLabel?.text = NSLocalizedString("I am under 13", comment: "Title for a user to check when they are under 13 years of age")
-      default:
-        cell.textLabel?.text = NSLocalizedString("I am 13 or older", comment: "Title for a user to check when they are 13 years of age or older")
+      if indexPath.row == 0 && !configuration.isJuvenile {
+        cell.textLabel?.text = configuration.localizedStrings.attestationDecline
+      } else {
+        cell.textLabel?.text = configuration.localizedStrings.attestationConfirm
       }
     } else {
-      cell.textLabel?.text = NSLocalizedString("I agree to the terms of the End User License Agreement", comment: "Statement that the user will check if they agree to the terms of the agreement.")
-      cell.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
-      cell.textLabel?.numberOfLines = 2
+      cell.textLabel?.text = NSLocalizedString("I have read and agree to the End User License Agreement", comment: "Statement that the user will check if they agree to the terms of the agreement.")
+    }
+    cell.textLabel?.numberOfLines = 0
+    if #available(iOS 9.0, *) {
+      cell.textLabel?.font = UIFont.preferredFont(forTextStyle: .callout)
     }
     setCheckmark(false, forCell: cell)
     cell.selectionStyle = .none
@@ -87,7 +86,7 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    if section == 0 {
+    if section == 0 && !configuration.isJuvenile {
       return 2
     } else {
       return 1
@@ -153,30 +152,40 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
     
     let selectedCell = tableView.cellForRow(at: indexPath)
     setCheckmark(true, forCell: selectedCell)
-    
-    if (indexPath.section == 0) {
-      var altIndexPath: IndexPath
-      if (indexPath.row == 0) {
-        self.didSelectUnder13()
-        altIndexPath = IndexPath(row: 1, section: 0)
-        let cell = tableView.cellForRow(at: altIndexPath)
-        setCheckmark(false, forCell: cell)
-        self.tableView.deselectRow(at: altIndexPath, animated: true)
+
+    if indexPath.section == 0 {
+      if configuration.isJuvenile {
+        didConfirmAttestation()
       } else {
-        self.didSelect13OrOlder()
-        altIndexPath = IndexPath(row: 0, section: 0)
-        let cell = tableView.cellForRow(at: altIndexPath)
-        setCheckmark(false, forCell: cell)
-        self.tableView.deselectRow(at: altIndexPath, animated: true)
+        var altIndexPath: IndexPath
+        if (indexPath.row == 0) {
+          self.didDenyAttestation()
+          altIndexPath = IndexPath(row: 1, section: 0)
+          let cell = tableView.cellForRow(at: altIndexPath)
+          setCheckmark(false, forCell: cell)
+          self.tableView.deselectRow(at: altIndexPath, animated: true)
+        } else {
+          self.didConfirmAttestation()
+          altIndexPath = IndexPath(row: 0, section: 0)
+          let cell = tableView.cellForRow(at: altIndexPath)
+          setCheckmark(false, forCell: cell)
+          self.tableView.deselectRow(at: altIndexPath, animated: true)
+        }
+        _ = tableView.cellForRow(at: altIndexPath)
       }
-      _ = tableView.cellForRow(at: altIndexPath)
     } else {
       self.eulaVerified = true
     }
   }
   
   func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-    if indexPath.section == 1 {
+    if indexPath.section == 0 {
+      if configuration.isJuvenile {
+        let cell = tableView.cellForRow(at: indexPath)
+        setCheckmark(false, forCell: cell)
+        didDenyAttestation()
+      }
+    } else {
       let cell = tableView.cellForRow(at: indexPath)
       setCheckmark(false, forCell: cell)
       self.eulaVerified = false
@@ -191,24 +200,24 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
   }
   
   @objc fileprivate func didSelectNext() {
-    if (ageVerified && eulaVerified) {
+    if (attestationVerified && eulaVerified) {
       self.navigationController?.pushViewController(
       LocationViewController(configuration: self.configuration),
       animated: true)
-    } else if (!ageVerified && eulaVerified) {
-      ageAlert()
+    } else if (!attestationVerified && eulaVerified) {
+      attestationAlert()
     } else {
       eulaAlert()
     }
   }
   
-  fileprivate func didSelect13OrOlder() {
-    self.ageVerified = true
+  fileprivate func didConfirmAttestation() {
+    self.attestationVerified = true
   }
   
-  fileprivate func didSelectUnder13() {
-    self.ageVerified = false
-    ageAlert()
+  fileprivate func didDenyAttestation() {
+    self.attestationVerified = false
+    attestationAlert()
   }
   
   fileprivate func setCheckmark(_ state: Bool, forCell cell: UITableViewCell?) {
@@ -223,14 +232,10 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
     }
   }
   
-  fileprivate func ageAlert() {
+  fileprivate func attestationAlert() {
     let alertController = UIAlertController(
-      title: NSLocalizedString(
-        "Age Restriction",
-        comment: "An alert title indicating that the user has encountered an age restriction"),
-      message: NSLocalizedString(
-        "You must be at least 13 years old to sign up for a library card.",
-        comment: "An alert message telling the user are not old enough to sign up for a library card"),
+      title: configuration.localizedStrings.attestationRequirementTitle,
+      message: configuration.localizedStrings.attestationRequirementMessage,
       preferredStyle: .alert)
     alertController.addAction(UIAlertAction(
       title: NSLocalizedString("OK", comment: ""),

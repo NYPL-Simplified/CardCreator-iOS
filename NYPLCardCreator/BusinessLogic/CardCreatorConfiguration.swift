@@ -50,10 +50,12 @@ public final class CardCreatorConfiguration: NSObject {
 
   /// This will always be called on the main thread. It will only be called in the event
   /// of a successful registration.
-  public var completionHandler: (_ username: String, _ PIN: String, _ userInitiated: Bool) -> Void
+  @objc public var completionHandler: (_ username: String, _ PIN: String, _ userInitiated: Bool) -> Void
 
   /// Saves in-progress data entered by User/Patron
   var user: UserInfo
+
+  let localizedStrings: FlowLocalizedStrings
   
   @objc public init(
     endpointURL: URL,
@@ -62,7 +64,7 @@ public final class CardCreatorConfiguration: NSObject {
     endpointPassword: String,
     juvenilePlatformAPIInfo: NYPLPlatformAPIInfo? = nil,
     requestTimeoutInterval: TimeInterval,
-    completionHandler: @escaping (_ username: String, _ PIN: String, _ userInitiated: Bool) -> Void)
+    completionHandler: @escaping (_ username: String, _ PIN: String, _ userInitiated: Bool) -> Void = { _, _, _ in })
   {
     self.endpointURL = endpointURL.appendingPathComponent(endpointVersion)
     self.endpointUsername = endpointUsername
@@ -70,9 +72,68 @@ public final class CardCreatorConfiguration: NSObject {
     self.platformAPIInfo = juvenilePlatformAPIInfo
     self.requestTimeoutInterval = requestTimeoutInterval
     self.completionHandler = completionHandler
+    let isJuvenileFlow = (juvenilePlatformAPIInfo != nil)
     self.user = UserInfo()
+    if isJuvenileFlow {
+      self.localizedStrings = JuvenileFlowLocalizedStrings()
+    } else {
+      self.localizedStrings = RegularFlowLocalizedStrings()
+    }
     super.init()
   }
+
+  var isJuvenile: Bool {
+    platformAPIInfo != nil
+  }
+}
+
+protocol FlowLocalizedStrings {
+  var welcomeTitle: String {get}
+  var featureRequirements: String {get}
+
+  /// This is the copy **declining** either the age requirement for the regular
+  /// flow or the legal guardianship attestation for the juvenile flow.
+  var attestationDecline: String? {get}
+
+  /// This is the copy **confirming** either the age requirement for the regular
+  /// flow or the legal guardianship attestation for the juvenile flow.
+  var attestationConfirm: String {get}
+
+  var attestationRequirementTitle: String {get}
+  var attestationRequirementMessage: String {get}
+}
+
+struct RegularFlowLocalizedStrings: FlowLocalizedStrings {
+  let welcomeTitle = NSLocalizedString("Sign Up", comment: "A title welcoming the user to library card sign up")
+  let featureRequirements = NSLocalizedString("""
+      To get a digital library card from the New York Public Library, you must \
+      live, work, or attend school in New York State. You must also be at least \
+      13 years of age and be physically present in New York at the time of sign-up.
+
+      You must be at least 13 years of age.
+      How old are you?
+      """, comment: "A description of what is required to get a library card")
+  let attestationDecline: String? = NSLocalizedString("I am under 13", comment: "Title for a user to check when they are under 13 years of age")
+  let attestationConfirm = NSLocalizedString("I am 13 or older", comment: "Title for a user to check when they are 13 years of age or older")
+  let attestationRequirementTitle = NSLocalizedString("Age Restriction", comment: "An alert title indicating that the user has encountered an age restriction")
+  let attestationRequirementMessage = NSLocalizedString(
+    "You must be at least 13 years old to sign up for a library card.", comment: "An alert message telling the user are not old enough to sign up for a library card")
+}
+
+struct JuvenileFlowLocalizedStrings: FlowLocalizedStrings {
+  let welcomeTitle = NSLocalizedString("Create Card for your Child", comment: "A title welcoming the user to library card sign up")
+  let featureRequirements = NSLocalizedString("""
+      To apply for a card for your under-13 child, you must be the \
+      parent/legal guardian of the minor in question and be physically \
+      present in New York State at the time of sign-up.
+
+      Please check the box below to confirm you are the legal guardian of \
+      the minor child for whom this card will be used.
+      """, comment: "A description of what is required to create a juvenile library card")
+  let attestationDecline: String? = nil
+  let attestationConfirm = NSLocalizedString("By checking this box, I confirm that I am the parent / legal guardian of the minor for whom I am creating a library card account.", comment: "Title to indicate that the patron provides legal guardianship for their child.")
+  let attestationRequirementTitle = NSLocalizedString("Legal Guardianship Restriction", comment: "An alert title indicating that the user has encountered an legal guardianship restriction")
+  let attestationRequirementMessage = NSLocalizedString("You may not proceed if you are not the parent/legal guardian of the minor for whom you are applying.", comment: "A message telling the user that it is required to attest legal guardianship for the child they are creating a card for.")
 }
 
 final class UserInfo {
