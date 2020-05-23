@@ -72,9 +72,7 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
       cell.textLabel?.text = NSLocalizedString("I have read and agree to the End User License Agreement", comment: "Statement that the user will check if they agree to the terms of the agreement.")
     }
     cell.textLabel?.numberOfLines = 0
-    if #available(iOS 9.0, *) {
-      cell.textLabel?.font = UIFont.preferredFont(forTextStyle: .callout)
-    }
+    cell.textLabel?.font = UIFont.preferredFont(forTextStyle: .callout)
     setCheckmark(false, forCell: cell)
     cell.selectionStyle = .none
     

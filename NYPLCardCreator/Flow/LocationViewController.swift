@@ -3,13 +3,13 @@ import UIKit
 /// The second step in the card registration flow.
 final class LocationViewController: UIViewController {
   
-  fileprivate let configuration: CardCreatorConfiguration
+  private let configuration: CardCreatorConfiguration
   
-  fileprivate let activityIndicatorView = UIActivityIndicatorView(style: .gray)
-  fileprivate var observers: [NSObjectProtocol] = []
-  fileprivate let resultLabel = UILabel()
-  fileprivate var placemarkQuery: PlacemarkQuery? = nil
-  fileprivate var viewDidAppearPreviously: Bool = false
+  private let activityIndicatorView = UIActivityIndicatorView(style: .gray)
+  private var observers: [NSObjectProtocol] = []
+  private let resultLabel = UILabel()
+  private var placemarkQuery: PlacemarkQuery? = nil
+  private var viewDidAppearPreviously: Bool = false
 
   init(configuration: CardCreatorConfiguration) {
     self.configuration = configuration
@@ -83,15 +83,19 @@ final class LocationViewController: UIViewController {
     self.checkLocation()
   }
   
-  @objc fileprivate func didSelectNext() {
-    self.navigationController?.pushViewController(
-      AddressViewController(
-        configuration: self.configuration,
-        addressStep: .home),
-      animated: true)
+  @objc private func didSelectNext() {
+    let vc: UIViewController
+    if configuration.isJuvenile {
+      vc = NameAndEmailViewController(juvenileConfiguration: configuration)
+    } else {
+      vc = AddressViewController(configuration: self.configuration,
+                                 addressStep: .home)
+    }
+
+    self.navigationController?.pushViewController(vc, animated: true)
   }
   
-  fileprivate func checkLocation() {
+  private func checkLocation() {
     self.resultLabel.isHidden = true
     self.activityIndicatorView.startAnimating()
     self.placemarkQuery = PlacemarkQuery()

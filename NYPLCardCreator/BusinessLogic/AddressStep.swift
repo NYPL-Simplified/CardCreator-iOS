@@ -106,13 +106,7 @@ enum AddressStep {
         viewController.present(alertController, animated: true, completion: nil)
       }
     case .temporary:
-      let (homeAddress, schoolOrWorkAddress) = self.pairWithAppendedAddress(address)
-      let nameAndEmailViewController = NameAndEmailViewController(
-        configuration: configuration,
-        homeAddress: homeAddress,
-        schoolOrWorkAddress: schoolOrWorkAddress,
-        cardType: cardType)
-      viewController.navigationController?.pushViewController(nameAndEmailViewController, animated: true)
+      fallthrough
     case .standard:
       let (homeAddress, schoolOrWorkAddress) = self.pairWithAppendedAddress(address)
       let nameAndEmailViewController = NameAndEmailViewController(
@@ -121,6 +115,8 @@ enum AddressStep {
         schoolOrWorkAddress: schoolOrWorkAddress,
         cardType: cardType)
       viewController.navigationController?.pushViewController(nameAndEmailViewController, animated: true)
+    case .juvenile:
+      break
     }
   }
 }
