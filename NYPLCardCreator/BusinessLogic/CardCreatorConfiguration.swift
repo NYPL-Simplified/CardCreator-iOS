@@ -56,6 +56,8 @@ public final class CardCreatorConfiguration: NSObject {
   var user: UserInfo
 
   let localizedStrings: FlowLocalizedStrings
+
+  let usernameMinLength: Int
   
   @objc public init(
     endpointURL: URL,
@@ -76,8 +78,10 @@ public final class CardCreatorConfiguration: NSObject {
     self.user = UserInfo()
     if isJuvenileFlow {
       self.localizedStrings = JuvenileFlowLocalizedStrings()
+      self.usernameMinLength = 3
     } else {
       self.localizedStrings = RegularFlowLocalizedStrings()
+      self.usernameMinLength = 5
     }
     super.init()
   }
@@ -101,6 +105,9 @@ protocol FlowLocalizedStrings {
 
   var attestationRequirementTitle: String {get}
   var attestationRequirementMessage: String {get}
+
+  var nameScreenTitle: String {get}
+  var usernameAndPINSubtitle: String {get}
 }
 
 struct RegularFlowLocalizedStrings: FlowLocalizedStrings {
@@ -118,6 +125,12 @@ struct RegularFlowLocalizedStrings: FlowLocalizedStrings {
   let attestationRequirementTitle = NSLocalizedString("Age Restriction", comment: "An alert title indicating that the user has encountered an age restriction")
   let attestationRequirementMessage = NSLocalizedString(
     "You must be at least 13 years old to sign up for a library card.", comment: "An alert message telling the user are not old enough to sign up for a library card")
+  let nameScreenTitle = NSLocalizedString(
+    "Personal Information",
+    comment: "A title for the screen asking the user for their personal information")
+  let usernameAndPINSubtitle = NSLocalizedString(
+    "Username must be 5–25 letters and numbers only.\nPIN must be 4 numeric characters only.",
+    comment: "A description of valid usernames and PINs for the regular flow")
 }
 
 struct JuvenileFlowLocalizedStrings: FlowLocalizedStrings {
@@ -134,6 +147,12 @@ struct JuvenileFlowLocalizedStrings: FlowLocalizedStrings {
   let attestationConfirm = NSLocalizedString("By checking this box, I confirm that I am the parent / legal guardian of the minor for whom I am creating a library card account.", comment: "Title to indicate that the patron provides legal guardianship for their child.")
   let attestationRequirementTitle = NSLocalizedString("Legal Guardianship Restriction", comment: "An alert title indicating that the user has encountered an legal guardianship restriction")
   let attestationRequirementMessage = NSLocalizedString("You may not proceed if you are not the parent/legal guardian of the minor for whom you are applying.", comment: "A message telling the user that it is required to attest legal guardianship for the child they are creating a card for.")
+  let nameScreenTitle = NSLocalizedString(
+    "Create New Card",
+    comment: "A title for the screen where a user can create a new card for their children")
+  let usernameAndPINSubtitle = NSLocalizedString(
+    "Username should be 3–25 letters and numbers only.\nPIN should be 4 numeric characters only.",
+    comment: "A description of valid usernames and PINs for the juvenile flow")
 }
 
 final class UserInfo {
