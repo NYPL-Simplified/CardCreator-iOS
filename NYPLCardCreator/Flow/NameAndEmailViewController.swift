@@ -79,9 +79,7 @@ final class NameAndEmailViewController: FormTableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.title = NSLocalizedString(
-      "Personal Information",
-      comment: "A title for a screen asking the user for their personal information")
+    self.title = configuration.localizedStrings.nameScreenTitle
   }
   
   private func prepareTableViewCells() {
@@ -140,13 +138,20 @@ final class NameAndEmailViewController: FormTableViewController {
   
   @objc override func didSelectNext() {
     self.view.endEditing(false)
-    
+
+    guard let firstName = firstNameCell.textField.text,
+      let middleInitial = middleInitialCell.textField.text,
+      let lastName = lastNameCell.textField.text else {
+        return
+    }
+
     var fullName: String
-    if self.middleInitialCell.textField.text!.isEmpty {
-      fullName = self.lastNameCell.textField.text! + ", " + self.firstNameCell.textField.text!
+    if configuration.isJuvenile && lastName.isEmpty {
+      fullName = firstName
+    } else if middleInitial.isEmpty {
+      fullName = lastName + ", " + firstName
     } else {
-      fullName = self.lastNameCell.textField.text! + ", " + self.firstNameCell.textField.text! + " " + 
-        self.middleInitialCell.textField.text!
+      fullName = lastName + ", " + firstName + " " + middleInitial
     }
     
     self.navigationController?.pushViewController(

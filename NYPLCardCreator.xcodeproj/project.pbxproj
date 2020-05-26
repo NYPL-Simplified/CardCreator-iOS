@@ -227,12 +227,12 @@
 			children = (
 				146E47B520DD746300C8F97F /* AddressStep.swift */,
 				146E47BA20DD746300C8F97F /* CardCreatorConfiguration.swift */,
+				738401022474974000236B0D /* ISSOToken.swift */,
+				738401042475927F00236B0D /* JuvenileCardCreationEligibility.swift */,
 				73935213246CD0C200ACC0AB /* JuvenileFlowCoordinator.swift */,
 				146E47B920DD746300C8F97F /* PlacemarkQuery.swift */,
 				146E47C620DD746300C8F97F /* ValidateAddressResponse.swift */,
 				146E47B820DD746300C8F97F /* ValidateUsernameResponse.swift */,
-				738401022474974000236B0D /* ISSOToken.swift */,
-				738401042475927F00236B0D /* JuvenileCardCreationEligibility.swift */,
 			);
 			path = BusinessLogic;
 			sourceTree = "<group>";
