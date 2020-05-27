@@ -89,7 +89,7 @@ final class AlternativeAddressesViewController: TableViewController {
   
   // MARK: UITableViewDataSource
   
-  func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
+  func numberOfSections(in tableView: UITableView) -> Int {
     return 1
   }
   

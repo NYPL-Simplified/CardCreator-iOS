@@ -3,27 +3,27 @@ import UIKit
 /// This class is used for summarizing the user's details before
 /// submitting the request to create a library card.
 final class UserSummaryViewController: TableViewController {
-  fileprivate var cells: [UITableViewCell]
-  fileprivate let headerLabel: UILabel
+  private var cells: [UITableViewCell]
+  private let headerLabel: UILabel
   
-  fileprivate let configuration: CardCreatorConfiguration
-  fileprivate let session: AuthenticatingSession
+  private let configuration: CardCreatorConfiguration
+  private let session: AuthenticatingSession
   
-  fileprivate let homeAddressCell: SummaryAddressCell
-  fileprivate let altAddressCell: SummaryAddressCell
-  fileprivate let cardType: CardType
-  fileprivate let fullNameCell: UITableViewCell
-  fileprivate let emailCell: UITableViewCell
-  fileprivate let usernameCell: UITableViewCell
-  fileprivate let pinCell: UITableViewCell
+  private let homeAddressCell: SummaryAddressCell
+  private let altAddressCell: SummaryAddressCell
+  private let cardType: CardType
+  private let fullNameCell: SummaryCell
+  private let emailCell: SummaryCell
+  private let usernameCell: SummaryCell
+  private let pinCell: SummaryCell
   
-  fileprivate let homeAddress: Address
-  fileprivate let schoolOrWorkAddress: Address?
-  fileprivate let fullName: String
-  fileprivate let email: String
-  fileprivate let username: String
-  fileprivate let pin: String
-  
+  private let homeAddress: Address
+  private let schoolOrWorkAddress: Address?
+  private let fullName: String
+  private let email: String
+  private let username: String
+  private let pin: String
+
   init(
     configuration: CardCreatorConfiguration,
     homeAddress: Address,
@@ -119,7 +119,7 @@ final class UserSummaryViewController: TableViewController {
     self.tableView.allowsSelection = false
   }
   
-  fileprivate func prepareTableViewCells() {
+  private func prepareTableViewCells() {
     for cell in self.cells {
       cell.backgroundColor = UIColor.clear
       self.tableView.separatorStyle = .none
@@ -137,13 +137,19 @@ final class UserSummaryViewController: TableViewController {
     return 1
   }
   
-  func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
+  func numberOfSections(in tableView: UITableView) -> Int {
     return self.cells.count
   }
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     return self.cells[indexPath.section]
   }
+
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return UITableView.automaticDimension
+  }
+
+  // MARK: Headers and footers
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     if section == 0 {
