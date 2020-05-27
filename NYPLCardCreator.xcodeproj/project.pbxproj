@@ -44,9 +44,14 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		7353354D246DBB8D000C2874 /* ResultErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7353354C246DBB8D000C2874 /* ResultErrors.swift */; };
+		735F6379247DDDB6008858C4 /* JuvenileCreationResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 735F6378247DDDB6008858C4 /* JuvenileCreationResponseBody.swift */; };
 		738401032474974000236B0D /* ISSOToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738401022474974000236B0D /* ISSOToken.swift */; };
 		738401052475927F00236B0D /* JuvenileCardCreationEligibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738401042475927F00236B0D /* JuvenileCardCreationEligibility.swift */; };
 		73935214246CD0C200ACC0AB /* JuvenileFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73935213246CD0C200ACC0AB /* JuvenileFlowCoordinator.swift */; };
+		73D15456247C96C700ACD04E /* JuvenileCreationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D15455247C96C700ACD04E /* JuvenileCreationInfo.swift */; };
+		73D15458247CA58000ACD04E /* PlatformAPIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D15457247CA58000ACD04E /* PlatformAPIError.swift */; };
+		73EEE7E4247F274E00A06D14 /* NYPLCardCreator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14E61C5C20DD7C4800124E2B /* NYPLCardCreator.framework */; };
+		73EEE7ED247F290700A06D14 /* JuvenileCreationResponseBodyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EEE7EC247F290700A06D14 /* JuvenileCreationResponseBodyTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +61,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 14E61C5B20DD7C4800124E2B;
 			remoteInfo = NYPLCardCreator;
+		};
+		73EEE7E5247F274E00A06D14 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 607FACC81AFB9204008FA782 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 14E61C5B20DD7C4800124E2B;
+			remoteInfo = NYPLCardCreator;
+		};
+		73EEE7EA247F276F00A06D14 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 607FACC81AFB9204008FA782 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 607FACCF1AFB9204008FA782;
+			remoteInfo = NYPLCardCreator_Example;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -112,9 +131,15 @@
 		607FACDC1AFB9204008FA782 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ../NYPLCardCreatorExample/Images.xcassets; sourceTree = "<group>"; };
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		7353354C246DBB8D000C2874 /* ResultErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultErrors.swift; sourceTree = "<group>"; };
+		735F6378247DDDB6008858C4 /* JuvenileCreationResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuvenileCreationResponseBody.swift; sourceTree = "<group>"; };
 		738401022474974000236B0D /* ISSOToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISSOToken.swift; sourceTree = "<group>"; };
 		738401042475927F00236B0D /* JuvenileCardCreationEligibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuvenileCardCreationEligibility.swift; sourceTree = "<group>"; };
 		73935213246CD0C200ACC0AB /* JuvenileFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuvenileFlowCoordinator.swift; sourceTree = "<group>"; };
+		73D15455247C96C700ACD04E /* JuvenileCreationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuvenileCreationInfo.swift; sourceTree = "<group>"; };
+		73D15457247CA58000ACD04E /* PlatformAPIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformAPIError.swift; sourceTree = "<group>"; };
+		73EEE7DF247F274E00A06D14 /* NYPLCardCreatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NYPLCardCreatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		73EEE7E3247F274E00A06D14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		73EEE7EC247F290700A06D14 /* JuvenileCreationResponseBodyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JuvenileCreationResponseBodyTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +157,14 @@
 			files = (
 				14E61C8620DD7E6A00124E2B /* PureLayout.framework in Frameworks */,
 				14E61C6320DD7C4800124E2B /* NYPLCardCreator.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		73EEE7DC247F274E00A06D14 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				73EEE7E4247F274E00A06D14 /* NYPLCardCreator.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,6 +188,7 @@
 			children = (
 				14E61C5D20DD7C4800124E2B /* NYPLCardCreator */,
 				607FACD21AFB9204008FA782 /* NYPLCardCreatorExample */,
+				73EEE7E0247F274E00A06D14 /* NYPLCardCreatorTests */,
 				607FACD11AFB9204008FA782 /* Products */,
 				9042A7DBE0CDD8162AA0E597 /* Frameworks */,
 			);
@@ -165,6 +199,7 @@
 			children = (
 				607FACD01AFB9204008FA782 /* NYPLCardCreator_Example.app */,
 				14E61C5C20DD7C4800124E2B /* NYPLCardCreator.framework */,
+				73EEE7DF247F274E00A06D14 /* NYPLCardCreatorTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -229,8 +264,11 @@
 				146E47BA20DD746300C8F97F /* CardCreatorConfiguration.swift */,
 				738401022474974000236B0D /* ISSOToken.swift */,
 				738401042475927F00236B0D /* JuvenileCardCreationEligibility.swift */,
+				73D15455247C96C700ACD04E /* JuvenileCreationInfo.swift */,
+				735F6378247DDDB6008858C4 /* JuvenileCreationResponseBody.swift */,
 				73935213246CD0C200ACC0AB /* JuvenileFlowCoordinator.swift */,
 				146E47B920DD746300C8F97F /* PlacemarkQuery.swift */,
+				73D15457247CA58000ACD04E /* PlatformAPIError.swift */,
 				146E47C620DD746300C8F97F /* ValidateAddressResponse.swift */,
 				146E47B820DD746300C8F97F /* ValidateUsernameResponse.swift */,
 			);
@@ -247,6 +285,15 @@
 				7353354C246DBB8D000C2874 /* ResultErrors.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		73EEE7E0247F274E00A06D14 /* NYPLCardCreatorTests */ = {
+			isa = PBXGroup;
+			children = (
+				73EEE7EC247F290700A06D14 /* JuvenileCreationResponseBodyTests.swift */,
+				73EEE7E3247F274E00A06D14 /* Info.plist */,
+			);
+			path = NYPLCardCreatorTests;
 			sourceTree = "<group>";
 		};
 		9042A7DBE0CDD8162AA0E597 /* Frameworks */ = {
@@ -308,13 +355,32 @@
 			productReference = 607FACD01AFB9204008FA782 /* NYPLCardCreator_Example.app */;
 			productType = "com.apple.product-type.application";
 		};
+		73EEE7DE247F274E00A06D14 /* NYPLCardCreatorTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 73EEE7E7247F274E00A06D14 /* Build configuration list for PBXNativeTarget "NYPLCardCreatorTests" */;
+			buildPhases = (
+				73EEE7DB247F274E00A06D14 /* Sources */,
+				73EEE7DC247F274E00A06D14 /* Frameworks */,
+				73EEE7DD247F274E00A06D14 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				73EEE7E6247F274E00A06D14 /* PBXTargetDependency */,
+				73EEE7EB247F276F00A06D14 /* PBXTargetDependency */,
+			);
+			name = NYPLCardCreatorTests;
+			productName = NYPLCardCreatorTests;
+			productReference = 73EEE7DF247F274E00A06D14 /* NYPLCardCreatorTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		607FACC81AFB9204008FA782 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0720;
+				LastSwiftUpdateCheck = 1140;
 				LastUpgradeCheck = 1140;
 				ORGANIZATIONNAME = "NYPL Labs";
 				TargetAttributes = {
@@ -327,6 +393,11 @@
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = 7262U6ST2R;
 						LastSwiftMigration = 0940;
+					};
+					73EEE7DE247F274E00A06D14 = {
+						CreatedOnToolsVersion = 11.4;
+						LastSwiftMigration = 1140;
+						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
 				};
 			};
@@ -345,6 +416,7 @@
 			targets = (
 				14E61C5B20DD7C4800124E2B /* NYPLCardCreator */,
 				607FACCF1AFB9204008FA782 /* NYPLCardCreator_Example */,
+				73EEE7DE247F274E00A06D14 /* NYPLCardCreatorTests */,
 			);
 		};
 /* End PBXProject section */
@@ -364,6 +436,13 @@
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				2D6F7C391D90FB3A000B906A /* InfoPlist.strings in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		73EEE7DD247F274E00A06D14 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,8 +473,11 @@
 				14E61C6920DD7C6200124E2B /* Address.swift in Sources */,
 				14E61C7D20DD7C6200124E2B /* AlternativeAddressesViewController.swift in Sources */,
 				14E61C6D20DD7C6200124E2B /* CardType.swift in Sources */,
+				73D15456247C96C700ACD04E /* JuvenileCreationInfo.swift in Sources */,
 				14E61C7820DD7C6200124E2B /* UserCredentialsViewController.swift in Sources */,
 				14E61C8220DD7C6200124E2B /* LabelledTextViewCell.swift in Sources */,
+				735F6379247DDDB6008858C4 /* JuvenileCreationResponseBody.swift in Sources */,
+				73D15458247CA58000ACD04E /* PlatformAPIError.swift in Sources */,
 				14E61C7720DD7C6200124E2B /* ValidateAddressResponse.swift in Sources */,
 				14E61C7120DD7C6200124E2B /* SummaryAddressCell.swift in Sources */,
 				14E61C8020DD7C6200124E2B /* TableViewController.swift in Sources */,
@@ -415,6 +497,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		73EEE7DB247F274E00A06D14 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				73EEE7ED247F290700A06D14 /* JuvenileCreationResponseBodyTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -422,6 +512,16 @@
 			isa = PBXTargetDependency;
 			target = 14E61C5B20DD7C4800124E2B /* NYPLCardCreator */;
 			targetProxy = 14E61C6120DD7C4800124E2B /* PBXContainerItemProxy */;
+		};
+		73EEE7E6247F274E00A06D14 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 14E61C5B20DD7C4800124E2B /* NYPLCardCreator */;
+			targetProxy = 73EEE7E5247F274E00A06D14 /* PBXContainerItemProxy */;
+		};
+		73EEE7EB247F276F00A06D14 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 607FACCF1AFB9204008FA782 /* NYPLCardCreator_Example */;
+			targetProxy = 73EEE7EA247F276F00A06D14 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -477,7 +577,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -522,7 +621,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -582,6 +680,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -630,6 +729,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 4.2;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -650,8 +750,6 @@
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.nypl.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -672,9 +770,61 @@
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.nypl.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		73EEE7E8247F274E00A06D14 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = NYPLCardCreatorTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.nypl.labs.NYPLCardCreatorTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NYPLCardCreator_Example.app/NYPLCardCreator_Example";
+			};
+			name = Debug;
+		};
+		73EEE7E9247F274E00A06D14 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = NYPLCardCreatorTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.nypl.labs.NYPLCardCreatorTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NYPLCardCreator_Example.app/NYPLCardCreator_Example";
 			};
 			name = Release;
 		};
@@ -704,6 +854,15 @@
 			buildConfigurations = (
 				607FACF01AFB9204008FA782 /* Debug */,
 				607FACF11AFB9204008FA782 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		73EEE7E7247F274E00A06D14 /* Build configuration list for PBXNativeTarget "NYPLCardCreatorTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				73EEE7E8247F274E00A06D14 /* Debug */,
+				73EEE7E9247F274E00A06D14 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
