@@ -21,7 +21,7 @@ struct JuvenileCardCreationEligibility: Decodable {
   /// Same as `description` except that it provides a default eligibility
   /// error message in case `description` is missing.
   var userFriendlyMessage: String {
-    return description ?? NSLocalizedString("You are not eligible to create cards for your children.", comment: "A generic message for lacking eligibility for juvenile card creation")
+    return description ?? NSLocalizedString("This card type is not eligible to create dependent cards.", comment: "A generic message for lacking eligibility for juvenile card creation")
   }
 
   static func fromData(_ data: Data) -> JuvenileCardCreationEligibility? {

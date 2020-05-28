@@ -196,7 +196,7 @@ public class JuvenileFlowCoordinator {
       guard (200...299).contains(response.statusCode) else {
         var userInfo: [String: Any] = ["requestURL": urlStr, "response": response]
         if response.statusCode == 401 || response.statusCode == 403 {
-          userInfo[NSLocalizedRecoverySuggestionErrorKey] = NSLocalizedString("Try to sign out, sign back in, then try again.", comment: "A error recovery suggestion")
+          userInfo[NSLocalizedRecoverySuggestionErrorKey] = NSLocalizedString("Please log out and try your card information again.", comment: "A error recovery suggestion related to missing login info")
         }
         let err = NSError(domain: ErrorDomain,
                           code: ErrorCode.unsuccessfulHTTPStatusCode.rawValue,
