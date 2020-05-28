@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 /// The information regarding the 2nd version of the card creator api. This is
 /// currently used only for the Juvenile cards but in the future it will be
@@ -48,6 +48,14 @@ public final class CardCreatorConfiguration: NSObject {
   /// The timeout to use for all requests to the API endpoint.
   public let requestTimeoutInterval: TimeInterval
 
+  /// The barcode of the parent creating juvenile accounts. Unused by the
+  /// regular flow.
+  let juvenileParentBarcode: String
+
+  /// The callback to use to create the child account.
+  /// - Note: This is ignored by the regular flow.
+  var juvenileCreationHandler: ((_: JuvenileCreationInfo, _: JuvenileCardCreationResponder?) -> Void)?
+
   /// This will always be called on the main thread. It will only be called in the event
   /// of a successful registration.
   @objc public var completionHandler: (_ username: String, _ PIN: String, _ userInitiated: Bool) -> Void
@@ -55,15 +63,37 @@ public final class CardCreatorConfiguration: NSObject {
   /// Saves in-progress data entered by User/Patron
   var user: UserInfo
 
+  /// Strings that differ between the regular and juvenile flows.
   let localizedStrings: FlowLocalizedStrings
 
-  let usernameMinLength: Int
-  
+  /// The minimum length of the username field.
+  let usernameMinLength: Int = 5
+
+  /// The designated initialier. This can be used for both regular and
+  /// juvenile card creation.
+  /// 
+  /// - Parameters:
+  ///   - endpointURL: The base URL for the API endpoints used by the regular
+  ///   card creation flow.
+  ///   - endpointVersion: Version of the API used by the regular
+  ///   card creation flow.
+  ///   - endpointUsername: Username for authenticating on the API used by the
+  ///   regular card creation flow.
+  ///   - endpointPassword: Password for authenticating on the API used by the
+  ///   regular card creation flow.
+  ///   - juvenileParentBarcode: Optional barcode of the parent for creating
+  ///   juvenile accounts.
+  ///   - juvenilePlatformAPIInfo: The platform API endpoints necessary for the
+  ///   juvenile flow. For regular card creation flow, leave this nil.
+  ///   - requestTimeoutInterval: Request timeouts for both flows.
+  ///   - completionHandler: Completion block that will be called on the main
+  ///   thread at the end of both registration flows.
   @objc public init(
     endpointURL: URL,
     endpointVersion: String,
     endpointUsername: String,
     endpointPassword: String,
+    juvenileParentBarcode: String = "",
     juvenilePlatformAPIInfo: NYPLPlatformAPIInfo? = nil,
     requestTimeoutInterval: TimeInterval,
     completionHandler: @escaping (_ username: String, _ PIN: String, _ userInitiated: Bool) -> Void = { _, _, _ in })
@@ -71,6 +101,7 @@ public final class CardCreatorConfiguration: NSObject {
     self.endpointURL = endpointURL.appendingPathComponent(endpointVersion)
     self.endpointUsername = endpointUsername
     self.endpointPassword = endpointPassword
+    self.juvenileParentBarcode = juvenileParentBarcode
     self.platformAPIInfo = juvenilePlatformAPIInfo
     self.requestTimeoutInterval = requestTimeoutInterval
     self.completionHandler = completionHandler
@@ -78,10 +109,8 @@ public final class CardCreatorConfiguration: NSObject {
     self.user = UserInfo()
     if isJuvenileFlow {
       self.localizedStrings = JuvenileFlowLocalizedStrings()
-      self.usernameMinLength = 3
     } else {
       self.localizedStrings = RegularFlowLocalizedStrings()
-      self.usernameMinLength = 5
     }
     super.init()
   }
@@ -107,7 +136,6 @@ protocol FlowLocalizedStrings {
   var attestationRequirementMessage: String {get}
 
   var nameScreenTitle: String {get}
-  var usernameAndPINSubtitle: String {get}
 }
 
 struct RegularFlowLocalizedStrings: FlowLocalizedStrings {
@@ -128,9 +156,6 @@ struct RegularFlowLocalizedStrings: FlowLocalizedStrings {
   let nameScreenTitle = NSLocalizedString(
     "Personal Information",
     comment: "A title for the screen asking the user for their personal information")
-  let usernameAndPINSubtitle = NSLocalizedString(
-    "Username must be 5–25 letters and numbers only.\nPIN must be 4 numeric characters only.",
-    comment: "A description of valid usernames and PINs for the regular flow")
 }
 
 struct JuvenileFlowLocalizedStrings: FlowLocalizedStrings {
@@ -150,9 +175,6 @@ struct JuvenileFlowLocalizedStrings: FlowLocalizedStrings {
   let nameScreenTitle = NSLocalizedString(
     "Create New Card",
     comment: "A title for the screen where a user can create a new card for their children")
-  let usernameAndPINSubtitle = NSLocalizedString(
-    "Username should be 3–25 letters and numbers only.\nPIN should be 4 numeric characters only.",
-    comment: "A description of valid usernames and PINs for the juvenile flow")
 }
 
 final class UserInfo {

@@ -118,7 +118,7 @@ final class UserCredentialsViewController: TableViewController {
     return 1
   }
   
-  func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
+  func numberOfSections(in tableView: UITableView) -> Int {
     return self.cells.count
   }
   
@@ -155,8 +155,8 @@ final class UserCredentialsViewController: TableViewController {
   func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
     return 0
   }
-  
-  func tableView(_ tableView: UITableView, heightForRowAtIndexPath indexPath: IndexPath) -> CGFloat {
+
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return UITableView.automaticDimension
   }
   

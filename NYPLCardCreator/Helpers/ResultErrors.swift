@@ -23,6 +23,8 @@ public enum ErrorCode: Int {
   case ineligibleForJuvenileCardCreation = 100
   case wrongPtype = 101
   case reachedMaxJuvenileCards = 102
+  case missingAuthentication = 103
+  case createJuvenileAccountFail = 104
 
   // MARK:- Low-level error codes
 

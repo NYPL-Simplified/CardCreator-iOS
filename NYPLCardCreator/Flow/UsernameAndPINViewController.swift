@@ -99,7 +99,9 @@ final class UsernameAndPINViewController: FormTableViewController {
   // MARK: UITableViewDataSource
   
   func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-    return configuration.localizedStrings.usernameAndPINSubtitle
+    return NSLocalizedString(
+      "Username should be 5–25 letters and numbers only.\nPIN should be 4 numeric characters only.",
+      comment: "A description of valid usernames and PINs")
   }
   
   // MARK: UITextFieldDelegate

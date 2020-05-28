@@ -12,6 +12,7 @@ public class JuvenileFlowCoordinator {
 
   private let urlSession: URLSession
   public let configuration: CardCreatorConfiguration
+  private var authToken: ISSOToken?
 
   public init(configuration: CardCreatorConfiguration) {
     self.configuration = configuration
@@ -32,11 +33,9 @@ public class JuvenileFlowCoordinator {
   /// `localizedDescription`.
   /// 
   /// - Parameters:
-  ///   - parentBarcode: The barcode of the parent to use to create dependent cards.
   ///   - completion: Always called at the end of the calls mentioned above on
   ///   the main queue.
-  public func startJuvenileFlow(parentBarcode: String,
-                                completion: @escaping (Result<UINavigationController>) -> Void) {
+  public func startJuvenileFlow(completion: @escaping (Result<UINavigationController>) -> Void) {
     guard let platformAPI = configuration.platformAPIInfo else {
       let err = NSError(domain: ErrorDomain,
                         code: ErrorCode.missingConfiguration.rawValue)
@@ -47,6 +46,19 @@ public class JuvenileFlowCoordinator {
     }
 
     let config = configuration
+    let parentBarcode = configuration.juvenileParentBarcode
+
+    configuration.juvenileCreationHandler = { [weak self] juvenileInfo, responder in
+      self?.createPatron(using: platformAPI, parameters: juvenileInfo) { result in
+        if case .fail(let err) = result {
+          responder?.handleJuvenilePatronResponse(.fail(
+            JuvenileFlowCoordinator.errorWithUserFriendlyMessage(amending: err)))
+          return
+        }
+
+        responder?.handleJuvenilePatronResponse(result)
+      }
+    }
 
     authenticate(using: platformAPI) { [weak self] result in
       guard let self = self else {
@@ -54,8 +66,9 @@ public class JuvenileFlowCoordinator {
       }
 
       switch result {
-      case .success(let issoToken):
-        self.fetchJuvenileElegibility(using: platformAPI, authToken: issoToken, parentBarcode: parentBarcode) { error in
+      case .success(let authToken):
+        self.authToken = authToken
+        self.fetchJuvenileElegibility(using: platformAPI, authToken: authToken, parentBarcode: parentBarcode) { error in
 
           OperationQueue.main.addOperation {
             if let error = error {
@@ -143,14 +156,14 @@ public class JuvenileFlowCoordinator {
 
     switch result {
     case .fail(let err):
-      completion(JuvenileFlowCoordinator.errorWithUserFriendlyMessage(amending: err))
+      completion(err)
     case .success(let req):
-      execute(req, completion: completion)
+      executeEligibility(req, completion: completion)
     }
   }
 
-  private func execute(_ req: URLRequest,
-                       completion: @escaping (_ error: Error?) -> Void) {
+  private func executeEligibility(_ req: URLRequest,
+                                  completion: @escaping (_ error: Error?) -> Void) {
 
     // note: the request built by eligibilityRequest(using...) will always
     // contain a valid url. This nil-coalescing check is just for future-proofing.
@@ -178,43 +191,106 @@ public class JuvenileFlowCoordinator {
         return
       }
 
-      // note: business logic errors related to ineligibility (e.g. "wrong
-      // ptype") will return a 2xx status code
       guard (200...299).contains(response.statusCode) else {
-        let msg = NSLocalizedString("An error occurred while processing your request.", comment: "A generic error message regarding a low-level error")
-        let recoveryMsg = NSLocalizedString("Try to sign out, sign back in, then try again.", comment: "A error recovery suggestion")
-        let err = NSError(domain: ErrorDomain,
-                          code: ErrorCode.unsuccessfulHTTPStatusCode.rawValue,
-                          userInfo: [
-                            NSLocalizedDescriptionKey: msg,
-                            NSLocalizedRecoverySuggestionErrorKey: recoveryMsg,
-                            "requestURL": urlStr,
-                            "response": response])
-        completion(err)
-        return
-      }
+        var userInfo: [String: Any] = ["requestURL": urlStr, "response": response]
+        if response.statusCode == 401 || response.statusCode == 403 {
+          userInfo[NSLocalizedRecoverySuggestionErrorKey] = NSLocalizedString("Please log out and try your card information again.", comment: "A error recovery suggestion related to missing login info")
+        }
 
-      guard let eligibility = JuvenileCardCreationEligibility.fromData(data) else {
-        let err = NSError(domain: ErrorDomain,
-                          code: ErrorCode.jsonDecodingFail.rawValue,
-                          userInfo: ["requestURL": urlStr, "data": data])
-        completion(err)
-        return
-      }
+        guard let responseError = PlatformAPIError.fromData(data) else {
+          completion(NSError(domain: ErrorDomain,
+                             code: ErrorCode.jsonDecodingFail.rawValue,
+                             userInfo: userInfo))
+          return
+        }
 
-      if eligibility.eligible == false {
         // NB: the server will return product-approved yet non-localized
         // messages, but because of time constraints we are not going to
         // localize those
-        let err = NSError(domain: ErrorDomain,
-                          code: ErrorCode.ineligibleForJuvenileCardCreation.rawValue,
-                          userInfo: [
-                            NSLocalizedDescriptionKey: eligibility.userFriendlyMessage])
-        completion(err)
+        userInfo[NSLocalizedDescriptionKey] = responseError.message
+        completion(NSError(domain: ErrorDomain,
+                           code: ErrorCode.ineligibleForJuvenileCardCreation.rawValue,
+                           userInfo: userInfo))
         return
       }
 
       completion(nil)
+    }
+    task.resume()
+  }
+
+  private func createPatron(using platformAPI: NYPLPlatformAPIInfo,
+                            parameters: JuvenileCreationInfo,
+                            completion: @escaping (_ result: Result<String>) -> Void) {
+
+    let result = juvenileCreateRequest(using: platformAPI,
+                                       parameters: parameters)
+    switch result {
+    case .fail(let err):
+      completion(.fail(err))
+    case .success(let req):
+      executeCreatePatron(req, completion: completion)
+    }
+  }
+
+  private func executeCreatePatron(_ req: URLRequest,
+                                   completion: @escaping (_ result: Result<String>) -> Void) {
+
+    // note: the request built by juvenileCreateRequest(using...) will always
+    // contain a valid url. This nil-coalescing check is just for future-proofing.
+    let urlStr = req.url?.absoluteString ?? "missing URL from /patrons/dependents request"
+
+    let task = urlSession.dataTask(with: req) { data, response, error in
+      if let error = error {
+        completion(.fail(error))
+        return
+      }
+
+      guard let data = data else {
+        let err = NSError(domain: ErrorDomain,
+                          code: ErrorCode.noData.rawValue,
+                          userInfo: ["requestURL": urlStr])
+        completion(.fail(err))
+        return
+      }
+
+      guard let response = response as? HTTPURLResponse else {
+        let err = NSError(domain: ErrorDomain,
+                          code: ErrorCode.noHTTPResponse.rawValue,
+                          userInfo: ["requestURL": urlStr])
+        completion(.fail(err))
+        return
+      }
+
+      guard (200...299).contains(response.statusCode) else {
+        guard let error = PlatformAPIError.fromData(data) else {
+          let err = NSError(domain: ErrorDomain,
+                            code: ErrorCode.jsonDecodingFail.rawValue,
+                            userInfo: [
+                              "requestURL": urlStr,
+                              "response": response])
+          completion(.fail(err))
+          return
+        }
+
+        completion(.fail(NSError(domain: ErrorDomain,
+                                 code: ErrorCode.createJuvenileAccountFail.rawValue,
+                                 userInfo: [
+                                  NSLocalizedDescriptionKey: error.message,
+                                  "requestURL": urlStr,
+                                  "response": response])))
+        return
+      }
+
+      guard let juvBarcode = JuvenileCreationResponseBody.fromData(data) else {
+        let err = NSError(domain: ErrorDomain,
+                          code: ErrorCode.jsonDecodingFail.rawValue,
+                          userInfo: ["requestURL": urlStr, "data": data])
+        completion(.fail(err))
+        return
+      }
+
+      completion(.success(juvBarcode.barcode))
     }
     task.resume()
   }
@@ -269,6 +345,28 @@ public class JuvenileFlowCoordinator {
     req.setValue("application/json", forHTTPHeaderField: "Accept")
     req.setValue("\(authToken.tokenType) \(authToken.accessToken)", forHTTPHeaderField: "Authorization")
     req.timeoutInterval = configuration.requestTimeoutInterval
+    return .success(req)
+  }
+
+  private func juvenileCreateRequest(using platformAPI: NYPLPlatformAPIInfo,
+                                     parameters: JuvenileCreationInfo) -> Result<URLRequest> {
+    let url = platformAPI.baseURL
+      .appendingPathComponent("patrons/dependents")
+
+    guard let authToken = self.authToken else {
+      let err = NSError(domain: ErrorDomain,
+                        code: ErrorCode.missingAuthentication.rawValue,
+                        userInfo: ["requestURL": url])
+      return .fail(err)
+    }
+
+    var req = URLRequest(url: url)
+    req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    req.setValue("application/json", forHTTPHeaderField: "Accept")
+    req.setValue("\(authToken.tokenType) \(authToken.accessToken)", forHTTPHeaderField: "Authorization")
+    req.timeoutInterval = configuration.requestTimeoutInterval
+    req.httpMethod = "POST"
+    req.httpBody = parameters.encode()
     return .success(req)
   }
 

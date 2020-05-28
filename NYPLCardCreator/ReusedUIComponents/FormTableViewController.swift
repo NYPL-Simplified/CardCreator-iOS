@@ -62,7 +62,7 @@ class FormTableViewController: TableViewController, UITextFieldDelegate {
     return self.cells.count
   }
   
-  func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
+  func numberOfSections(in tableView: UITableView) -> Int {
     return 1
   }
   
