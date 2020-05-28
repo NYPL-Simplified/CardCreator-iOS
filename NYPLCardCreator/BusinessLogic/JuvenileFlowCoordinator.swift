@@ -191,37 +191,26 @@ public class JuvenileFlowCoordinator {
         return
       }
 
-      // note: business logic errors related to ineligibility (e.g. "wrong
-      // ptype") will return a 2xx status code
       guard (200...299).contains(response.statusCode) else {
         var userInfo: [String: Any] = ["requestURL": urlStr, "response": response]
         if response.statusCode == 401 || response.statusCode == 403 {
           userInfo[NSLocalizedRecoverySuggestionErrorKey] = NSLocalizedString("Please log out and try your card information again.", comment: "A error recovery suggestion related to missing login info")
         }
-        let err = NSError(domain: ErrorDomain,
-                          code: ErrorCode.unsuccessfulHTTPStatusCode.rawValue,
-                          userInfo: userInfo)
-        completion(err)
-        return
-      }
 
-      guard let eligibility = JuvenileCardCreationEligibility.fromData(data) else {
-        let err = NSError(domain: ErrorDomain,
-                          code: ErrorCode.jsonDecodingFail.rawValue,
-                          userInfo: ["requestURL": urlStr, "data": data])
-        completion(err)
-        return
-      }
+        guard let responseError = PlatformAPIError.fromData(data) else {
+          completion(NSError(domain: ErrorDomain,
+                             code: ErrorCode.jsonDecodingFail.rawValue,
+                             userInfo: userInfo))
+          return
+        }
 
-      if eligibility.eligible == false {
         // NB: the server will return product-approved yet non-localized
         // messages, but because of time constraints we are not going to
         // localize those
-        let err = NSError(domain: ErrorDomain,
-                          code: ErrorCode.ineligibleForJuvenileCardCreation.rawValue,
-                          userInfo: [
-                            NSLocalizedDescriptionKey: eligibility.userFriendlyMessage])
-        completion(err)
+        userInfo[NSLocalizedDescriptionKey] = responseError.message
+        completion(NSError(domain: ErrorDomain,
+                           code: ErrorCode.ineligibleForJuvenileCardCreation.rawValue,
+                           userInfo: userInfo))
         return
       }
 
@@ -249,7 +238,7 @@ public class JuvenileFlowCoordinator {
 
     // note: the request built by juvenileCreateRequest(using...) will always
     // contain a valid url. This nil-coalescing check is just for future-proofing.
-    let urlStr = req.url?.absoluteString ?? "missing URL from eligibility request"
+    let urlStr = req.url?.absoluteString ?? "missing URL from /patrons/dependents request"
 
     let task = urlSession.dataTask(with: req) { data, response, error in
       if let error = error {

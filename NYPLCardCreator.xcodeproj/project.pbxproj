@@ -46,7 +46,6 @@
 		7353354D246DBB8D000C2874 /* ResultErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7353354C246DBB8D000C2874 /* ResultErrors.swift */; };
 		735F6379247DDDB6008858C4 /* JuvenileCreationResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 735F6378247DDDB6008858C4 /* JuvenileCreationResponseBody.swift */; };
 		738401032474974000236B0D /* ISSOToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738401022474974000236B0D /* ISSOToken.swift */; };
-		738401052475927F00236B0D /* JuvenileCardCreationEligibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738401042475927F00236B0D /* JuvenileCardCreationEligibility.swift */; };
 		73935214246CD0C200ACC0AB /* JuvenileFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73935213246CD0C200ACC0AB /* JuvenileFlowCoordinator.swift */; };
 		73D15456247C96C700ACD04E /* JuvenileCreationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D15455247C96C700ACD04E /* JuvenileCreationInfo.swift */; };
 		73D15458247CA58000ACD04E /* PlatformAPIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D15457247CA58000ACD04E /* PlatformAPIError.swift */; };
@@ -133,7 +132,6 @@
 		7353354C246DBB8D000C2874 /* ResultErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultErrors.swift; sourceTree = "<group>"; };
 		735F6378247DDDB6008858C4 /* JuvenileCreationResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuvenileCreationResponseBody.swift; sourceTree = "<group>"; };
 		738401022474974000236B0D /* ISSOToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISSOToken.swift; sourceTree = "<group>"; };
-		738401042475927F00236B0D /* JuvenileCardCreationEligibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuvenileCardCreationEligibility.swift; sourceTree = "<group>"; };
 		73935213246CD0C200ACC0AB /* JuvenileFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuvenileFlowCoordinator.swift; sourceTree = "<group>"; };
 		73D15455247C96C700ACD04E /* JuvenileCreationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuvenileCreationInfo.swift; sourceTree = "<group>"; };
 		73D15457247CA58000ACD04E /* PlatformAPIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformAPIError.swift; sourceTree = "<group>"; };
@@ -263,7 +261,6 @@
 				146E47B520DD746300C8F97F /* AddressStep.swift */,
 				146E47BA20DD746300C8F97F /* CardCreatorConfiguration.swift */,
 				738401022474974000236B0D /* ISSOToken.swift */,
-				738401042475927F00236B0D /* JuvenileCardCreationEligibility.swift */,
 				73D15455247C96C700ACD04E /* JuvenileCreationInfo.swift */,
 				735F6378247DDDB6008858C4 /* JuvenileCreationResponseBody.swift */,
 				73935213246CD0C200ACC0AB /* JuvenileFlowCoordinator.swift */,
@@ -453,7 +450,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				738401052475927F00236B0D /* JuvenileCardCreationEligibility.swift in Sources */,
 				14E61C7020DD7C6200124E2B /* IntroductionViewController.swift in Sources */,
 				14E61C6F20DD7C6200124E2B /* RemoteHTMLViewController.swift in Sources */,
 				14E61C6C20DD7C6200124E2B /* ActivityTitleView.swift in Sources */,
