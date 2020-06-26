@@ -5,11 +5,11 @@ import CoreGraphics
 /// The first step in the card registration flow.
 final class IntroductionViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
   
-  fileprivate let configuration: CardCreatorConfiguration
-  fileprivate let descriptionLabel: UILabel
-  fileprivate var attestationVerified: Bool
-  fileprivate var eulaVerified: Bool
-  fileprivate var tableView: UITableView!
+  private let configuration: CardCreatorConfiguration
+  private let descriptionLabel: UILabel
+  private var attestationVerified: Bool
+  private var eulaVerified: Bool
+  private var tableView: UITableView!
 
   public init(configuration: CardCreatorConfiguration) {
     self.configuration = configuration
@@ -46,7 +46,7 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
       action: #selector(didSelectNext))
   }
   
-  fileprivate func setupCustomViews() {
+  private func setupCustomViews() {
     if #available(iOS 13.0, *) {
       self.descriptionLabel.textColor = UIColor.label
     } else {
@@ -69,7 +69,12 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
         cell.textLabel?.text = configuration.localizedStrings.attestationConfirm
       }
     } else {
-      cell.textLabel?.text = NSLocalizedString("I have read and agree to the End User License Agreement", comment: "Statement that the user will check if they agree to the terms of the agreement.")
+      let eula = NSLocalizedString("I have read and agree to the End User License Agreement", comment: "Statement that the user will check if they agree to the terms of the agreement.")
+      var disclaimer = ""
+      if configuration.isJuvenile {
+        disclaimer = NSLocalizedString("and the Legal Disclaimer", comment: "addendum to EULA text to mention the legal disclaimer for juvenile card creation")
+      }
+      cell.textLabel?.text = "\(eula) \(disclaimer)"
     }
     cell.textLabel?.numberOfLines = 0
     cell.textLabel?.font = UIFont.preferredFont(forTextStyle: .callout)
@@ -127,23 +132,50 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
     }
   }
   
-  func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    if section == 1 {
-      let containerView = UIView()
-      let button = UIButton()
-      containerView.addSubview(button)
-      button.setTitle(NSLocalizedString("End User License Agreement", comment: "Title of button for EULA"), for: .normal)
-      button.setTitleColor(UIColor.blue, for: .normal)
-      button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
-      button.addTarget(self, action: #selector(eulaPressed(_:)), for: .touchUpInside)
-      button.autoAlignAxis(toSuperviewAxis: .vertical)
-      button.autoPinEdge(toSuperviewEdge: .top, withInset: 8)
-      button.autoPinEdges(toSuperviewMarginsExcludingEdge: .top)
-      button.autoSetDimension(.height, toSize: 20, relation: .greaterThanOrEqual)
-      return containerView
-    } else {
+  func tableView(_ tableView: UITableView,
+                 viewForFooterInSection section: Int) -> UIView? {
+
+    guard section == 1 else {
       return nil
     }
+
+    let linkColor: UIColor
+    if #available(iOS 13, *) {
+      linkColor = .link
+    } else {
+      linkColor = UIColor(red: 0.05, green: 0.4, blue: 0.65, alpha: 1.0)
+    }
+
+    let eulaButton = UIButton()
+    eulaButton.setTitle(NSLocalizedString("End User License Agreement", comment: "Title of button for EULA"), for: .normal)
+    eulaButton.setTitleColor(linkColor, for: .normal)
+    eulaButton.titleLabel?.font = .preferredFont(forTextStyle: .footnote)
+    eulaButton.addTarget(self,
+                         action: #selector(eulaPressed(_:)),
+                         for: .touchUpInside)
+
+    let arrangedViews: [UIView]
+    if configuration.isJuvenile {
+      let disclaimerButton = UIButton()
+      disclaimerButton.setTitle(NSLocalizedString("Legal Disclaimer", comment: "Title of legal disclaimer action for juvenile card creation"), for: .normal)
+      disclaimerButton.setTitleColor(linkColor, for: .normal)
+      disclaimerButton.titleLabel?.font = .preferredFont(forTextStyle: .footnote)
+      disclaimerButton.addTarget(self,
+                                 action: #selector(disclaimerPressed),
+                                 for: .touchUpInside)
+      arrangedViews = [eulaButton, disclaimerButton]
+    } else {
+      arrangedViews = [eulaButton]
+    }
+
+    let containerView = UIStackView(arrangedSubviews: arrangedViews)
+    containerView.axis = .vertical
+    containerView.alignment = .center
+    containerView.spacing = 5
+    containerView.isLayoutMarginsRelativeArrangement = true
+    containerView.layoutMargins = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+
+    return containerView
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -192,12 +224,30 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
   
   // MARK: -
   
-  @objc fileprivate func eulaPressed(_ sender: Any) {
+  @objc private func eulaPressed(_ sender: Any) {
     let vc = RemoteHTMLViewController(URL: URL.init(string: "https://www.librarysimplified.org/EULA")!, title: "EULA", failureMessage: nil)
     self.navigationController?.pushViewController(vc, animated: true)
   }
   
-  @objc fileprivate func didSelectNext() {
+  @objc private func disclaimerPressed(_ sender: Any) {
+    let msg = NSLocalizedString("""
+    I understand that the ecard will be valid for 3 years. After that time, \
+    I am required to renew the ecard. I understand that if the Library \
+    determines I am not the parent / legal guardian of the minor(s) I created \
+    a library ecard account for, the Library will deactivate the ecard account.
+
+    For more information, please see:
+    www.nypl.org/help/library-card/terms-conditions.
+    """, comment: "Body of the legal disclaimer for juvenile card creation")
+    let alert = UIAlertController(title: NSLocalizedString("Legal Disclaimer", comment: "Title of legal disclaimer action for juvenile card creation"),
+                                  message: msg,
+                                  preferredStyle: .actionSheet)
+    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+    alert.view.isUserInteractionEnabled = true
+    present(alert, animated: true, completion: nil)
+  }
+
+  @objc private func didSelectNext() {
     if (attestationVerified && eulaVerified) {
       self.navigationController?.pushViewController(
       LocationViewController(configuration: self.configuration),
@@ -209,16 +259,16 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
     }
   }
   
-  fileprivate func didConfirmAttestation() {
+  private func didConfirmAttestation() {
     self.attestationVerified = true
   }
   
-  fileprivate func didDenyAttestation() {
+  private func didDenyAttestation() {
     self.attestationVerified = false
     attestationAlert()
   }
   
-  fileprivate func setCheckmark(_ state: Bool, forCell cell: UITableViewCell?) {
+  private func setCheckmark(_ state: Bool, forCell cell: UITableViewCell?) {
     if (state == true) {
       cell?.accessoryView = UIImageView(image: UIImage(named: "CheckboxOn"))
       cell?.accessibilityLabel = NSLocalizedString("Checkbox is marked", comment: "Accessible label for the current status of the item")
@@ -230,7 +280,7 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
     }
   }
   
-  fileprivate func attestationAlert() {
+  private func attestationAlert() {
     let alertController = UIAlertController(
       title: configuration.localizedStrings.attestationRequirementTitle,
       message: configuration.localizedStrings.attestationRequirementMessage,
@@ -244,7 +294,7 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
     }
   }
   
-  fileprivate func eulaAlert() {
+  private func eulaAlert() {
     let alertController = UIAlertController(
       title: NSLocalizedString(
         "EULA Requirement",
