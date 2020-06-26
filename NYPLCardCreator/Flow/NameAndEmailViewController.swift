@@ -2,45 +2,69 @@ import UIKit
 
 final class NameAndEmailViewController: FormTableViewController {
   
-  fileprivate let configuration: CardCreatorConfiguration
+  private let configuration: CardCreatorConfiguration
   
-  fileprivate let cardType: CardType
-  fileprivate let firstNameCell: LabelledTextViewCell
-  fileprivate let middleInitialCell: LabelledTextViewCell
-  fileprivate let lastNameCell: LabelledTextViewCell
-  fileprivate let emailCell: LabelledTextViewCell
-  fileprivate let homeAddress: Address
-  fileprivate let schoolOrWorkAddress: Address?
-  
+  private let cardType: CardType
+  private let firstNameCell: LabelledTextViewCell
+  private let middleInitialCell: LabelledTextViewCell
+  private let lastNameCell: LabelledTextViewCell
+  private let emailCell: LabelledTextViewCell
+  private let homeAddress: Address
+  private let schoolOrWorkAddress: Address?
+
+  convenience init(juvenileConfiguration: CardCreatorConfiguration) {
+    // providing a fake home address because it will be ignored anyway for
+    // juvenile flows
+    self.init(configuration: juvenileConfiguration,
+              homeAddress: Address(street1: "", street2: "", city: "", region: "", zip: ""),
+              schoolOrWorkAddress: nil,
+              cardType: .juvenile)
+  }
+
   init(configuration: CardCreatorConfiguration,
        homeAddress: Address,
        schoolOrWorkAddress: Address?,
        cardType: CardType) {
     self.configuration = configuration
+
+    let requiredPlaceholder = NSLocalizedString("Required", comment: "A placeholder for a required text field")
+    let optionalPlaceholder = NSLocalizedString("Optional", comment: "A placeholder for a required text field")
+
     self.firstNameCell = LabelledTextViewCell(
       title: NSLocalizedString("First Name", comment: "The text field title for the first name of a user"),
-      placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
+      placeholder: requiredPlaceholder)
+
     self.middleInitialCell = LabelledTextViewCell(
       title: NSLocalizedString("Middle", comment: "The text field title for the middle name of a user"),
-      placeholder: NSLocalizedString("Optional", comment: "A placeholder for a required text field"))
+      placeholder: optionalPlaceholder)
+
     self.lastNameCell = LabelledTextViewCell(
       title: NSLocalizedString("Last Name", comment: "The text field title for the last name of a user"),
-      placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
+      placeholder: (configuration.isJuvenile ? optionalPlaceholder : requiredPlaceholder))
+
     self.emailCell = LabelledTextViewCell(
       title: NSLocalizedString("Email", comment: "A text field title for a user's email address"),
-      placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
+      placeholder: requiredPlaceholder)
     
     self.homeAddress = homeAddress
     self.schoolOrWorkAddress = schoolOrWorkAddress
     self.cardType = cardType
-    
-    super.init(
-      cells: [
+
+    let cells: [LabelledTextViewCell]
+    if configuration.isJuvenile {
+      cells = [
+        self.firstNameCell,
+        self.lastNameCell,
+      ]
+    } else {
+      cells = [
         self.firstNameCell,
         self.middleInitialCell,
         self.lastNameCell,
         self.emailCell
-      ])
+      ]
+    }
+    super.init(cells: cells)
     
     self.navigationItem.rightBarButtonItem?.isEnabled = false
     
@@ -55,12 +79,10 @@ final class NameAndEmailViewController: FormTableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.title = NSLocalizedString(
-      "Personal Information",
-      comment: "A title for a screen asking the user for their personal information")
+    self.title = configuration.localizedStrings.nameScreenTitle
   }
   
-  fileprivate func prepareTableViewCells() {
+  private func prepareTableViewCells() {
     for cell in self.cells {
       if let labelledTextViewCell = cell as? LabelledTextViewCell {
         labelledTextViewCell.selectionStyle = .none
@@ -116,13 +138,20 @@ final class NameAndEmailViewController: FormTableViewController {
   
   @objc override func didSelectNext() {
     self.view.endEditing(false)
-    
+
+    guard let firstName = firstNameCell.textField.text,
+      let middleInitial = middleInitialCell.textField.text,
+      let lastName = lastNameCell.textField.text else {
+        return
+    }
+
     var fullName: String
-    if self.middleInitialCell.textField.text!.isEmpty {
-      fullName = self.lastNameCell.textField.text! + ", " + self.firstNameCell.textField.text!
+    if configuration.isJuvenile && lastName.isEmpty {
+      fullName = firstName
+    } else if middleInitial.isEmpty {
+      fullName = lastName + ", " + firstName
     } else {
-      fullName = self.lastNameCell.textField.text! + ", " + self.firstNameCell.textField.text! + " " + 
-        self.middleInitialCell.textField.text!
+      fullName = lastName + ", " + firstName + " " + middleInitial
     }
     
     self.navigationController?.pushViewController(
@@ -136,23 +165,23 @@ final class NameAndEmailViewController: FormTableViewController {
       animated: true)
   }
   
-  fileprivate func emailIsValid() -> Bool {
+  private func emailIsValid() -> Bool {
     let emailRegEx = ".+@.+\\..+"
     let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
     return emailTest.evaluate(with: self.emailCell.textField.text!)
   }
   
-  fileprivate func namesAreValid() -> Bool {
-    return !self.firstNameCell.textField.text!.isEmpty && !self.lastNameCell.textField.text!.isEmpty
+  private func namesAreValid() -> Bool {
+    if configuration.isJuvenile {
+      return !self.firstNameCell.textField.text!.isEmpty
+    } else {
+      return !self.firstNameCell.textField.text!.isEmpty && !self.lastNameCell.textField.text!.isEmpty
+    }
   }
   
-  @objc fileprivate func textFieldDidChange() {
-    if (self.emailIsValid()) {
-      if namesAreValid() {
-        self.navigationItem.rightBarButtonItem?.isEnabled = true
-      } else {
-        self.navigationItem.rightBarButtonItem?.isEnabled = false
-      }
+  @objc private func textFieldDidChange() {
+    if namesAreValid() && (emailIsValid() || configuration.isJuvenile) {
+      self.navigationItem.rightBarButtonItem?.isEnabled = true
     } else {
       self.navigationItem.rightBarButtonItem?.isEnabled = false
     }

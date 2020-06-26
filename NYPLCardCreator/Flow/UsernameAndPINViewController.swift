@@ -3,17 +3,17 @@ import UIKit
 /// This class is used to allow the user to enter their desired username and PIN.
 final class UsernameAndPINViewController: FormTableViewController {
   
-  fileprivate let configuration: CardCreatorConfiguration
+  private let configuration: CardCreatorConfiguration
   
-  fileprivate let usernameCell: LabelledTextViewCell
-  fileprivate let pinCell: LabelledTextViewCell
-  fileprivate let homeAddress: Address
-  fileprivate let schoolOrWorkAddress: Address?
-  fileprivate let cardType: CardType
-  fileprivate let fullName: String
-  fileprivate let email: String
+  private let usernameCell: LabelledTextViewCell
+  private let pinCell: LabelledTextViewCell
+  private let homeAddress: Address
+  private let schoolOrWorkAddress: Address?
+  private let cardType: CardType
+  private let fullName: String
+  private let email: String
   
-  fileprivate let session: AuthenticatingSession
+  private let session: AuthenticatingSession
   
   init(
     configuration: CardCreatorConfiguration,
@@ -58,11 +58,11 @@ final class UsernameAndPINViewController: FormTableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.title = NSLocalizedString(
-      "Username & PIN",
+      "User Details",
       comment: "A title for a screen asking the user for the user's username and PIN")
   }
   
-  fileprivate func prepareTableViewCells() {
+  private func prepareTableViewCells() {
     for cell in self.cells {
       if let labelledTextViewCell = cell as? LabelledTextViewCell {
         labelledTextViewCell.selectionStyle = .none
@@ -99,8 +99,9 @@ final class UsernameAndPINViewController: FormTableViewController {
   // MARK: UITableViewDataSource
   
   func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-    return NSLocalizedString("Usernames must be 5–25 letters and numbers only. PINs must be four digits.",
-                             comment: "A description of valid usernames and PINs")
+    return NSLocalizedString(
+      "Username should be 5–25 letters and numbers only.\nPIN should be 4 numeric characters only.",
+      comment: "A description of valid usernames and PINs")
   }
   
   // MARK: UITextFieldDelegate
@@ -109,7 +110,7 @@ final class UsernameAndPINViewController: FormTableViewController {
                        shouldChangeCharactersInRange range: NSRange,
                                                      replacementString string: String) -> Bool
   {
-    if !string.canBeConverted(to: String.Encoding.ascii) {
+    guard string.canBeConverted(to: String.Encoding.ascii) else {
       return false
     }
     
@@ -132,13 +133,19 @@ final class UsernameAndPINViewController: FormTableViewController {
         return string.count <= 4
       }
     }
-    
-    fatalError()
+
+    assert(false)
+    return false
   }
   
   // MARK: -
   
   @objc override func didSelectNext() {
+    if configuration.isJuvenile {
+      moveToFinalReview()
+      return
+    }
+
     self.view.endEditing(false)
     self.navigationController?.view.isUserInteractionEnabled = false
     self.navigationItem.titleView =
@@ -152,69 +159,41 @@ final class UsernameAndPINViewController: FormTableViewController {
     request.httpMethod = "POST"
     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
     request.timeoutInterval = self.configuration.requestTimeoutInterval
-    let task = self.session.dataTaskWithRequest(request) { (data, response, error) in
+    let task = self.session.dataTaskWithRequest(request) { [weak self] data, response, error in
       OperationQueue.main.addOperation {
+        guard let self = self else {
+          return
+        }
         self.navigationController?.view.isUserInteractionEnabled = true
         self.navigationItem.titleView = nil
+
         if let error = error {
-          let alertController = UIAlertController(
-            title: NSLocalizedString("Error", comment: "The title for an error alert"),
-            message: error.localizedDescription,
-            preferredStyle: .alert)
-          alertController.addAction(UIAlertAction(
-            title: NSLocalizedString("OK", comment: ""),
-            style: .default,
-            handler: nil))
-          self.present(alertController, animated: true, completion: nil)
+          self.showErrorAlert(message: error.localizedDescription)
           return
         }
-        func showErrorAlert() {
-          let alertController = UIAlertController(
-            title: NSLocalizedString("Error", comment: "The title for an error alert"),
-            message: NSLocalizedString(
-              "A server error occurred during username validation. Please try again later.",
-              comment: "An alert message explaining an error and telling the user to try again later"),
-            preferredStyle: .alert)
-          alertController.addAction(UIAlertAction(
-            title: NSLocalizedString("OK", comment: ""),
-            style: .default,
-            handler: nil))
-          self.present(alertController, animated: true, completion: nil)
+
+        guard let response = response as? HTTPURLResponse,
+          response.statusCode == 200,
+          let data = data,
+          let decodedData = ValidateUsernameResponse.responseWithData(data) else {
+            self.showErrorAlert()
+            return
         }
-        if (response as! HTTPURLResponse).statusCode != 200 || data == nil {
-          showErrorAlert()
-          return
-        }
-        guard let validateUsernameResponse = ValidateUsernameResponse.responseWithData(data!) else {
-          showErrorAlert()
-          return
-        }
-        switch validateUsernameResponse {
+
+        switch decodedData {
         case .unavailableUsername:
-          let alertController = UIAlertController(
+          self.showErrorAlert(
             title: NSLocalizedString("Username Unavailable", comment: "The title for an error alert"),
             message: NSLocalizedString(
               "Your chosen username is already in use. Please choose another and try again.",
-              comment: "An alert message explaining an error and telling the user to try again"),
-            preferredStyle: .alert)
-          alertController.addAction(UIAlertAction(
-            title: NSLocalizedString("OK", comment: ""),
-            style: .default,
-            handler: nil))
-          self.present(alertController, animated: true, completion: nil)
+              comment: "An alert message explaining an error and telling the user to try again"))
         case .invalidUsername:
           // We should never be here due to client-side validation, but we'll report it anyway.
-          let alertController = UIAlertController(
+          self.showErrorAlert(
             title: NSLocalizedString("Username Invalid", comment: "The title for an error alert"),
             message: NSLocalizedString(
-              "Usernames must be 5–25 letters and numbers only. Please correct your username and try again.",
-              comment: "An alert message explaining an error and telling the user to try again"),
-            preferredStyle: .alert)
-          alertController.addAction(UIAlertAction(
-            title: NSLocalizedString("OK", comment: ""),
-            style: .default,
-            handler: nil))
-          self.present(alertController, animated: true, completion: nil)
+              "Usernames must be 5–25 letters and numbers only. Please revise your username.",
+              comment: "An alert message explaining an error and telling the user to try again"))
         case .availableUsername:
           self.moveToFinalReview()
         }
@@ -224,17 +203,16 @@ final class UsernameAndPINViewController: FormTableViewController {
     task.resume()
   }
 
-  @objc fileprivate func textFieldDidChange() {
-    
+  @objc private func textFieldDidChange() {
     guard let usernameTextCount = self.usernameCell.textField.text?.count,
           let pinCellTextCount = self.pinCell.textField.text?.count else {
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         return
     }
-    self.navigationItem.rightBarButtonItem?.isEnabled = (usernameTextCount >= 5 && pinCellTextCount == 4)
+    self.navigationItem.rightBarButtonItem?.isEnabled = (usernameTextCount >= configuration.usernameMinLength && pinCellTextCount == 4)
   }
   
-  fileprivate func moveToFinalReview() {
+  private func moveToFinalReview() {
     self.view.endEditing(false)
     self.navigationController?.pushViewController(
       UserSummaryViewController(
@@ -248,5 +226,26 @@ final class UsernameAndPINViewController: FormTableViewController {
         pin: self.pinCell.textField.text!),
       animated: true)
   }
-  
+
+  /// - parameter title: If missing, defaults to generic error title.
+  /// - parameter message: If missing, defaults to server error message.
+  private func showErrorAlert(title: String? = nil, message: String? = nil) {
+    let alertTitle = title ?? NSLocalizedString(
+      "Error",
+      comment: "The title for an error alert")
+
+    let alertMessage = message ?? NSLocalizedString(
+      "A server error occurred during username validation. Please try again later.",
+      comment: "An alert message explaining an error and telling the user to try again later")
+
+    let alertController = UIAlertController(
+      title: alertTitle,
+      message: alertMessage,
+      preferredStyle: .alert)
+    alertController.addAction(UIAlertAction(
+      title: NSLocalizedString("OK", comment: ""),
+      style: .default,
+      handler: nil))
+    self.present(alertController, animated: true, completion: nil)
+  }
 }

@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "14E61C5B20DD7C4800124E2B"
-               BuildableName = "NYPLCardCreator.framework"
-               BlueprintName = "NYPLCardCreator"
+               BlueprintIdentifier = "607FACCF1AFB9204008FA782"
+               BuildableName = "NYPLCardCreator_Example.app"
+               BlueprintName = "NYPLCardCreator_Example"
                ReferencedContainer = "container:NYPLCardCreator.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,6 +28,16 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "73EEE7DE247F274E00A06D14"
+               BuildableName = "NYPLCardCreatorTests.xctest"
+               BlueprintName = "NYPLCardCreatorTests"
+               ReferencedContainer = "container:NYPLCardCreator.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -40,15 +50,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "14E61C5B20DD7C4800124E2B"
-            BuildableName = "NYPLCardCreator.framework"
-            BlueprintName = "NYPLCardCreator"
+            BlueprintIdentifier = "607FACCF1AFB9204008FA782"
+            BuildableName = "NYPLCardCreator_Example.app"
+            BlueprintName = "NYPLCardCreator_Example"
             ReferencedContainer = "container:NYPLCardCreator.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -56,15 +67,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "14E61C5B20DD7C4800124E2B"
-            BuildableName = "NYPLCardCreator.framework"
-            BlueprintName = "NYPLCardCreator"
+            BlueprintIdentifier = "607FACCF1AFB9204008FA782"
+            BuildableName = "NYPLCardCreator_Example.app"
+            BlueprintName = "NYPLCardCreator_Example"
             ReferencedContainer = "container:NYPLCardCreator.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

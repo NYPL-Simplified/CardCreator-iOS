@@ -6,4 +6,5 @@ enum CardType {
   case none
   case temporary
   case standard
+  case juvenile
 }

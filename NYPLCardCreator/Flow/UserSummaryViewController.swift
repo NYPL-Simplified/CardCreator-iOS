@@ -1,29 +1,36 @@
 import UIKit
 
+protocol JuvenileCardCreationResponder {
+  /// The callback to handle the result of the api response for creating a
+  /// juvenile account. In case of error, the error must include a
+  /// user-friendly error message.
+  func handleJuvenilePatronResponse(_: Result<String>)
+}
+
 /// This class is used for summarizing the user's details before
 /// submitting the request to create a library card.
-final class UserSummaryViewController: TableViewController {
-  fileprivate var cells: [UITableViewCell]
-  fileprivate let headerLabel: UILabel
+final class UserSummaryViewController: TableViewController, JuvenileCardCreationResponder {
+  private var cells: [UITableViewCell]
+  private let headerLabel: UILabel
   
-  fileprivate let configuration: CardCreatorConfiguration
-  fileprivate let session: AuthenticatingSession
+  private let configuration: CardCreatorConfiguration
+  private let session: AuthenticatingSession
   
-  fileprivate let homeAddressCell: SummaryAddressCell
-  fileprivate let altAddressCell: SummaryAddressCell
-  fileprivate let cardType: CardType
-  fileprivate let fullNameCell: UITableViewCell
-  fileprivate let emailCell: UITableViewCell
-  fileprivate let usernameCell: UITableViewCell
-  fileprivate let pinCell: UITableViewCell
+  private let homeAddressCell: SummaryAddressCell
+  private let altAddressCell: SummaryAddressCell
+  private let cardType: CardType
+  private let fullNameCell: SummaryCell
+  private let emailCell: SummaryCell
+  private let usernameCell: SummaryCell
+  private let pinCell: SummaryCell
   
-  fileprivate let homeAddress: Address
-  fileprivate let schoolOrWorkAddress: Address?
-  fileprivate let fullName: String
-  fileprivate let email: String
-  fileprivate let username: String
-  fileprivate let pin: String
-  
+  private let homeAddress: Address
+  private let schoolOrWorkAddress: Address?
+  private let fullName: String
+  private let email: String
+  private let username: String
+  private let pin: String
+
   init(
     configuration: CardCreatorConfiguration,
     homeAddress: Address,
@@ -70,13 +77,21 @@ final class UserSummaryViewController: TableViewController {
     self.pinCell = SummaryCell(section: NSLocalizedString("Pin", comment: "Title of the section for the user's PIN number"),
                                cellText: self.pin)
 
-    self.cells = [
-      self.homeAddressCell,
-      self.fullNameCell,
-      self.emailCell,
-      self.usernameCell,
-      self.pinCell
-    ]
+    if configuration.isJuvenile {
+      self.cells = [
+        self.fullNameCell,
+        self.usernameCell,
+        self.pinCell
+      ]
+    } else {
+      self.cells = [
+        self.homeAddressCell,
+        self.fullNameCell,
+        self.emailCell,
+        self.usernameCell,
+        self.pinCell
+      ]
+    }
 
     if (self.schoolOrWorkAddress != nil) {
       self.cells.insert(self.altAddressCell, at: 1)
@@ -85,14 +100,20 @@ final class UserSummaryViewController: TableViewController {
     super.init(style: .plain)
     
     self.tableView.separatorStyle = .none
-    
+
+    let actionCallback: Selector
+    if configuration.isJuvenile {
+      actionCallback = #selector(createJuvenilePatron)
+    } else {
+      actionCallback = #selector(createRegularPatron)
+    }
     self.navigationItem.rightBarButtonItem =
       UIBarButtonItem(title: NSLocalizedString(
         "Create Card",
         comment: "A title for a button that submits the user's information to create a library card"),
                       style: .plain,
                       target: self,
-                      action: #selector(createPatron))
+                      action: actionCallback)
 
     self.prepareTableViewCells()
   }
@@ -119,15 +140,10 @@ final class UserSummaryViewController: TableViewController {
     self.tableView.allowsSelection = false
   }
   
-  fileprivate func prepareTableViewCells() {
+  private func prepareTableViewCells() {
     for cell in self.cells {
       cell.backgroundColor = UIColor.clear
       self.tableView.separatorStyle = .none
-      
-      if let labelledTextViewCell = cell as? LabelledTextViewCell {
-        labelledTextViewCell.selectionStyle = .none
-        labelledTextViewCell.textField.allowsEditingTextAttributes = false
-      }
     }
   }
   
@@ -137,13 +153,19 @@ final class UserSummaryViewController: TableViewController {
     return 1
   }
   
-  func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
+  func numberOfSections(in tableView: UITableView) -> Int {
     return self.cells.count
   }
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     return self.cells[indexPath.section]
   }
+
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return UITableView.automaticDimension
+  }
+
+  // MARK: Headers and footers
   
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     if section == 0 {
@@ -179,13 +201,43 @@ final class UserSummaryViewController: TableViewController {
     return 0
   }
   
-  func tableView(_ tableView: UITableView, heightForRowAtIndexPath indexPath: IndexPath) -> CGFloat {
-    return UITableView.automaticDimension
+  // MARK: - Juvenile Patron Flow
+
+  @objc private func createJuvenilePatron() {
+    let info = JuvenileCreationInfo(parentBarcode: configuration.juvenileParentBarcode,
+                                    name: fullName,
+                                    username: username,
+                                    pin: pin)
+    configuration.juvenileCreationHandler?(info, self)
   }
-  
-  // MARK: -
-  
-  @objc fileprivate func createPatron() {
+
+  func handleJuvenilePatronResponse(_ result: Result<String>) {
+    OperationQueue.main.addOperation { [weak self] in
+      guard let self = self else {
+        return
+      }
+      
+      self.navigationController?.view.isUserInteractionEnabled = true
+      self.navigationItem.titleView = nil
+      
+      switch result {
+      case .success(let juvenileBarcode):
+        self.navigationController?.pushViewController(
+          UserCredentialsViewController(configuration: self.configuration,
+                                        username: self.username,
+                                        barcode: juvenileBarcode,
+                                        pin: self.pin,
+                                        cardType: self.cardType),
+          animated: true)
+      case .fail(let error):
+        self.showErrorAlert(error.localizedDescription)
+      }
+    }
+  }
+
+  // MARK: - Regular Patron Flow
+
+  @objc private func createRegularPatron() {
     self.navigationItem.rightBarButtonItem?.isEnabled = false
     self.navigationController?.view.isUserInteractionEnabled = false
     self.navigationItem.titleView =
@@ -213,57 +265,64 @@ final class UserSummaryViewController: TableViewController {
     request.httpMethod = "POST"
     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
     request.timeoutInterval = self.configuration.requestTimeoutInterval
-    let task = self.session.dataTaskWithRequest(request) { (data, response, error) in
+    let task = session.dataTaskWithRequest(request) { [weak self] data, response, error in
       OperationQueue.main.addOperation {
-        self.navigationController?.view.isUserInteractionEnabled = true
-        self.navigationItem.titleView = nil
-        if let error = error {
-          let alertController = UIAlertController(
-            title: NSLocalizedString("Error", comment: "The title for an error alert"),
-            message: error.localizedDescription,
-            preferredStyle: .alert)
-          alertController.addAction(UIAlertAction(
-            title: NSLocalizedString("OK", comment: ""),
-            style: .default,
-            handler: nil))
-          self.present(alertController, animated: true, completion: nil)
-          self.navigationItem.rightBarButtonItem?.isEnabled = true
-          return
-        }
-        func showErrorAlert() {
-          let alertController = UIAlertController(
-            title: NSLocalizedString("Error", comment: "The title for an error alert"),
-            message: NSLocalizedString(
-              "A server error occurred during card creation. Please try again later.",
-              comment: "An alert message explaining an error and telling the user to try again later"),
-            preferredStyle: .alert)
-          alertController.addAction(UIAlertAction(
-            title: NSLocalizedString("OK", comment: ""),
-            style: .default,
-            handler: nil))
-          self.present(alertController, animated: true, completion: nil)
-          self.navigationItem.rightBarButtonItem?.isEnabled = true
-        }
-        if (response as! HTTPURLResponse).statusCode != 200 || data == nil {
-          showErrorAlert()
-          return
-        }
-        
-        let JSONObject = try? JSONSerialization.jsonObject(with: data!, options: []) as! [String: AnyObject]
-        let barcode = JSONObject?["barcode"] as? String
-        
-        self.navigationController?.pushViewController(
-          UserCredentialsViewController(configuration: self.configuration,
-            username: self.username,
-            barcode: barcode,
-            pin: self.pin,
-            cardType: self.cardType),
-        animated: true)
+        self?.handleRegularPatronResponse(response, data: data, error: error)
       }
     }
     
     task.resume()
   }
 
-  
+  private func handleRegularPatronResponse(_ response: URLResponse?,
+                                           data: Data?,
+                                           error: Error?) {
+    self.navigationController?.view.isUserInteractionEnabled = true
+    self.navigationItem.titleView = nil
+
+    if let error = error {
+      showErrorAlert(error.localizedDescription)
+      return
+    }
+
+    guard let httpResponse = response as? HTTPURLResponse,
+      httpResponse.statusCode == 200,
+      let data = data,
+      let JSONObject = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject] else {
+
+        var errMsg = ""
+        if let code = (response as? HTTPURLResponse)?.statusCode {
+          errMsg = "\nError code: \(code)"
+        }
+        showErrorAlert(NSLocalizedString(
+          "A server error occurred during card creation. Please try again later.\(errMsg)",
+          comment: "An alert message explaining an error and telling the user to try again later"))
+        return
+    }
+
+    let barcode = JSONObject?["barcode"] as? String
+
+    self.navigationController?.pushViewController(
+      UserCredentialsViewController(configuration: self.configuration,
+                                    username: self.username,
+                                    barcode: barcode,
+                                    pin: self.pin,
+                                    cardType: self.cardType),
+      animated: true)
+  }
+
+  // MARK: - Private helpers
+
+  private func showErrorAlert(_ message: String) {
+    let alertController = UIAlertController(
+      title: NSLocalizedString("Error", comment: "The title for an error alert"),
+      message: message,
+      preferredStyle: .alert)
+    alertController.addAction(UIAlertAction(
+      title: NSLocalizedString("OK", comment: ""),
+      style: .default,
+      handler: nil))
+    self.present(alertController, animated: true, completion: nil)
+    self.navigationItem.rightBarButtonItem?.isEnabled = true
+  }
 }
