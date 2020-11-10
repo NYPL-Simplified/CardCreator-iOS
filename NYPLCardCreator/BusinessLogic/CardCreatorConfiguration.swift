@@ -118,6 +118,30 @@ public final class CardCreatorConfiguration: NSObject {
   var isJuvenile: Bool {
     platformAPIInfo != nil
   }
+
+  /// Composes the full name of the user being created as it's expected by
+  /// the server api.
+  /// - Parameters:
+  ///   - firstName: Mandatory for both juvenile and regular cards.
+  ///   - middleInitial: Ignored for juvenile cards.
+  ///   - lastName: Mandatory for both juvenile and regular cards.
+  /// - Returns: For juvenile card the required format is "First Last, while
+  /// for regular cards it's "Last, First Middle".
+  func fullName(forFirstName firstName: String,
+                middleInitial: String?,
+                lastName: String) -> String {
+    if isJuvenile {
+      if lastName.isEmpty {
+        return firstName
+      } else {
+        return firstName + " " + lastName
+      }
+    } else if let middleInitial = middleInitial, !middleInitial.isEmpty {
+      return lastName + ", " + firstName + " " + middleInitial
+    } else {
+      return lastName + ", " + firstName
+    }
+  }
 }
 
 protocol FlowLocalizedStrings {

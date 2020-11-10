@@ -140,20 +140,15 @@ final class NameAndEmailViewController: FormTableViewController {
     self.view.endEditing(false)
 
     guard let firstName = firstNameCell.textField.text,
-      let middleInitial = middleInitialCell.textField.text,
       let lastName = lastNameCell.textField.text else {
         return
     }
 
-    var fullName: String
-    if configuration.isJuvenile && lastName.isEmpty {
-      fullName = firstName
-    } else if middleInitial.isEmpty {
-      fullName = lastName + ", " + firstName
-    } else {
-      fullName = lastName + ", " + firstName + " " + middleInitial
-    }
-    
+    let middleInitial = middleInitialCell.textField.text
+    let fullName = configuration.fullName(forFirstName: firstName,
+                                          middleInitial: middleInitial,
+                                          lastName: lastName)
+
     self.navigationController?.pushViewController(
       UsernameAndPINViewController(
         configuration: self.configuration,
