@@ -31,7 +31,7 @@ public class JuvenileFlowCoordinator {
   /// - it will have one of the `ErrorCode` error codes;
   /// - it will contain a user-friendly error message in the NSError's
   /// `localizedDescription`.
-  /// 
+  ///
   /// - Parameters:
   ///   - completion: Always called at the end of the calls mentioned above on
   ///   the main queue.
@@ -60,17 +60,12 @@ public class JuvenileFlowCoordinator {
       }
     }
 
-    checkJuvenileCreationEligibility(parentBarcode: parentBarcode) { result in
-      switch result {
-      case .success():
-        OperationQueue.main.addOperation {
-          completion(.success(UINavigationController(rootViewController: IntroductionViewController(configuration: config))))
-        }
-      case .fail(let error):
-        OperationQueue.main.addOperation {
-          completion(.fail(error))
-        }
+    checkJuvenileCreationEligibility(parentBarcode: parentBarcode) { (error) in
+      if let error = error {
+        completion(.fail(error))
+        return
       }
+      completion(.success(UINavigationController(rootViewController: IntroductionViewController(configuration: config))))
     }
   }
   
@@ -90,12 +85,12 @@ public class JuvenileFlowCoordinator {
   ///   - completion: Always called at the end of the calls mentioned above on
   ///   the main queue.
   public func checkJuvenileCreationEligibility(parentBarcode: String,
-                                               completion: @escaping (Result<Void>) -> Void) {
+                                               completion: @escaping (_ error: Error?) -> Void) {
     guard let platformAPI = configuration.platformAPIInfo else {
       let err = NSError(domain: ErrorDomain,
                         code: ErrorCode.missingConfiguration.rawValue)
       OperationQueue.main.addOperation {
-        completion(.fail(JuvenileFlowCoordinator.errorWithUserFriendlyMessage(amending: err)))
+        completion(JuvenileFlowCoordinator.errorWithUserFriendlyMessage(amending: err))
       }
       return
     }
@@ -111,15 +106,15 @@ public class JuvenileFlowCoordinator {
         self.fetchJuvenileElegibility(using: platformAPI, authToken: authToken, parentBarcode: parentBarcode) { error in
           OperationQueue.main.addOperation {
             if let error = error {
-              completion(.fail(JuvenileFlowCoordinator.errorWithUserFriendlyMessage(amending: error)))
+              completion(JuvenileFlowCoordinator.errorWithUserFriendlyMessage(amending: error))
               return
             }
-            completion(.success(()))
+            completion(nil)
           }
         }
       case .fail(let error):
         OperationQueue.main.addOperation {
-          completion(.fail(JuvenileFlowCoordinator.errorWithUserFriendlyMessage(amending: error)))
+          completion(JuvenileFlowCoordinator.errorWithUserFriendlyMessage(amending: error))
         }
       }
     }
