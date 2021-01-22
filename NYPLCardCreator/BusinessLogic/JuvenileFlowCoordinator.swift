@@ -60,6 +60,46 @@ public class JuvenileFlowCoordinator {
       }
     }
 
+    checkJuvenileCreationEligibility(parentBarcode: parentBarcode) { result in
+      switch result {
+      case .success():
+        OperationQueue.main.addOperation {
+          completion(.success(UINavigationController(rootViewController: IntroductionViewController(configuration: config))))
+        }
+      case .fail(let error):
+        OperationQueue.main.addOperation {
+          completion(.fail(error))
+        }
+      }
+    }
+  }
+  
+  /// This is part of the Juvenile Flow being refactored into a separated function.
+  /// This allows the client application to authenticate and check Juvenile eligibility without Juvenile creation.
+  ///
+  /// If any of the calls fails, an error is returned in the completion handler.
+  /// This error could be an application error or a system error (such as
+  /// lack of connectivity). If it is an application error:
+  /// - the Error will be in the `ErrorDomain` domain;
+  /// - it will have one of the `ErrorCode` error codes;
+  /// - it will contain a user-friendly error message in the NSError's
+  /// `localizedDescription`.
+  ///
+  /// - Parameters:
+  ///   - parentBarcode: The barcode of user's account
+  ///   - completion: Always called at the end of the calls mentioned above on
+  ///   the main queue.
+  public func checkJuvenileCreationEligibility(parentBarcode: String,
+                                               completion: @escaping (Result<Void>) -> Void) {
+    guard let platformAPI = configuration.platformAPIInfo else {
+      let err = NSError(domain: ErrorDomain,
+                        code: ErrorCode.missingConfiguration.rawValue)
+      OperationQueue.main.addOperation {
+        completion(.fail(JuvenileFlowCoordinator.errorWithUserFriendlyMessage(amending: err)))
+      }
+      return
+    }
+    
     authenticate(using: platformAPI) { [weak self] result in
       guard let self = self else {
         return
@@ -69,14 +109,12 @@ public class JuvenileFlowCoordinator {
       case .success(let authToken):
         self.authToken = authToken
         self.fetchJuvenileElegibility(using: platformAPI, authToken: authToken, parentBarcode: parentBarcode) { error in
-
           OperationQueue.main.addOperation {
             if let error = error {
               completion(.fail(JuvenileFlowCoordinator.errorWithUserFriendlyMessage(amending: error)))
               return
             }
-
-            completion(.success(UINavigationController(rootViewController: IntroductionViewController(configuration: config))))
+            completion(.success(()))
           }
         }
       case .fail(let error):
