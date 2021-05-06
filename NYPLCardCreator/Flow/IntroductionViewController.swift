@@ -269,12 +269,13 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
   }
   
   private func setCheckmark(_ state: Bool, forCell cell: UITableViewCell?) {
+    let bundle = Bundle(for: type(of: self))
     if (state == true) {
-      cell?.accessoryView = UIImageView(image: UIImage(named: "CheckboxOn"))
+      cell?.accessoryView = UIImageView(image: UIImage(named: "CheckboxOn", in: bundle, compatibleWith: nil))
       cell?.accessibilityLabel = NSLocalizedString("Checkbox is marked", comment: "Accessible label for the current status of the item")
       cell?.accessibilityHint = NSLocalizedString("Select to remove the checkmark", comment: "Accessible label to help give context to the item")
     } else {
-      cell?.accessoryView = UIImageView(image: UIImage(named: "CheckboxOff"))
+      cell?.accessoryView = UIImageView(image: UIImage(named: "CheckboxOff", in: bundle, compatibleWith: nil))
       cell?.accessibilityLabel = NSLocalizedString("Checkbox is not marked", comment: "Accessible label for the current status of the item")
       cell?.accessibilityHint = NSLocalizedString("Select to add a checkmark", comment: "Accessible label to help give context to the item")
     }

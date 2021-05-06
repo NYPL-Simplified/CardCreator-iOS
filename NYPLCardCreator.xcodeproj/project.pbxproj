@@ -39,6 +39,7 @@
 		14E61C8520DD7D6F00124E2B /* PureLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14E61C8320DD7D2000124E2B /* PureLayout.framework */; };
 		14E61C8620DD7E6A00124E2B /* PureLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14E61C8320DD7D2000124E2B /* PureLayout.framework */; };
 		14E61C8720DD7E6A00124E2B /* PureLayout.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 14E61C8320DD7D2000124E2B /* PureLayout.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1744DF5A264237EA00CBAAA8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		2D6F7C391D90FB3A000B906A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D6F7C381D90FB3A000B906A /* InfoPlist.strings */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
@@ -426,6 +427,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1744DF5A264237EA00CBAAA8 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
