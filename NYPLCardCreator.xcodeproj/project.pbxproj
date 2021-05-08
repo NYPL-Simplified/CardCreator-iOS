@@ -36,8 +36,8 @@
 		14E61C8020DD7C6200124E2B /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47BF20DD746300C8F97F /* TableViewController.swift */; };
 		14E61C8120DD7C6200124E2B /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47B720DD746300C8F97F /* LocationViewController.swift */; };
 		14E61C8220DD7C6200124E2B /* LabelledTextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47BB20DD746300C8F97F /* LabelledTextViewCell.swift */; };
-		14E61C8520DD7D6F00124E2B /* PureLayout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14E61C8320DD7D2000124E2B /* PureLayout.framework */; };
 		1744DF5A264237EA00CBAAA8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
+		1760C2CA2646096C0087C28C /* PureLayout.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 176F5BCD2644D28D002CBA0E /* PureLayout.xcframework */; };
 		176F5BCE2644D28D002CBA0E /* PureLayout.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 176F5BCD2644D28D002CBA0E /* PureLayout.xcframework */; };
 		176F5BCF2644D28D002CBA0E /* PureLayout.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 176F5BCD2644D28D002CBA0E /* PureLayout.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2D6F7C391D90FB3A000B906A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D6F7C381D90FB3A000B906A /* InfoPlist.strings */; };
@@ -149,7 +149,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				14E61C8520DD7D6F00124E2B /* PureLayout.framework in Frameworks */,
+				1760C2CA2646096C0087C28C /* PureLayout.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,6 +569,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_ONLY_ACTIVE_RESOURCES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -619,6 +620,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_ONLY_ACTIVE_RESOURCES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -763,6 +765,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/NYPLCardCreatorExample/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -786,6 +789,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/NYPLCardCreatorExample/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
