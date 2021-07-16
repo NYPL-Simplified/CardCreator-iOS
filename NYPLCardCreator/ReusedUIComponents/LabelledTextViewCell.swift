@@ -14,18 +14,7 @@ final class LabelledTextViewCell: UITableViewCell
     
     super.init(style: .default, reuseIdentifier: reuseIdentifier)
     
-    if ProcessInfo().isOperatingSystemAtLeast(
-      OperatingSystemVersion(majorVersion: 9, minorVersion: 0, patchVersion: 0))
-    {
-      self.label.autoSetDimension(.width, toSize: 100)
-    } else {
-      // The above method does not work correctly on iOS 8 so we do this instead.
-      self.label.text = "Temporary"
-      let labelSize = self.label.sizeThatFits(CGSize(width: 100, height: CGFloat.greatestFiniteMagnitude))
-      self.label.frame = CGRect(x: 0, y: 0, width: labelSize.width, height: labelSize.height)
-      self.label.text = nil
-    }
-    
+    self.label.autoSetDimension(.width, toSize: 100)
     self.textField.leftView = label
     self.textField.leftViewMode = .always
     self.addSubview(self.textField)
