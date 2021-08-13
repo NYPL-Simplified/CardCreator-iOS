@@ -17,7 +17,7 @@ final class LabelledTextViewCell: UITableViewCell
     self.label.autoSetDimension(.width, toSize: 100)
     self.textField.leftView = label
     self.textField.leftViewMode = .always
-    self.addSubview(self.textField)
+    self.contentView.addSubview(self.textField)
     self.textField.autoPinEdge(toSuperviewEdge: .left, withInset: 15)
     self.textField.autoPinEdge(toSuperviewEdge: .right, withInset: 15)
     self.textField.autoCenterInSuperview()
