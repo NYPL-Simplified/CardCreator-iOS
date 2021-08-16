@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
     }
     
-    let initialViewController = CardCreator.initialNavigationControllerWithConfiguration(configuration)
+    let initialViewController = CardCreator.initialNavigationController(configuration: configuration)
     
     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(NSEC_PER_SEC)) / Double(NSEC_PER_SEC)) {
       initialViewController.modalPresentationStyle = .formSheet
