@@ -13,7 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
   {
     self.window = UIWindow.init(frame: UIScreen.main.bounds)
     self.window?.rootViewController = UIViewController()
-    self.window?.rootViewController?.view.backgroundColor = UIColor.white
+    self.window?.rootViewController?.view.backgroundColor = NYPLColor.primaryBackgroundColor
     self.window?.tintAdjustmentMode = .normal;
     self.window?.makeKeyAndVisible()
     

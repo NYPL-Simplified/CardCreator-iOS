@@ -28,7 +28,7 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
     super.viewDidLoad()
     
     self.title = configuration.localizedStrings.welcomeTitle
-    self.view.backgroundColor = UIColor.white
+    self.view.backgroundColor = NYPLColor.primaryBackgroundColor
     
     self.tableView = UITableView.init(frame: view.frame, style: .grouped)
     self.tableView.delegate = self
@@ -47,11 +47,7 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
   }
   
   private func setupCustomViews() {
-    if #available(iOS 13.0, *) {
-      self.descriptionLabel.textColor = UIColor.label
-    } else {
-      self.descriptionLabel.textColor = UIColor.gray
-    }
+    self.descriptionLabel.textColor = NYPLColor.primaryTextColor
     self.descriptionLabel.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body)
     self.descriptionLabel.numberOfLines = 0
     self.descriptionLabel.text = configuration.localizedStrings.featureRequirements
@@ -139,13 +135,7 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
       return nil
     }
 
-    let linkColor: UIColor
-    if #available(iOS 13, *) {
-      linkColor = .link
-    } else {
-      linkColor = UIColor(red: 0.05, green: 0.4, blue: 0.65, alpha: 1.0)
-    }
-
+    let linkColor = NYPLColor.actionColor
     let eulaButton = UIButton()
     eulaButton.setTitle(NSLocalizedString("End User License Agreement", comment: "Title of button for EULA"), for: .normal)
     eulaButton.setTitleColor(linkColor, for: .normal)
@@ -271,11 +261,17 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
   private func setCheckmark(_ state: Bool, forCell cell: UITableViewCell?) {
     let bundle = Bundle(for: type(of: self))
     if (state == true) {
-      cell?.accessoryView = UIImageView(image: UIImage(named: "CheckboxOn", in: bundle, compatibleWith: nil))
+      let image = UIImage(named: "CheckboxOn", in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+      let imageView = UIImageView(image: image)
+      imageView.tintColor = NYPLColor.primaryTextColor
+      cell?.accessoryView = imageView
       cell?.accessibilityLabel = NSLocalizedString("Checkbox is marked", comment: "Accessible label for the current status of the item")
       cell?.accessibilityHint = NSLocalizedString("Select to remove the checkmark", comment: "Accessible label to help give context to the item")
     } else {
-      cell?.accessoryView = UIImageView(image: UIImage(named: "CheckboxOff", in: bundle, compatibleWith: nil))
+      let image = UIImage(named: "CheckboxOff", in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+      let imageView = UIImageView(image: image)
+      imageView.tintColor = NYPLColor.primaryTextColor
+      cell?.accessoryView = imageView
       cell?.accessibilityLabel = NSLocalizedString("Checkbox is not marked", comment: "Accessible label for the current status of the item")
       cell?.accessibilityHint = NSLocalizedString("Select to add a checkmark", comment: "Accessible label to help give context to the item")
     }

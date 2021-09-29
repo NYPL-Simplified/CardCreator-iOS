@@ -38,7 +38,7 @@ final class AlternativeAddressesViewController: TableViewController {
     
     headerLabel.numberOfLines = 0
     headerLabel.lineBreakMode = .byWordWrapping
-    headerLabel.textColor = UIColor.darkGray
+    headerLabel.textColor = NYPLColor.disabledFieldTextColor
     headerLabel.textAlignment = .center
     
     switch self.addressStep {

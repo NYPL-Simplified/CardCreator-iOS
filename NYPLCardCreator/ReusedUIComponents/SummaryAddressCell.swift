@@ -37,7 +37,7 @@ final class SummaryAddressCell: UITableViewCell {
     //Style labels
     self.sectionLabel.text = section
     self.sectionLabel.text  = self.sectionLabel.text?.uppercased()
-    self.sectionLabel.textColor = UIColor.darkGray
+    self.sectionLabel.textColor = NYPLColor.disabledFieldTextColor
     self.sectionLabel.font = UIFont(name: "AvenirNext-Regular", size: 14)
     
     self.contentView.addSubview(self.sectionLabel)
