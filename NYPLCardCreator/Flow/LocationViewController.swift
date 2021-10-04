@@ -5,7 +5,7 @@ final class LocationViewController: UIViewController {
   
   private let configuration: CardCreatorConfiguration
   
-  private let activityIndicatorView = UIActivityIndicatorView(style: .gray)
+  private let activityIndicatorView = UIActivityIndicatorView()
   private var observers: [NSObjectProtocol] = []
   private let resultLabel = UILabel()
   private var placemarkQuery: PlacemarkQuery? = nil
@@ -43,16 +43,17 @@ final class LocationViewController: UIViewController {
                                      action: nil)
     self.navigationItem.backBarButtonItem = backButton
     
-    self.view.backgroundColor = UIColor.white
+    self.view.backgroundColor = NYPLColor.primaryBackgroundColor
     
     self.view.addSubview(self.activityIndicatorView)
     self.activityIndicatorView.autoCenterInSuperview()
+    self.activityIndicatorView.color = NYPLColor.disabledFieldTextColor
     
     self.view.addSubview(self.resultLabel)
     self.resultLabel.isHidden = true
     self.resultLabel.autoPinEdgesToSuperviewMargins()
     self.resultLabel.numberOfLines = 0
-    self.resultLabel.textColor = UIColor.darkGray
+    self.resultLabel.textColor = NYPLColor.disabledFieldTextColor
     self.resultLabel.textAlignment = .center
     
     self.navigationItem.rightBarButtonItem =

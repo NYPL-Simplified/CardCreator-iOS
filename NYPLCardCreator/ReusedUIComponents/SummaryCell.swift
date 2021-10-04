@@ -17,7 +17,7 @@ final class SummaryCell: UITableViewCell {
     self.cellLabel.text = cellText
     
     self.sectionLabel.text  = self.sectionLabel.text?.uppercased()
-    self.sectionLabel.textColor = UIColor.darkGray
+    self.sectionLabel.textColor = NYPLColor.disabledFieldTextColor
     self.sectionLabel.font = UIFont(name: "AvenirNext-Regular", size: 14)
     
     self.contentView.addSubview(self.sectionLabel)

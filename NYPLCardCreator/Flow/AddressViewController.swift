@@ -106,7 +106,7 @@ final class AddressViewController: FormTableViewController {
     case .work:
       self.regionCell.textField.isUserInteractionEnabled = false
       self.regionCell.textField.text = "New York"
-      self.regionCell.textField.textColor = UIColor.gray
+      self.regionCell.textField.textColor = NYPLColor.disabledFieldTextColor
     }
     
     self.zipCell.textField.keyboardType = .numberPad
