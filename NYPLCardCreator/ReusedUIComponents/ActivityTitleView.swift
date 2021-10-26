@@ -10,7 +10,8 @@ final class ActivityTitleView: UIView {
     
     let padding: CGFloat = 5.0
     
-    let activityIndicatorView = UIActivityIndicatorView(style: .gray)
+    let activityIndicatorView = UIActivityIndicatorView()
+    activityIndicatorView.color = NYPLColor.disabledFieldTextColor
     activityIndicatorView.startAnimating()
     self.addSubview(activityIndicatorView)
     activityIndicatorView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets.zero, excludingEdge: .right)

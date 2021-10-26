@@ -37,6 +37,10 @@
 		14E61C8120DD7C6200124E2B /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47B720DD746300C8F97F /* LocationViewController.swift */; };
 		14E61C8220DD7C6200124E2B /* LabelledTextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47BB20DD746300C8F97F /* LabelledTextViewCell.swift */; };
 		1744DF5A264237EA00CBAAA8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
+		1754096E26FE7F3400B8E077 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1754096D26FE7F3400B8E077 /* Colors.xcassets */; };
+		1754096F26FE7F3400B8E077 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1754096D26FE7F3400B8E077 /* Colors.xcassets */; };
+		1754097326FE7FD900B8E077 /* NYPLColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1754097226FE7FD900B8E077 /* NYPLColor.swift */; };
+		1754097426FE7FD900B8E077 /* NYPLColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1754097226FE7FD900B8E077 /* NYPLColor.swift */; };
 		1760C2CA2646096C0087C28C /* PureLayout.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 176F5BCD2644D28D002CBA0E /* PureLayout.xcframework */; };
 		176F5BCE2644D28D002CBA0E /* PureLayout.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 176F5BCD2644D28D002CBA0E /* PureLayout.xcframework */; };
 		176F5BCF2644D28D002CBA0E /* PureLayout.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 176F5BCD2644D28D002CBA0E /* PureLayout.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -125,6 +129,8 @@
 		14E61C5E20DD7C4800124E2B /* NYPLCardCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NYPLCardCreator.h; sourceTree = "<group>"; };
 		14E61C5F20DD7C4800124E2B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		14E61C8320DD7D2000124E2B /* PureLayout.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PureLayout.framework; path = Carthage/Build/iOS/PureLayout.framework; sourceTree = "<group>"; };
+		1754096D26FE7F3400B8E077 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		1754097226FE7FD900B8E077 /* NYPLColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NYPLColor.swift; sourceTree = "<group>"; };
 		176F5BCD2644D28D002CBA0E /* PureLayout.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PureLayout.xcframework; path = Carthage/Build/PureLayout.xcframework; sourceTree = "<group>"; };
 		2D6F7C381D90FB3A000B906A /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = ../NYPLCardCreatorExample/InfoPlist.strings; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* NYPLCardCreator_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NYPLCardCreator_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -213,6 +219,7 @@
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
+				1754096D26FE7F3400B8E077 /* Colors.xcassets */,
 			);
 			name = NYPLCardCreatorExample;
 			path = NYPLCardCreator;
@@ -284,6 +291,7 @@
 				146E47B220DD746300C8F97F /* AuthenticatingSession.swift */,
 				146E47BD20DD746300C8F97F /* CardType.swift */,
 				7353354C246DBB8D000C2874 /* ResultErrors.swift */,
+				1754097226FE7FD900B8E077 /* NYPLColor.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -430,6 +438,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1744DF5A264237EA00CBAAA8 /* Images.xcassets in Resources */,
+				1754096E26FE7F3400B8E077 /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,6 +447,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
+				1754096F26FE7F3400B8E077 /* Colors.xcassets in Resources */,
 				2D6F7C391D90FB3A000B906A /* InfoPlist.strings in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 			);
@@ -461,6 +471,7 @@
 				14E61C6F20DD7C6200124E2B /* RemoteHTMLViewController.swift in Sources */,
 				14E61C6C20DD7C6200124E2B /* ActivityTitleView.swift in Sources */,
 				14E61C7320DD7C6200124E2B /* FormTableViewController.swift in Sources */,
+				1754097326FE7FD900B8E077 /* NYPLColor.swift in Sources */,
 				14E61C7C20DD7C6200124E2B /* NameAndEmailViewController.swift in Sources */,
 				14E61C6A20DD7C6200124E2B /* CardCreator.swift in Sources */,
 				14E61C7420DD7C6200124E2B /* PlacemarkQuery.swift in Sources */,
@@ -496,6 +507,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1754097426FE7FD900B8E077 /* NYPLColor.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

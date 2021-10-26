@@ -121,7 +121,7 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    self.tableView.backgroundColor = UIColor.groupTableViewBackground
+    self.tableView.backgroundColor = NYPLColor.primaryBackgroundColor
     
     self.title = NSLocalizedString(
       "Review",
@@ -129,7 +129,7 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
     
     headerLabel.numberOfLines = 0
     headerLabel.lineBreakMode = .byWordWrapping
-    headerLabel.textColor = UIColor.darkGray
+    headerLabel.textColor = NYPLColor.disabledFieldTextColor
     headerLabel.textAlignment = .center
     
     headerLabel.text = NSLocalizedString(

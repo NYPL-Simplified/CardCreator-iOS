@@ -69,7 +69,7 @@ final class UserCredentialsViewController: TableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    self.tableView.backgroundColor = UIColor.groupTableViewBackground
+    self.tableView.backgroundColor = NYPLColor.primaryBackgroundColor
 
     self.title = NSLocalizedString(
       "Your Card Information",
@@ -94,7 +94,7 @@ final class UserCredentialsViewController: TableViewController {
     
     headerLabel.numberOfLines = 0
     headerLabel.lineBreakMode = .byWordWrapping
-    headerLabel.textColor = UIColor.darkGray
+    headerLabel.textColor = NYPLColor.disabledFieldTextColor
     headerLabel.textAlignment = .center
     
     self.tableView.estimatedRowHeight = 120

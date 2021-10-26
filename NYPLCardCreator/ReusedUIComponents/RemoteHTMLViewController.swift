@@ -32,7 +32,7 @@ final class RemoteHTMLViewController: UIViewController, WKNavigationDelegate {
   override func viewDidLoad() {
     webView.frame = self.view.frame
     webView.navigationDelegate = self
-    webView.backgroundColor = UIColor.white
+    webView.backgroundColor = NYPLColor.primaryBackgroundColor
     webView.allowsBackForwardNavigationGestures = true
 
     view.addSubview(self.webView)
@@ -46,7 +46,8 @@ final class RemoteHTMLViewController: UIViewController, WKNavigationDelegate {
   
   func activityView(_ animated: Bool) -> Void {
     if animated == true {
-      activityView = UIActivityIndicatorView.init(style: .gray)
+      activityView = UIActivityIndicatorView.init()
+      activityView.color = NYPLColor.disabledFieldTextColor
       activityView.center = self.view.center
       view.addSubview(activityView)
       activityView.startAnimating()
