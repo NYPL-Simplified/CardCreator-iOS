@@ -300,7 +300,7 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
         return
     }
 
-    let barcode = JSONObject?["barcode"] as? String
+    let barcode = JSONObject["barcode"] as? String
 
     self.navigationController?.pushViewController(
       UserCredentialsViewController(configuration: self.configuration,

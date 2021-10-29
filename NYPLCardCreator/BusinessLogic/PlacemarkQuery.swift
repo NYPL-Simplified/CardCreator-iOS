@@ -50,8 +50,6 @@ final class PlacemarkQuery: NSObject, CLLocationManagerDelegate {
       OperationQueue.main.addOperation({ 
         handler(.errorAlertController(alertController: alertController))
       })
-    case .notDetermined:
-      self.locationManager.requestWhenInUseAuthorization()
     case .restricted:
       let alertController = UIAlertController(
         title: NSLocalizedString("Location Access Restricted",
@@ -68,6 +66,10 @@ final class PlacemarkQuery: NSObject, CLLocationManagerDelegate {
       OperationQueue.main.addOperation({ 
         handler(.errorAlertController(alertController: alertController))
       })
+    case .notDetermined:
+      fallthrough
+    @unknown default:
+      self.locationManager.requestWhenInUseAuthorization()
     }
   }
   
