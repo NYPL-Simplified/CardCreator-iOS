@@ -9,7 +9,7 @@ final class ValidateAddressResponse {
   
   class func responseWithData(_ data: Data) -> Response? {
     guard
-      let JSONObject = try? JSONSerialization.jsonObject(with: data, options: []) as! [String: AnyObject],
+      let JSONObject = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject],
       let type = JSONObject["type"] as? String,
       let message = JSONObject["message"] as? String
       else { return nil }
