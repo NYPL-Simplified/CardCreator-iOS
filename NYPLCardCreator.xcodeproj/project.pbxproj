@@ -44,6 +44,8 @@
 		1760C2CA2646096C0087C28C /* PureLayout.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 176F5BCD2644D28D002CBA0E /* PureLayout.xcframework */; };
 		176F5BCE2644D28D002CBA0E /* PureLayout.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 176F5BCD2644D28D002CBA0E /* PureLayout.xcframework */; };
 		176F5BCF2644D28D002CBA0E /* PureLayout.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 176F5BCD2644D28D002CBA0E /* PureLayout.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		17B17A96272B9F5400314AF6 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B17A95272B9F5400314AF6 /* PasswordValidator.swift */; };
+		17B17A9A272BAE2000314AF6 /* PasswordValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B17A99272BAE2000314AF6 /* PasswordValidationTests.swift */; };
 		2D6F7C391D90FB3A000B906A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D6F7C381D90FB3A000B906A /* InfoPlist.strings */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
@@ -132,6 +134,8 @@
 		1754096D26FE7F3400B8E077 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		1754097226FE7FD900B8E077 /* NYPLColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NYPLColor.swift; sourceTree = "<group>"; };
 		176F5BCD2644D28D002CBA0E /* PureLayout.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PureLayout.xcframework; path = Carthage/Build/PureLayout.xcframework; sourceTree = "<group>"; };
+		17B17A95272B9F5400314AF6 /* PasswordValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidator.swift; sourceTree = "<group>"; };
+		17B17A99272BAE2000314AF6 /* PasswordValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidationTests.swift; sourceTree = "<group>"; };
 		2D6F7C381D90FB3A000B906A /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = ../NYPLCardCreatorExample/InfoPlist.strings; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* NYPLCardCreator_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NYPLCardCreator_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../NYPLCardCreatorExample/Info.plist; sourceTree = "<group>"; };
@@ -279,6 +283,7 @@
 				73D15457247CA58000ACD04E /* PlatformAPIError.swift */,
 				146E47C620DD746300C8F97F /* ValidateAddressResponse.swift */,
 				146E47B820DD746300C8F97F /* ValidateUsernameResponse.swift */,
+				17B17A95272B9F5400314AF6 /* PasswordValidator.swift */,
 			);
 			path = BusinessLogic;
 			sourceTree = "<group>";
@@ -302,6 +307,7 @@
 				73EEE7E3247F274E00A06D14 /* Info.plist */,
 				73EEE7EC247F290700A06D14 /* JuvenileCreationResponseBodyTests.swift */,
 				736D97A42559EB1300843709 /* CardCreatorConfigurationTests.swift */,
+				17B17A99272BAE2000314AF6 /* PasswordValidationTests.swift */,
 			);
 			path = NYPLCardCreatorTests;
 			sourceTree = "<group>";
@@ -470,6 +476,7 @@
 				14E61C7020DD7C6200124E2B /* IntroductionViewController.swift in Sources */,
 				14E61C6F20DD7C6200124E2B /* RemoteHTMLViewController.swift in Sources */,
 				14E61C6C20DD7C6200124E2B /* ActivityTitleView.swift in Sources */,
+				17B17A96272B9F5400314AF6 /* PasswordValidator.swift in Sources */,
 				14E61C7320DD7C6200124E2B /* FormTableViewController.swift in Sources */,
 				1754097326FE7FD900B8E077 /* NYPLColor.swift in Sources */,
 				14E61C7C20DD7C6200124E2B /* NameAndEmailViewController.swift in Sources */,
@@ -516,6 +523,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17B17A9A272BAE2000314AF6 /* PasswordValidationTests.swift in Sources */,
 				73EEE7ED247F290700A06D14 /* JuvenileCreationResponseBodyTests.swift in Sources */,
 				736D97A52559EB1300843709 /* CardCreatorConfigurationTests.swift in Sources */,
 			);
