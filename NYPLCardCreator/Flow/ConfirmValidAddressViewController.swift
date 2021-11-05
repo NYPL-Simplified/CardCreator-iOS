@@ -7,6 +7,7 @@ final class ConfirmValidAddressViewController: TableViewController {
   fileprivate let validAddressAndCardType: (Address, CardType)
   
   fileprivate let configuration: CardCreatorConfiguration
+  fileprivate let authToken: ISSOToken
   
   fileprivate let headerLabel: UILabel
   
@@ -14,10 +15,12 @@ final class ConfirmValidAddressViewController: TableViewController {
   
   init(
     configuration: CardCreatorConfiguration,
+    authToken: ISSOToken,
     addressStep: AddressStep,
     validAddressAndCardType: (Address, CardType))
   {
     self.configuration = configuration
+    self.authToken = authToken
     self.addressStep = addressStep
     self.validAddressAndCardType = validAddressAndCardType
     
@@ -111,6 +114,7 @@ final class ConfirmValidAddressViewController: TableViewController {
     let (address, cardType) = self.validAddressAndCardType
     self.addressStep.continueFlowWithValidAddress(
       self.configuration,
+      authToken: authToken,
       viewController: self,
       address: address,
       cardType: cardType)

@@ -33,11 +33,12 @@ enum AddressStep {
     }
   }
   
-  /// Given a `Configuration`, the current `UIViewController`, an `Address` that has just
+  /// Given a `Configuration`, `authToken`, the current `UIViewController`, an `Address` that has just
   /// been validated, and the `CardType` implied by the validated address, continue with the
   /// registration flow as appropriate.
   func continueFlowWithValidAddress(
     _ configuration: CardCreatorConfiguration,
+    authToken: ISSOToken,
     viewController: UIViewController,
     address: Address,
     cardType: CardType)
@@ -58,7 +59,9 @@ enum AddressStep {
           style: .default,
           handler: {_ in
             viewController.navigationController?.pushViewController(
-              AddressViewController(configuration: configuration, addressStep: .work(homeAddress: address)),
+              AddressViewController(configuration: configuration,
+                                    authToken: authToken,
+                                    addressStep: .work(homeAddress: address)),
               animated: true)
         }))
         alertController.addAction(UIAlertAction(
@@ -66,7 +69,9 @@ enum AddressStep {
           style: .default,
           handler: {_ in
             viewController.navigationController?.pushViewController(
-              AddressViewController(configuration: configuration, addressStep: .school(homeAddress: address)),
+              AddressViewController(configuration: configuration,
+                                    authToken: authToken,
+                                    addressStep: .school(homeAddress: address)),
               animated: true)
         }))
         alertController.addAction(UIAlertAction(
@@ -111,6 +116,7 @@ enum AddressStep {
       let (homeAddress, schoolOrWorkAddress) = self.pairWithAppendedAddress(address)
       let nameAndEmailViewController = NameAndEmailViewController(
         configuration: configuration,
+        authToken: authToken,
         homeAddress: homeAddress,
         schoolOrWorkAddress: schoolOrWorkAddress,
         cardType: cardType)

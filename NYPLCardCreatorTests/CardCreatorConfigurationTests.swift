@@ -17,12 +17,12 @@ class CardCreatorConfigurationTests: XCTestCase {
       endpointVersion: "1",
       endpointUsername: "test",
       endpointPassword: "password",
-      juvenileParentBarcode: "parent",
-      juvenilePlatformAPIInfo: NYPLPlatformAPIInfo(
+      platformAPIInfo: NYPLPlatformAPIInfo(
         oauthTokenURL: URL(string: "https://example.com/token")!,
         clientID: "clientID",
         clientSecret: "secret",
-        baseURL: URL(string: "https://example.com")!),
+        baseURL: URL(string: "https://example.com")!)!,
+      juvenileParentBarcode: "parent",
       requestTimeoutInterval: 1.0)
     XCTAssert(juvenileConfig.isJuvenile)
 
@@ -52,6 +52,11 @@ class CardCreatorConfigurationTests: XCTestCase {
       endpointVersion: "1",
       endpointUsername: "test",
       endpointPassword: "password",
+      platformAPIInfo: NYPLPlatformAPIInfo(
+        oauthTokenURL: URL(string: "https://example.com/token")!,
+        clientID: "clientID",
+        clientSecret: "secret",
+        baseURL: URL(string: "https://example.com")!)!,
       requestTimeoutInterval: 1.0)
     XCTAssertFalse(config.isJuvenile)
 

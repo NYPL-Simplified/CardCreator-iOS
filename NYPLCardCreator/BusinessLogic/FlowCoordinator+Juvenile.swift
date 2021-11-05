@@ -8,17 +8,8 @@
 
 import UIKit
 
-public class JuvenileFlowCoordinator {
-
-  private let urlSession: URLSession
-  public let configuration: CardCreatorConfiguration
-  private var authToken: ISSOToken?
-
-  public init(configuration: CardCreatorConfiguration) {
-    self.configuration = configuration
-    self.urlSession = URLSession(configuration: .ephemeral)
-  }
-
+/// This extension contains Juvenile Card Creation flow
+public extension FlowCoordinator {
   /// The starting point of the juvenile card creation flow.
   /// This performs a first call to isso.nypl.org to obtain a OAuth token, and
   /// then uses that to reach an endpoint on platform.nypl.org to determine
@@ -35,24 +26,15 @@ public class JuvenileFlowCoordinator {
   /// - Parameters:
   ///   - completion: Always called at the end of the calls mentioned above on
   ///   the main queue.
-  public func startJuvenileFlow(completion: @escaping (Result<UINavigationController>) -> Void) {
-    guard let platformAPI = configuration.platformAPIInfo else {
-      let err = NSError(domain: ErrorDomain,
-                        code: ErrorCode.missingConfiguration.rawValue)
-      OperationQueue.main.addOperation {
-        completion(.fail(JuvenileFlowCoordinator.errorWithUserFriendlyMessage(amending: err)))
-      }
-      return
-    }
-
-    let config = configuration
-    let parentBarcode = configuration.juvenileParentBarcode
-
+  func startJuvenileFlow(completion: @escaping (Result<UINavigationController>) -> Void) {
     configuration.juvenileCreationHandler = { [weak self] juvenileInfo, responder in
-      self?.createPatron(using: platformAPI, parameters: juvenileInfo) { result in
+      guard let self = self else {
+        return
+      }
+      
+      self.createPatron(using: self.configuration.platformAPIInfo, parameters: juvenileInfo) { result in
         if case .fail(let err) = result {
-          responder?.handleJuvenilePatronResponse(.fail(
-            JuvenileFlowCoordinator.errorWithUserFriendlyMessage(amending: err)))
+          responder?.handleJuvenilePatronResponse(.fail(FlowCoordinator.errorWithUserFriendlyMessage(amending: err)))
           return
         }
 
@@ -60,12 +42,25 @@ public class JuvenileFlowCoordinator {
       }
     }
 
-    checkJuvenileCreationEligibility(parentBarcode: parentBarcode) { (error) in
+    checkJuvenileCreationEligibility(parentBarcode: self.configuration.juvenileParentBarcode) { [weak self] error in
+      guard let self = self else {
+        return
+      }
+      
       if let error = error {
         completion(.fail(error))
         return
       }
-      completion(.success(UINavigationController(rootViewController: IntroductionViewController(configuration: config))))
+      
+      // We should have the auth token at this point, just sanity check
+      guard let authToken = self.authToken else {
+        let err = NSError(domain: ErrorDomain,
+                          code: ErrorCode.missingAuthentication.rawValue)
+        completion(.fail(FlowCoordinator.errorWithUserFriendlyMessage(amending: err)))
+        return
+      }
+      
+      completion(.success(UINavigationController(rootViewController: IntroductionViewController(configuration: self.configuration, authToken: authToken))))
     }
   }
   
@@ -84,18 +79,9 @@ public class JuvenileFlowCoordinator {
   ///   - parentBarcode: The barcode of user's account
   ///   - completion: Always called at the end of the calls mentioned above on
   ///   the main queue.
-  public func checkJuvenileCreationEligibility(parentBarcode: String,
+  func checkJuvenileCreationEligibility(parentBarcode: String,
                                                completion: @escaping (_ error: Error?) -> Void) {
-    guard let platformAPI = configuration.platformAPIInfo else {
-      let err = NSError(domain: ErrorDomain,
-                        code: ErrorCode.missingConfiguration.rawValue)
-      OperationQueue.main.addOperation {
-        completion(JuvenileFlowCoordinator.errorWithUserFriendlyMessage(amending: err))
-      }
-      return
-    }
-    
-    authenticate(using: platformAPI) { [weak self] result in
+    authenticate(using: configuration.platformAPIInfo) { [weak self] result in
       guard let self = self else {
         return
       }
@@ -103,10 +89,12 @@ public class JuvenileFlowCoordinator {
       switch result {
       case .success(let authToken):
         self.authToken = authToken
-        self.fetchJuvenileElegibility(using: platformAPI, authToken: authToken, parentBarcode: parentBarcode) { error in
+        self.fetchJuvenileElegibility(using: self.configuration.platformAPIInfo,
+                                      authToken: authToken,
+                                      parentBarcode: parentBarcode) { error in
           OperationQueue.main.addOperation {
             if let error = error {
-              completion(JuvenileFlowCoordinator.errorWithUserFriendlyMessage(amending: error))
+              completion(FlowCoordinator.errorWithUserFriendlyMessage(amending: error))
               return
             }
             completion(nil)
@@ -114,69 +102,13 @@ public class JuvenileFlowCoordinator {
         }
       case .fail(let error):
         OperationQueue.main.addOperation {
-          completion(JuvenileFlowCoordinator.errorWithUserFriendlyMessage(amending: error))
+          completion(FlowCoordinator.errorWithUserFriendlyMessage(amending: error))
         }
       }
     }
   }
 
   // MARK: - Private API calls
-
-  private func authenticate(using platformEndpoints: NYPLPlatformAPIInfo,
-                            completion: @escaping (Result<ISSOToken>) -> Void) {
-    guard let req = ISSORequest(using: platformEndpoints) else {
-      let err = NSError(domain: ErrorDomain,
-                        code: ErrorCode.jsonEncodingFail.rawValue)
-      completion(.fail(err))
-      return
-    }
-
-    let task = urlSession.dataTask(with: req) { data, response, error in
-      if let error = error {
-        completion(.fail(error))
-        return
-      }
-
-      // note: the request built by ISSORequest(using...) will always contain
-      // a valid url. This nil-coalescing check is just for future-proofing.
-      let urlStrLog = req.url?.absoluteString ?? "missing URL from ISSO auth request"
-
-      guard let data = data else {
-        let err = NSError(domain: ErrorDomain,
-                          code: ErrorCode.noData.rawValue,
-                          userInfo: ["requestURL": urlStrLog])
-        completion(.fail(err))
-        return
-      }
-
-      guard let response = response as? HTTPURLResponse else {
-        let err = NSError(domain: ErrorDomain,
-                          code: ErrorCode.noHTTPResponse.rawValue,
-                          userInfo: ["requestURL": urlStrLog])
-        completion(.fail(err))
-        return
-      }
-
-      guard (200...299).contains(response.statusCode) else {
-        let err = NSError(domain: ErrorDomain,
-                          code: ErrorCode.unsuccessfulHTTPStatusCode.rawValue,
-                          userInfo: ["requestURL": urlStrLog, "response": response])
-        completion(.fail(err))
-        return
-      }
-
-      guard let token = ISSOToken.fromData(data) else {
-        let err = NSError(domain: ErrorDomain,
-                          code: ErrorCode.jsonDecodingFail.rawValue,
-                          userInfo: ["requestURL": urlStrLog, "data": data])
-        completion(.fail(err))
-        return
-      }
-
-      completion(.success(token))
-    }
-    task.resume()
-  }
 
   private func fetchJuvenileElegibility(using platformEndpoints: NYPLPlatformAPIInfo,
                                         authToken: ISSOToken,
@@ -202,7 +134,7 @@ public class JuvenileFlowCoordinator {
     // contain a valid url. This nil-coalescing check is just for future-proofing.
     let urlStr = req.url?.absoluteString ?? "missing URL from eligibility request"
 
-    let task = urlSession.dataTask(with: req) { data, response, error in
+    let task = self.urlSession.dataTask(with: req) { data, response, error in
       if let error = error {
         completion(error)
         return
@@ -273,7 +205,7 @@ public class JuvenileFlowCoordinator {
     // contain a valid url. This nil-coalescing check is just for future-proofing.
     let urlStr = req.url?.absoluteString ?? "missing URL from /patrons/dependents request"
 
-    let task = urlSession.dataTask(with: req) { data, response, error in
+    let task = self.urlSession.dataTask(with: req) { data, response, error in
       if let error = error {
         completion(.fail(error))
         return
@@ -330,34 +262,6 @@ public class JuvenileFlowCoordinator {
 
   // MARK: - Private Helpers
 
-  private func ISSORequest(using platformAPI: NYPLPlatformAPIInfo) -> URLRequest? {
-    let parameters: [String: String] = [
-      "client_id": platformAPI.clientID,
-      "client_secret": platformAPI.clientSecret,
-      "grant_type": "client_credentials"
-    ]
-
-    let boundary = "Boundary-\(UUID().uuidString)"
-    var body = ""
-    parameters.forEach { (key: String, value: String) in
-      body += "--\(boundary)\r\n"
-      body += "Content-Disposition:form-data; name=\"\(key)\"\r\n"
-      body += "\r\n\(value)\r\n"
-    }
-    body += "--\(boundary)--\r\n";
-    guard let bodyData = body.data(using: .utf8) else {
-      return nil
-    }
-
-    var req = URLRequest(url: platformAPI.oauthTokenURL,
-                         timeoutInterval: configuration.requestTimeoutInterval)
-    req.setValue("application/json", forHTTPHeaderField: "Accept")
-    req.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-    req.httpMethod = "POST"
-    req.httpBody = bodyData
-    return req
-  }
-
   private func eligibilityRequest(using platformEndpoints: NYPLPlatformAPIInfo,
                                   authToken: ISSOToken,
                                   parentBarcode: String) -> Result<URLRequest> {
@@ -401,18 +305,5 @@ public class JuvenileFlowCoordinator {
     req.httpMethod = "POST"
     req.httpBody = parameters.encode()
     return .success(req)
-  }
-
-  private static func errorWithUserFriendlyMessage(amending error: Error) -> NSError {
-    let nsError = error as NSError
-    if !nsError.localizedDescription.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-      // if we already have a localized description, we're going to trust that
-      return nsError
-    }
-
-    let errorMsg = NSLocalizedString("An error occurred while processing your request.\n\nError Code: \(nsError.code)", comment: "A generic error message for low-level errors")
-    var userInfo = nsError.userInfo
-    userInfo[NSLocalizedDescriptionKey] = errorMsg
-    return NSError(domain: nsError.domain, code: nsError.code, userInfo: userInfo)
   }
 }

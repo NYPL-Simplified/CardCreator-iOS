@@ -8,15 +8,18 @@ final class AlternativeAddressesViewController: TableViewController {
   fileprivate let headerLabel: UILabel
   
   fileprivate let configuration: CardCreatorConfiguration
+  fileprivate let authToken: ISSOToken
   
   fileprivate static let addressCellReuseIdentifier = "addressCellReuseIdentifier"
   
   init(
     configuration: CardCreatorConfiguration,
+    authToken: ISSOToken,
     addressStep: AddressStep,
     alternativeAddressesAndCardTypes: [(Address, CardType)])
   {
     self.configuration = configuration
+    self.authToken = authToken
     self.addressStep = addressStep
     self.alternativeAddressesAndCardTypes = alternativeAddressesAndCardTypes
     
@@ -82,6 +85,7 @@ final class AlternativeAddressesViewController: TableViewController {
     let (address, cardType) = self.alternativeAddressesAndCardTypes[indexPath.row]
     self.addressStep.continueFlowWithValidAddress(
       self.configuration,
+      authToken: authToken,
       viewController: self,
       address: address,
       cardType: cardType)

@@ -4,6 +4,7 @@ import UIKit
 final class AddressViewController: FormTableViewController {
   
   fileprivate let configuration: CardCreatorConfiguration
+  fileprivate let authToken: ISSOToken
   
   fileprivate let addressStep: AddressStep
   fileprivate let street1Cell: LabelledTextViewCell
@@ -14,8 +15,12 @@ final class AddressViewController: FormTableViewController {
   
   fileprivate let session: AuthenticatingSession
   
-  init(configuration: CardCreatorConfiguration, addressStep: AddressStep) {
+  init(configuration: CardCreatorConfiguration,
+       authToken: ISSOToken,
+       addressStep: AddressStep)
+  {
     self.configuration = configuration
+    self.authToken = authToken
     self.addressStep = addressStep
     self.street1Cell = LabelledTextViewCell(
       title: NSLocalizedString("Street 1", comment: "The first line of a US street address"),
@@ -330,12 +335,14 @@ final class AddressViewController: FormTableViewController {
         case let .validAddress(_, address, cardType):
             let viewController = ConfirmValidAddressViewController(
                 configuration: self.configuration,
+                authToken: self.authToken,
                 addressStep: self.addressStep,
                 validAddressAndCardType: (address, cardType))
             self.navigationController?.pushViewController(viewController, animated: true)
         case let .alternativeAddresses(_, addressTuples):
           let viewController = AlternativeAddressesViewController(
             configuration: self.configuration,
+            authToken: self.authToken,
             addressStep: self.addressStep,
             alternativeAddressesAndCardTypes: addressTuples)
           self.navigationController?.pushViewController(viewController, animated: true)

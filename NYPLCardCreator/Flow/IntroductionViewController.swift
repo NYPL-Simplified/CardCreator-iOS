@@ -10,12 +10,16 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
   private var attestationVerified: Bool
   private var eulaVerified: Bool
   private var tableView: UITableView!
+  private let authToken: ISSOToken
 
-  public init(configuration: CardCreatorConfiguration) {
+  public init(configuration: CardCreatorConfiguration,
+              authToken: ISSOToken)
+  {
     self.configuration = configuration
     self.descriptionLabel = UILabel()
     self.attestationVerified = false
     self.eulaVerified = false
+    self.authToken = authToken
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -240,7 +244,7 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
   @objc private func didSelectNext() {
     if (attestationVerified && eulaVerified) {
       self.navigationController?.pushViewController(
-      LocationViewController(configuration: self.configuration),
+      LocationViewController(configuration: self.configuration, authToken: authToken),
       animated: true)
     } else if (!attestationVerified && eulaVerified) {
       attestationAlert()
