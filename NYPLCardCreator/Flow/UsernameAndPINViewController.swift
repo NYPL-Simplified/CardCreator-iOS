@@ -4,6 +4,7 @@ import UIKit
 final class UsernameAndPINViewController: FormTableViewController {
   
   private let configuration: CardCreatorConfiguration
+  private let authToken: ISSOToken
   
   private let usernameCell: LabelledTextViewCell
   private let pinCell: LabelledTextViewCell
@@ -17,6 +18,7 @@ final class UsernameAndPINViewController: FormTableViewController {
   
   init(
     configuration: CardCreatorConfiguration,
+    authToken: ISSOToken,
     homeAddress: Address,
     schoolOrWorkAddress: Address?,
     cardType: CardType,
@@ -24,6 +26,7 @@ final class UsernameAndPINViewController: FormTableViewController {
     email: String)
   {
     self.configuration = configuration
+    self.authToken = authToken
     self.usernameCell = LabelledTextViewCell(
       title: NSLocalizedString("Username", comment: "A username used to log into a service"),
       placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
@@ -217,6 +220,7 @@ final class UsernameAndPINViewController: FormTableViewController {
     self.navigationController?.pushViewController(
       UserSummaryViewController(
         configuration: self.configuration,
+        authToken: self.authToken,
         homeAddress: self.homeAddress,
         schoolOrWorkAddress: self.schoolOrWorkAddress,
         cardType: self.cardType,

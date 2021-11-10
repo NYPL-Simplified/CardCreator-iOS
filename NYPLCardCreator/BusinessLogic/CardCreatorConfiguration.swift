@@ -1,8 +1,7 @@
 import UIKit
 
 /// The information regarding the 2nd version of the card creator api. This is
-/// currently used only for the Juvenile cards but in the future it will be
-/// used for regular patron cards too.
+/// currently used for both regular and Juvenile card creation.
 public final class NYPLPlatformAPIInfo: NSObject {
   let oauthTokenURL: URL
   let clientID: String
@@ -40,10 +39,10 @@ public final class CardCreatorConfiguration: NSObject {
   /// The password to be provided via basic authentication to the API endpoint.
   public let endpointPassword: String
 
-  /// Currently necessary only for the Juvenile flow.
+  /// Necessary for both regular and Juvenile flow.
   /// - Note: At some point in the future this will also include `endpointURL`,
   /// `endpointUsername`, `endpointPassword`.
-  let platformAPIInfo: NYPLPlatformAPIInfo?
+  let platformAPIInfo: NYPLPlatformAPIInfo
 
   /// The timeout to use for all requests to the API endpoint.
   public let requestTimeoutInterval: TimeInterval
@@ -81,10 +80,9 @@ public final class CardCreatorConfiguration: NSObject {
   ///   regular card creation flow.
   ///   - endpointPassword: Password for authenticating on the API used by the
   ///   regular card creation flow.
-  ///   - juvenileParentBarcode: Optional barcode of the parent for creating
-  ///   juvenile accounts.
-  ///   - juvenilePlatformAPIInfo: The platform API endpoints necessary for the
-  ///   juvenile flow. For regular card creation flow, leave this nil.
+  ///   - platformAPIInfo: The platform API endpoints required for card creation.
+  ///   - juvenileParentBarcode: Barcode of the parent for creating
+  ///   juvenile accounts. Required for Juvenile card creation flow.
   ///   - requestTimeoutInterval: Request timeouts for both flows.
   ///   - completionHandler: Completion block that will be called on the main
   ///   thread at the end of both registration flows.
@@ -93,8 +91,8 @@ public final class CardCreatorConfiguration: NSObject {
     endpointVersion: String,
     endpointUsername: String,
     endpointPassword: String,
+    platformAPIInfo: NYPLPlatformAPIInfo,
     juvenileParentBarcode: String = "",
-    juvenilePlatformAPIInfo: NYPLPlatformAPIInfo? = nil,
     requestTimeoutInterval: TimeInterval,
     completionHandler: @escaping (_ username: String, _ PIN: String, _ userInitiated: Bool) -> Void = { _, _, _ in })
   {
@@ -102,10 +100,10 @@ public final class CardCreatorConfiguration: NSObject {
     self.endpointUsername = endpointUsername
     self.endpointPassword = endpointPassword
     self.juvenileParentBarcode = juvenileParentBarcode
-    self.platformAPIInfo = juvenilePlatformAPIInfo
+    self.platformAPIInfo = platformAPIInfo
     self.requestTimeoutInterval = requestTimeoutInterval
     self.completionHandler = completionHandler
-    let isJuvenileFlow = (juvenilePlatformAPIInfo != nil)
+    let isJuvenileFlow = (juvenileParentBarcode.count > 0)
     self.user = UserInfo()
     if isJuvenileFlow {
       self.localizedStrings = JuvenileFlowLocalizedStrings()
@@ -116,7 +114,7 @@ public final class CardCreatorConfiguration: NSObject {
   }
 
   var isJuvenile: Bool {
-    platformAPIInfo != nil
+    juvenileParentBarcode.count > 0
   }
 
   /// Composes the full name of the user being created as it's expected by

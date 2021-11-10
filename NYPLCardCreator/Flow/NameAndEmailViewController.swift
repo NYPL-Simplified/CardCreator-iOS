@@ -3,6 +3,7 @@ import UIKit
 final class NameAndEmailViewController: FormTableViewController {
   
   private let configuration: CardCreatorConfiguration
+  private let authToken: ISSOToken
   
   private let cardType: CardType
   private let firstNameCell: LabelledTextViewCell
@@ -12,20 +13,25 @@ final class NameAndEmailViewController: FormTableViewController {
   private let homeAddress: Address
   private let schoolOrWorkAddress: Address?
 
-  convenience init(juvenileConfiguration: CardCreatorConfiguration) {
+  convenience init(juvenileConfiguration: CardCreatorConfiguration,
+                   authToken: ISSOToken)
+  {
     // providing a fake home address because it will be ignored anyway for
     // juvenile flows
     self.init(configuration: juvenileConfiguration,
-              homeAddress: Address(street1: "", street2: "", city: "", region: "", zip: ""),
+              authToken: authToken,
+              homeAddress: Address(street1: "", street2: "", city: "", region: "", zip: "", isResidential: false, hasBeenValidated: false),
               schoolOrWorkAddress: nil,
               cardType: .juvenile)
   }
 
   init(configuration: CardCreatorConfiguration,
+       authToken: ISSOToken,
        homeAddress: Address,
        schoolOrWorkAddress: Address?,
        cardType: CardType) {
     self.configuration = configuration
+    self.authToken = authToken
 
     let requiredPlaceholder = NSLocalizedString("Required", comment: "A placeholder for a required text field")
     let optionalPlaceholder = NSLocalizedString("Optional", comment: "A placeholder for a required text field")
@@ -152,6 +158,7 @@ final class NameAndEmailViewController: FormTableViewController {
     self.navigationController?.pushViewController(
       UsernameAndPINViewController(
         configuration: self.configuration,
+        authToken: authToken,
         homeAddress: self.homeAddress,
         schoolOrWorkAddress: self.schoolOrWorkAddress,
         cardType: self.cardType,

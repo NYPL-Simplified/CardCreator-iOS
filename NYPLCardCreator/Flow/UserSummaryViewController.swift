@@ -14,6 +14,7 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
   private let headerLabel: UILabel
   
   private let configuration: CardCreatorConfiguration
+  private let authToken: ISSOToken
   private let session: AuthenticatingSession
   
   private let homeAddressCell: SummaryAddressCell
@@ -33,6 +34,7 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
 
   init(
     configuration: CardCreatorConfiguration,
+    authToken: ISSOToken,
     homeAddress: Address,
     schoolOrWorkAddress: Address?,
     cardType: CardType,
@@ -42,6 +44,7 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
     pin: String)
   {
     self.configuration = configuration
+    self.authToken = authToken
     self.session = AuthenticatingSession(configuration: configuration)
 
     self.homeAddress = homeAddress

@@ -4,6 +4,7 @@ import UIKit
 final class AddressViewController: FormTableViewController {
   
   fileprivate let configuration: CardCreatorConfiguration
+  fileprivate let authToken: ISSOToken
   
   fileprivate let addressStep: AddressStep
   fileprivate let street1Cell: LabelledTextViewCell
@@ -14,8 +15,12 @@ final class AddressViewController: FormTableViewController {
   
   fileprivate let session: AuthenticatingSession
   
-  init(configuration: CardCreatorConfiguration, addressStep: AddressStep) {
+  init(configuration: CardCreatorConfiguration,
+       authToken: ISSOToken,
+       addressStep: AddressStep)
+  {
     self.configuration = configuration
+    self.authToken = authToken
     self.addressStep = addressStep
     self.street1Cell = LabelledTextViewCell(
       title: NSLocalizedString("Street 1", comment: "The first line of a US street address"),
@@ -260,7 +265,18 @@ final class AddressViewController: FormTableViewController {
       return nil
     }
     
-    return Address(street1: street1, street2: self.street2Cell.textField.text, city: city, region: region, zip: zip)
+    let isResidential: Bool = {
+      switch self.addressStep {
+      case .home:
+        return true
+      case .school:
+        fallthrough
+      case .work:
+        return false
+      }
+    }()
+    
+    return Address(street1: street1, street2: self.street2Cell.textField.text, city: city, region: region, zip: zip, isResidential: isResidential, hasBeenValidated: false)
   }
   
   fileprivate func submit() {
@@ -270,24 +286,16 @@ final class AddressViewController: FormTableViewController {
         NSLocalizedString(
           "Validating Address",
           comment: "A title telling the user their address is currently being validated"))
-    var request = URLRequest.init(url: self.configuration.endpointURL.appendingPathComponent("validate/address"))
-    let isSchoolOrWorkAddress: Bool = {
-      switch self.addressStep {
-      case .home:
-        return false
-      case .school:
-        return true
-      case .work:
-        return true
-      }
-    }()
+    var request = URLRequest.init(url: self.configuration.endpointURL.appendingPathComponent("validations/address"))
+    
     let JSONObject: [String: AnyObject] = [
-      "address": self.currentAddress()!.JSONObject() as AnyObject,
-      "is_work_or_school_address": isSchoolOrWorkAddress as AnyObject
+      "address": self.currentAddress()!.JSONObject() as AnyObject
     ]
     request.httpBody = try! JSONSerialization.data(withJSONObject: JSONObject, options: [.prettyPrinted])
     request.httpMethod = "POST"
-    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.setValue("application/json", forHTTPHeaderField: "Accept")
+    request.setValue("\(authToken.tokenType) \(authToken.accessToken)", forHTTPHeaderField: "Authorization")
     request.timeoutInterval = self.configuration.requestTimeoutInterval
     let task = self.session.dataTaskWithRequest(request) { (data, response, error) in
       OperationQueue.main.addOperation {
@@ -318,7 +326,11 @@ final class AddressViewController: FormTableViewController {
             handler: nil))
           self.present(alertController, animated: true, completion: nil)
         }
-        if (response as! HTTPURLResponse).statusCode != 200 || data == nil {
+        // While responses with status code 400 are mostly errors, we need to handle the error
+        // on a case by case basis (eg. alternate addresses) in the ValidateAddressResponse class
+        if (response as! HTTPURLResponse).statusCode != 200 &&
+            (response as! HTTPURLResponse).statusCode != 400 ||
+            data == nil {
           showErrorAlert()
           return
         }
@@ -327,17 +339,26 @@ final class AddressViewController: FormTableViewController {
           return
         }
         switch validateAddressResponse {
-        case let .validAddress(_, address, cardType):
+        case let .validAddress(address, cardType):
+            // The v0.3 API does not return CardType value,
+            // therefore we set the CardType to standard if the address is within NY.
+            let newCardType = self.validateCardType(for: address, cardType: cardType)
             let viewController = ConfirmValidAddressViewController(
                 configuration: self.configuration,
+                authToken: self.authToken,
                 addressStep: self.addressStep,
-                validAddressAndCardType: (address, cardType))
+                validAddressAndCardType: (address, newCardType))
             self.navigationController?.pushViewController(viewController, animated: true)
-        case let .alternativeAddresses(_, addressTuples):
+        case let .alternativeAddresses(_, addresses):
+          let addressesAndCardTypes: [(Address, CardType)] = addresses.map {
+            let cardType: CardType = self.validateCardType(for: $0)
+            return ($0, cardType)
+          }
           let viewController = AlternativeAddressesViewController(
             configuration: self.configuration,
+            authToken: self.authToken,
             addressStep: self.addressStep,
-            alternativeAddressesAndCardTypes: addressTuples)
+            alternativeAddressesAndCardTypes: addressesAndCardTypes)
           self.navigationController?.pushViewController(viewController, animated: true)
         case .unrecognizedAddress:
           let alertController = UIAlertController(
@@ -358,5 +379,17 @@ final class AddressViewController: FormTableViewController {
     }
     
     task.resume()
+  }
+  
+  // MARK: - Helper
+  
+  /// If we do not receive a CardType value from server, we will return a CardType based on address's region
+  private func validateCardType(for address: Address, cardType: CardType = .none) -> CardType {
+    // Received CardType from server, no action needed
+    if cardType != .none {
+      return cardType
+    }
+    
+    return address.region.lowercased() == "ny" ? .standard : .none
   }
 }
