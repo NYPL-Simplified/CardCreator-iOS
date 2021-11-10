@@ -80,7 +80,7 @@ public extension FlowCoordinator {
   ///   - completion: Always called at the end of the calls mentioned above on
   ///   the main queue.
   func checkJuvenileCreationEligibility(parentBarcode: String,
-                                               completion: @escaping (_ error: Error?) -> Void) {
+                                        completion: @escaping (_ error: Error?) -> Void) {
     authenticate(using: configuration.platformAPIInfo) { [weak self] result in
       guard let self = self else {
         return
@@ -134,7 +134,7 @@ public extension FlowCoordinator {
     // contain a valid url. This nil-coalescing check is just for future-proofing.
     let urlStr = req.url?.absoluteString ?? "missing URL from eligibility request"
 
-    let task = self.urlSession.dataTask(with: req) { data, response, error in
+    let task = urlSession.dataTask(with: req) { data, response, error in
       if let error = error {
         completion(error)
         return

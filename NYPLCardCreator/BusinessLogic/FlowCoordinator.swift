@@ -27,8 +27,10 @@ public class FlowCoordinator {
       switch result {
       case .success(let authToken):
         self.authToken = authToken
-        let introVC = IntroductionViewController(configuration: self.configuration, authToken: authToken)
-        completion(.success(UINavigationController(rootViewController: introVC)))
+        OperationQueue.main.addOperation {
+          let introVC = IntroductionViewController(configuration: self.configuration, authToken: authToken)
+          completion(.success(UINavigationController(rootViewController: introVC)))
+        }
       case .fail(let error):
         OperationQueue.main.addOperation {
           completion(.fail(FlowCoordinator.errorWithUserFriendlyMessage(amending: error)))

@@ -80,12 +80,12 @@ final class AlternativeAddressesViewController: TableViewController {
   }
   
   // MARK: UITableViewDelegate
-  
-  func tableView(_ tableView: UITableView, didSelectRowAtIndexPath indexPath: IndexPath) {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: false)
     let (address, cardType) = self.alternativeAddressesAndCardTypes[indexPath.row]
     self.addressStep.continueFlowWithValidAddress(
       self.configuration,
-      authToken: authToken,
+      authToken: self.authToken,
       viewController: self,
       address: address,
       cardType: cardType)

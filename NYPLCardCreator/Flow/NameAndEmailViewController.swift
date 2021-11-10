@@ -20,7 +20,7 @@ final class NameAndEmailViewController: FormTableViewController {
     // juvenile flows
     self.init(configuration: juvenileConfiguration,
               authToken: authToken,
-              homeAddress: Address(street1: "", street2: "", city: "", region: "", zip: ""),
+              homeAddress: Address(street1: "", street2: "", city: "", region: "", zip: "", isResidential: false, hasBeenValidated: false),
               schoolOrWorkAddress: nil,
               cardType: .juvenile)
   }
