@@ -156,7 +156,7 @@ final class NameAndEmailViewController: FormTableViewController {
                                           lastName: lastName)
 
     self.navigationController?.pushViewController(
-      UsernameAndPINViewController(
+      UsernameAndPasswordViewController(
         configuration: self.configuration,
         authToken: authToken,
         homeAddress: self.homeAddress,

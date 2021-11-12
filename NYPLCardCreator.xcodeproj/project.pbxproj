@@ -31,7 +31,7 @@
 		14E61C7C20DD7C6200124E2B /* NameAndEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47C920DD746300C8F97F /* NameAndEmailViewController.swift */; };
 		14E61C7D20DD7C6200124E2B /* AlternativeAddressesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47C220DD746300C8F97F /* AlternativeAddressesViewController.swift */; };
 		14E61C7E20DD7C6200124E2B /* CardCreatorConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47BA20DD746300C8F97F /* CardCreatorConfiguration.swift */; };
-		14E61C7F20DD7C6200124E2B /* UsernameAndPINViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47BC20DD746300C8F97F /* UsernameAndPINViewController.swift */; };
+		14E61C7F20DD7C6200124E2B /* UsernameAndPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47BC20DD746300C8F97F /* UsernameAndPasswordViewController.swift */; };
 		14E61C8020DD7C6200124E2B /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47BF20DD746300C8F97F /* TableViewController.swift */; };
 		14E61C8120DD7C6200124E2B /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47B720DD746300C8F97F /* LocationViewController.swift */; };
 		14E61C8220DD7C6200124E2B /* LabelledTextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47BB20DD746300C8F97F /* LabelledTextViewCell.swift */; };
@@ -112,7 +112,7 @@
 		146E47B920DD746300C8F97F /* PlacemarkQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacemarkQuery.swift; sourceTree = "<group>"; };
 		146E47BA20DD746300C8F97F /* CardCreatorConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCreatorConfiguration.swift; sourceTree = "<group>"; };
 		146E47BB20DD746300C8F97F /* LabelledTextViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelledTextViewCell.swift; sourceTree = "<group>"; };
-		146E47BC20DD746300C8F97F /* UsernameAndPINViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameAndPINViewController.swift; sourceTree = "<group>"; };
+		146E47BC20DD746300C8F97F /* UsernameAndPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameAndPasswordViewController.swift; sourceTree = "<group>"; };
 		146E47BD20DD746300C8F97F /* CardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardType.swift; sourceTree = "<group>"; };
 		146E47BE20DD746300C8F97F /* AddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressCell.swift; sourceTree = "<group>"; };
 		146E47BF20DD746300C8F97F /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
@@ -247,7 +247,7 @@
 				146E47C420DD746300C8F97F /* ConfirmValidAddressViewController.swift */,
 				146E47C220DD746300C8F97F /* AlternativeAddressesViewController.swift */,
 				146E47C920DD746300C8F97F /* NameAndEmailViewController.swift */,
-				146E47BC20DD746300C8F97F /* UsernameAndPINViewController.swift */,
+				146E47BC20DD746300C8F97F /* UsernameAndPasswordViewController.swift */,
 				146E47C320DD746300C8F97F /* UserSummaryViewController.swift */,
 				146E47C520DD746300C8F97F /* UserCredentialsViewController.swift */,
 			);
@@ -483,7 +483,7 @@
 				179267E92734D85D004EA5E7 /* FlowCoordinator.swift in Sources */,
 				14E61C7420DD7C6200124E2B /* PlacemarkQuery.swift in Sources */,
 				73935214246CD0C200ACC0AB /* FlowCoordinator+Juvenile.swift in Sources */,
-				14E61C7F20DD7C6200124E2B /* UsernameAndPINViewController.swift in Sources */,
+				14E61C7F20DD7C6200124E2B /* UsernameAndPasswordViewController.swift in Sources */,
 				14E61C7920DD7C6200124E2B /* AddressViewController.swift in Sources */,
 				14E61C7220DD7C6200124E2B /* SummaryCell.swift in Sources */,
 				14E61C8120DD7C6200124E2B /* LocationViewController.swift in Sources */,

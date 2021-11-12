@@ -23,14 +23,14 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
   private let fullNameCell: SummaryCell
   private let emailCell: SummaryCell
   private let usernameCell: SummaryCell
-  private let pinCell: SummaryCell
+  private let passwordCell: SummaryCell
   
   private let homeAddress: Address
   private let schoolOrWorkAddress: Address?
   private let fullName: String
   private let email: String
   private let username: String
-  private let pin: String
+  private let password: String
 
   init(
     configuration: CardCreatorConfiguration,
@@ -41,7 +41,7 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
     fullName: String,
     email: String,
     username: String,
-    pin: String)
+    password: String)
   {
     self.configuration = configuration
     self.authToken = authToken
@@ -53,7 +53,7 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
     self.fullName = fullName
     self.email = email
     self.username = username
-    self.pin = pin
+    self.password = password
     
     self.headerLabel = UILabel()
     
@@ -77,14 +77,14 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
                                  cellText: self.email)
     self.usernameCell = SummaryCell(section: NSLocalizedString("Username", comment: "Title of the section for the user's chosen username"),
                                     cellText: self.username)
-    self.pinCell = SummaryCell(section: NSLocalizedString("Pin", comment: "Title of the section for the user's PIN number"),
-                               cellText: self.pin)
+    self.passwordCell = SummaryCell(section: NSLocalizedString("Password", comment: "Title of the section for the user's chosen password"),
+                               cellText: self.password)
 
     if configuration.isJuvenile {
       self.cells = [
         self.fullNameCell,
         self.usernameCell,
-        self.pinCell
+        self.passwordCell
       ]
     } else {
       self.cells = [
@@ -92,7 +92,7 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
         self.fullNameCell,
         self.emailCell,
         self.usernameCell,
-        self.pinCell
+        self.passwordCell
       ]
     }
 
@@ -210,7 +210,7 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
     let info = JuvenileCreationInfo(parentBarcode: configuration.juvenileParentBarcode,
                                     name: fullName,
                                     username: username,
-                                    pin: pin)
+                                    pin: password)
     configuration.juvenileCreationHandler?(info, self)
   }
 
@@ -229,7 +229,7 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
           UserCredentialsViewController(configuration: self.configuration,
                                         username: self.username,
                                         barcode: juvenileBarcode,
-                                        pin: self.pin,
+                                        pin: self.password,
                                         cardType: self.cardType),
           animated: true)
       case .fail(let error):
@@ -261,7 +261,7 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
       "email": self.email as AnyObject,
       "address": self.homeAddress.JSONObject() as AnyObject,
       "username": self.username as AnyObject,
-      "pin": self.pin as AnyObject,
+      "pin": self.password as AnyObject,
       "work_or_school_address": schoolOrWorkAddressOrNull
     ]
     request.httpBody = try! JSONSerialization.data(withJSONObject: JSONObject, options: [.prettyPrinted])
@@ -309,7 +309,7 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
       UserCredentialsViewController(configuration: self.configuration,
                                     username: self.username,
                                     barcode: barcode,
-                                    pin: self.pin,
+                                    pin: self.password,
                                     cardType: self.cardType),
       animated: true)
   }

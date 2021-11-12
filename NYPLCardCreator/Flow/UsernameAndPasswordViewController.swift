@@ -1,13 +1,13 @@
 import UIKit
 
-/// This class is used to allow the user to enter their desired username and PIN.
-final class UsernameAndPINViewController: FormTableViewController {
+/// This class is used to allow the user to enter their desired username and password.
+final class UsernameAndPasswordViewController: FormTableViewController {
   
   private let configuration: CardCreatorConfiguration
   private let authToken: ISSOToken
   
   private let usernameCell: LabelledTextViewCell
-  private let pinCell: LabelledTextViewCell
+  private let passwordCell: LabelledTextViewCell
   private let homeAddress: Address
   private let schoolOrWorkAddress: Address?
   private let cardType: CardType
@@ -30,8 +30,8 @@ final class UsernameAndPINViewController: FormTableViewController {
     self.usernameCell = LabelledTextViewCell(
       title: NSLocalizedString("Username", comment: "A username used to log into a service"),
       placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
-    self.pinCell = LabelledTextViewCell(
-      title: NSLocalizedString("PIN", comment: "An abbreviation for personal identification number"),
+    self.passwordCell = LabelledTextViewCell(
+      title: NSLocalizedString("Password", comment: "A password used to log into a service"),
       placeholder: NSLocalizedString("Required", comment: "A placeholder for a required text field"))
     
     self.homeAddress = homeAddress
@@ -45,7 +45,7 @@ final class UsernameAndPINViewController: FormTableViewController {
     super.init(
       cells: [
         self.usernameCell,
-        self.pinCell
+        self.passwordCell
       ])
     
     self.navigationItem.rightBarButtonItem?.isEnabled = false
@@ -62,7 +62,7 @@ final class UsernameAndPINViewController: FormTableViewController {
     super.viewDidLoad()
     self.title = NSLocalizedString(
       "User Details",
-      comment: "A title for a screen asking the user for the user's username and PIN")
+      comment: "A title for a screen asking the user for the user's username and password")
   }
   
   private func prepareTableViewCells() {
@@ -80,8 +80,8 @@ final class UsernameAndPINViewController: FormTableViewController {
     self.usernameCell.textField.autocapitalizationType = .none
     self.usernameCell.textField.autocorrectionType = .no
     
-    self.pinCell.textField.keyboardType = .numberPad
-    self.pinCell.textField.inputAccessoryView = self.returnToolbar()
+    self.passwordCell.textField.keyboardType = .alphabet
+    self.passwordCell.textField.inputAccessoryView = self.returnToolbar()
   }
   
   func checkToPrefillForm() {
@@ -102,9 +102,17 @@ final class UsernameAndPINViewController: FormTableViewController {
   // MARK: UITableViewDataSource
   
   func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    // TODO: Update localized strings
     return NSLocalizedString(
-      "Username should be 5–25 letters and numbers only.\nPIN should be 4 numeric characters only.",
-      comment: "A description of valid usernames and PINs")
+"""
+Username should be 5–25 letters and numbers only.
+Password should be
+ • between 8 - 32 characters
+ • a combination of letters, numbers and the following symbols ~ ! ? @ # $ % ^ & * ( )
+ • not consecutively repeating a character 3 or more times
+ • not consecutively repeating a pattern
+""",
+      comment: "A description of valid usernames and passwords")
   }
   
   // MARK: UITextFieldDelegate
@@ -127,13 +135,11 @@ final class UsernameAndPINViewController: FormTableViewController {
       }
     }
     
-    if textField == self.pinCell.textField {
-      if let _ = string.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) {
-        return false
-      } else if let text = textField.text {
-        return text.count - range.length + string.count <= 4
+    if textField == self.passwordCell.textField {
+      if let text = textField.text {
+        return text.count - range.length + string.count <= 32
       } else {
-        return string.count <= 4
+        return string.count <= 32
       }
     }
 
@@ -144,6 +150,12 @@ final class UsernameAndPINViewController: FormTableViewController {
   // MARK: -
   
   @objc override func didSelectNext() {
+    if let passwordValidationError = PasswordValidator.validate(password: self.passwordCell.textField.text) {
+      let errorMessage = passwordValidationError.errorMessage()
+      showErrorAlert(title: NSLocalizedString("Invalid Password", comment: "The title for an error alert"), message: errorMessage)
+      return
+    }
+    
     if configuration.isJuvenile {
       moveToFinalReview()
       return
@@ -156,11 +168,13 @@ final class UsernameAndPINViewController: FormTableViewController {
         NSLocalizedString(
           "Validating Name",
           comment: "A title telling the user their full name is currently being validated"))
-    var request = URLRequest.init(url: self.configuration.endpointURL.appendingPathComponent("validate/username"))
+    var request = URLRequest.init(url: self.configuration.endpointURL.appendingPathComponent("validations/username"))
     let JSONObject: [String: String] = ["username": self.usernameCell.textField.text!]
     request.httpBody = try! JSONSerialization.data(withJSONObject: JSONObject, options: [.prettyPrinted])
     request.httpMethod = "POST"
-    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.setValue("application/json", forHTTPHeaderField: "Accept")
+    request.setValue("\(authToken.tokenType) \(authToken.accessToken)", forHTTPHeaderField: "Authorization")
     request.timeoutInterval = self.configuration.requestTimeoutInterval
     let task = self.session.dataTaskWithRequest(request) { [weak self] data, response, error in
       OperationQueue.main.addOperation {
@@ -176,7 +190,7 @@ final class UsernameAndPINViewController: FormTableViewController {
         }
 
         guard let response = response as? HTTPURLResponse,
-          response.statusCode == 200,
+          response.statusCode == 200 || response.statusCode == 400,
           let data = data,
           let decodedData = ValidateUsernameResponse.responseWithData(data) else {
             self.showErrorAlert()
@@ -208,11 +222,11 @@ final class UsernameAndPINViewController: FormTableViewController {
 
   @objc private func textFieldDidChange() {
     guard let usernameTextCount = self.usernameCell.textField.text?.count,
-          let pinCellTextCount = self.pinCell.textField.text?.count else {
+          let passwordTextCount = self.passwordCell.textField.text?.count else {
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         return
     }
-    self.navigationItem.rightBarButtonItem?.isEnabled = (usernameTextCount >= configuration.usernameMinLength && pinCellTextCount == 4)
+    self.navigationItem.rightBarButtonItem?.isEnabled = (usernameTextCount >= configuration.usernameMinLength && passwordTextCount >= 8 && passwordTextCount <= 32)
   }
   
   private func moveToFinalReview() {
@@ -227,7 +241,7 @@ final class UsernameAndPINViewController: FormTableViewController {
         fullName: self.fullName,
         email: self.email,
         username: self.usernameCell.textField.text!,
-        pin: self.pinCell.textField.text!),
+        password: self.passwordCell.textField.text!),
       animated: true)
   }
 

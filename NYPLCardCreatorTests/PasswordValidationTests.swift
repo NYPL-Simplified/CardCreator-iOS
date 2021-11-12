@@ -3,53 +3,52 @@ import XCTest
 
 class PasswordValidationTests: XCTestCase {
   func testPasswordCharacterCount() throws {
-    XCTAssertFalse(PasswordValidator.validatePassword("1234567"))
-    
-    XCTAssertTrue(PasswordValidator.validatePassword("12345678"))
+    XCTAssertNil(PasswordValidator.validate(password: "12345678"), "Password is valid")
+    XCTAssertEqual(PasswordValidator.validate(password: "1234567"), .invalidCount)
     
     let stringWithMaxCharacters = "abcdefghijklmnopqrstuvwxyz123456"
-    XCTAssertTrue(PasswordValidator.validatePassword(stringWithMaxCharacters))
+    XCTAssertNil(PasswordValidator.validate(password: "12345678"), "Password character count is valid")
     
-    XCTAssertFalse(PasswordValidator.validatePassword(stringWithMaxCharacters + "a"))
+    XCTAssertEqual(PasswordValidator.validate(password: stringWithMaxCharacters + "a"), .invalidCount)
   }
   
   func testSymbols() throws {
     let validSymbolString = #"~!?@#$%^&*()"#
-    XCTAssertTrue(PasswordValidator.validatePassword(validSymbolString))
+    XCTAssertNil(PasswordValidator.validate(password: validSymbolString), "Password is valid")
     
-    XCTAssertFalse(PasswordValidator.validatePassword("asdfg_<"))
-    XCTAssertFalse(PasswordValidator.validatePassword("asdfg_>"))
-    XCTAssertFalse(PasswordValidator.validatePassword(#"asdfg_\"#))
-    XCTAssertFalse(PasswordValidator.validatePassword("asdfg_/"))
-    XCTAssertFalse(PasswordValidator.validatePassword("asdfg_."))
-    XCTAssertFalse(PasswordValidator.validatePassword("asdfg_ "))
+    XCTAssertEqual(PasswordValidator.validate(password: "1234567<"), .invalidCharacter)
+    XCTAssertEqual(PasswordValidator.validate(password: "1234567>"), .invalidCharacter)
+    XCTAssertEqual(PasswordValidator.validate(password: #"1234567\"#), .invalidCharacter)
+    XCTAssertEqual(PasswordValidator.validate(password: "1234567/"), .invalidCharacter)
+    XCTAssertEqual(PasswordValidator.validate(password: "1234567."), .invalidCharacter)
+    XCTAssertEqual(PasswordValidator.validate(password: "1234567 "), .invalidCharacter)
   }
 
   func testRepeatingCharacters() throws {
-    XCTAssertTrue(PasswordValidator.validatePassword("aabbccddeeffgg"))
+    XCTAssertNil(PasswordValidator.validate(password: "aabbccddeeffgg"), "Password is valid")
     
-    XCTAssertFalse(PasswordValidator.validatePassword("1234444asd"))
-    XCTAssertFalse(PasswordValidator.validatePassword("111asbciwhnk@#$"))
-    XCTAssertFalse(PasswordValidator.validatePassword("123aaa567"))
-    XCTAssertFalse(PasswordValidator.validatePassword("abcdefg00000000000000"))
-    XCTAssertFalse(PasswordValidator.validatePassword("aolghe$$$$$"))
-    XCTAssertFalse(PasswordValidator.validatePassword("123@@@mcns"))
+    XCTAssertEqual(PasswordValidator.validate(password: "1234444asd"), .repeatingCharacter)
+    XCTAssertEqual(PasswordValidator.validate(password: "111asbciwhnk@#$"), .repeatingCharacter)
+    XCTAssertEqual(PasswordValidator.validate(password: "123aaa567"), .repeatingCharacter)
+    XCTAssertEqual(PasswordValidator.validate(password: "abcdefg00000000000000"), .repeatingCharacter)
+    XCTAssertEqual(PasswordValidator.validate(password: "aolghe$$$$$"), .repeatingCharacter)
+    XCTAssertEqual(PasswordValidator.validate(password: "123@@@mcns"), .repeatingCharacter)
   }
   
   func testRepeatingPatterns() throws {
-    XCTAssertTrue(PasswordValidator.validatePassword("aa4567aa"))
-    XCTAssertTrue(PasswordValidator.validatePassword("abc12abc"))
-    XCTAssertTrue(PasswordValidator.validatePassword("aabb234bbaa"))
-    XCTAssertTrue(PasswordValidator.validatePassword("1234512345"))
-    XCTAssertTrue(PasswordValidator.validatePassword("~~aa~~AA"))
-    XCTAssertTrue(PasswordValidator.validatePassword("~~aa~~AA~~aa"))
+    XCTAssertNil(PasswordValidator.validate(password: "aa4567aa"), "Password is valid")
+    XCTAssertNil(PasswordValidator.validate(password: "abc12abc"), "Password is valid")
+    XCTAssertNil(PasswordValidator.validate(password: "aabb234bbaa"), "Password is valid")
+    XCTAssertNil(PasswordValidator.validate(password: "1234512345"), "Password is valid")
+    XCTAssertNil(PasswordValidator.validate(password: "~~aa~~AA"), "Password is valid")
+    XCTAssertNil(PasswordValidator.validate(password: "~~aa~~AA~~aa"), "Password is valid")
     
-    XCTAssertFalse(PasswordValidator.validatePassword("ab1212ab"))
-    XCTAssertFalse(PasswordValidator.validatePassword("12124545"))
-    XCTAssertFalse(PasswordValidator.validatePassword("abcabc12"))
-    XCTAssertFalse(PasswordValidator.validatePassword("~!@~!@~!@~!@~!@"))
-    XCTAssertFalse(PasswordValidator.validatePassword("abcdabcd"))
-    XCTAssertFalse(PasswordValidator.validatePassword("~~aa~~aa"))
-    XCTAssertFalse(PasswordValidator.validatePassword("~~aa~~AA~~aa~~aa"))
+    XCTAssertEqual(PasswordValidator.validate(password: "ab1212ab"), .repeatingPattern)
+    XCTAssertEqual(PasswordValidator.validate(password: "12124545"), .repeatingPattern)
+    XCTAssertEqual(PasswordValidator.validate(password: "abcabc12"), .repeatingPattern)
+    XCTAssertEqual(PasswordValidator.validate(password: "~!@~!@~!@~!@~!@"), .repeatingPattern)
+    XCTAssertEqual(PasswordValidator.validate(password: "abcdabcd"), .repeatingPattern)
+    XCTAssertEqual(PasswordValidator.validate(password: "~~aa~~aa"), .repeatingPattern)
+    XCTAssertEqual(PasswordValidator.validate(password: "~~aa~~AA~~aa~~aa"), .repeatingPattern)
   }
 }
