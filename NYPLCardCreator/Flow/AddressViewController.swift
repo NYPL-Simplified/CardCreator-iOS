@@ -302,40 +302,23 @@ final class AddressViewController: FormTableViewController {
         self.navigationController?.view.isUserInteractionEnabled = true
         self.navigationItem.titleView = nil
         if let error = error {
-          let alertController = UIAlertController(
-            title: NSLocalizedString("Error", comment: "The title for an error alert"),
-            message: error.localizedDescription,
-            preferredStyle: .alert)
-          alertController.addAction(UIAlertAction(
-            title: NSLocalizedString("OK", comment: ""),
-            style: .default,
-            handler: nil))
-          self.present(alertController, animated: true, completion: nil)
+          self.showErrorAlert(message: error.localizedDescription)
           return
-        }
-        func showErrorAlert() {
-          let alertController = UIAlertController(
-            title: NSLocalizedString("Error", comment: "The title for an error alert"),
-            message: NSLocalizedString(
-              "A server error occurred during address validation. Please try again later.",
-              comment: "An alert message explaining an error and telling the user to try again later"),
-            preferredStyle: .alert)
-          alertController.addAction(UIAlertAction(
-            title: NSLocalizedString("OK", comment: ""),
-            style: .default,
-            handler: nil))
-          self.present(alertController, animated: true, completion: nil)
         }
         // While responses with status code 400 are mostly errors, we need to handle the error
         // on a case by case basis (eg. alternate addresses) in the ValidateAddressResponse class
         if (response as! HTTPURLResponse).statusCode != 200 &&
             (response as! HTTPURLResponse).statusCode != 400 ||
             data == nil {
-          showErrorAlert()
+          self.showErrorAlert(message: NSLocalizedString(
+                                "A server error occurred during address validation. Please try again later.",
+                                comment: "An alert message explaining an error and telling the user to try again later"))
           return
         }
         guard let validateAddressResponse = ValidateAddressResponse.responseWithData(data!) else {
-          showErrorAlert()
+          self.showErrorAlert(message: NSLocalizedString(
+                                "A server error occurred during address validation. Please try again later.",
+                                comment: "An alert message explaining an error and telling the user to try again later"))
           return
         }
         switch validateAddressResponse {
@@ -361,19 +344,13 @@ final class AddressViewController: FormTableViewController {
             alternativeAddressesAndCardTypes: addressesAndCardTypes)
           self.navigationController?.pushViewController(viewController, animated: true)
         case .unrecognizedAddress:
-          let alertController = UIAlertController(
-            title: NSLocalizedString(
-              "Unrecognized Address",
-              comment: "An alert title telling the user their address was not recognized by the server"),
-            message: NSLocalizedString(
-              "Your address could not be verified. Please try another address.",
-              comment: "An alert message telling the user their address was not recognized by the server"),
-            preferredStyle: .alert)
-          alertController.addAction(UIAlertAction(
-            title: NSLocalizedString("OK", comment: ""),
-            style: .default,
-            handler: nil))
-          self.present(alertController, animated: true, completion: nil)
+          let title = NSLocalizedString(
+            "Unrecognized Address",
+            comment: "An alert title telling the user their address was not recognized by the server")
+          let message = NSLocalizedString(
+            "Your address could not be verified. Please try another address.",
+            comment: "An alert message telling the user their address was not recognized by the server")
+          self.showErrorAlert(title: title, message: message)
         }
       }
     }

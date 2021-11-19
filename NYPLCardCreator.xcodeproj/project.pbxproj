@@ -28,7 +28,7 @@
 		14E61C7920DD7C6200124E2B /* AddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47C720DD746300C8F97F /* AddressViewController.swift */; };
 		14E61C7A20DD7C6200124E2B /* AuthenticatingSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47B220DD746300C8F97F /* AuthenticatingSession.swift */; };
 		14E61C7B20DD7C6200124E2B /* AddressStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47B520DD746300C8F97F /* AddressStep.swift */; };
-		14E61C7C20DD7C6200124E2B /* NameAndEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47C920DD746300C8F97F /* NameAndEmailViewController.swift */; };
+		14E61C7C20DD7C6200124E2B /* UserPersonalInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47C920DD746300C8F97F /* UserPersonalInfoViewController.swift */; };
 		14E61C7D20DD7C6200124E2B /* AlternativeAddressesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47C220DD746300C8F97F /* AlternativeAddressesViewController.swift */; };
 		14E61C7E20DD7C6200124E2B /* CardCreatorConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47BA20DD746300C8F97F /* CardCreatorConfiguration.swift */; };
 		14E61C7F20DD7C6200124E2B /* UsernameAndPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47BC20DD746300C8F97F /* UsernameAndPasswordViewController.swift */; };
@@ -44,6 +44,7 @@
 		176F5BCE2644D28D002CBA0E /* PureLayout.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 176F5BCD2644D28D002CBA0E /* PureLayout.xcframework */; };
 		176F5BCF2644D28D002CBA0E /* PureLayout.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 176F5BCD2644D28D002CBA0E /* PureLayout.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		179267E92734D85D004EA5E7 /* FlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179267E82734D85D004EA5E7 /* FlowCoordinator.swift */; };
+		1792694F2743332C004EA5E7 /* PatronCreationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1792694E2743332B004EA5E7 /* PatronCreationInfo.swift */; };
 		17B17A96272B9F5400314AF6 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B17A95272B9F5400314AF6 /* PasswordValidator.swift */; };
 		17B17A9A272BAE2000314AF6 /* PasswordValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B17A99272BAE2000314AF6 /* PasswordValidationTests.swift */; };
 		2D6F7C391D90FB3A000B906A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D6F7C381D90FB3A000B906A /* InfoPlist.strings */; };
@@ -125,7 +126,7 @@
 		146E47C620DD746300C8F97F /* ValidateAddressResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidateAddressResponse.swift; sourceTree = "<group>"; };
 		146E47C720DD746300C8F97F /* AddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressViewController.swift; sourceTree = "<group>"; };
 		146E47C820DD746300C8F97F /* SummaryAddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryAddressCell.swift; sourceTree = "<group>"; };
-		146E47C920DD746300C8F97F /* NameAndEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameAndEmailViewController.swift; sourceTree = "<group>"; };
+		146E47C920DD746300C8F97F /* UserPersonalInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPersonalInfoViewController.swift; sourceTree = "<group>"; };
 		14E61C5C20DD7C4800124E2B /* NYPLCardCreator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NYPLCardCreator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		14E61C5E20DD7C4800124E2B /* NYPLCardCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NYPLCardCreator.h; sourceTree = "<group>"; };
 		14E61C5F20DD7C4800124E2B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -134,6 +135,7 @@
 		1754097226FE7FD900B8E077 /* NYPLColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NYPLColor.swift; sourceTree = "<group>"; };
 		176F5BCD2644D28D002CBA0E /* PureLayout.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PureLayout.xcframework; path = Carthage/Build/PureLayout.xcframework; sourceTree = "<group>"; };
 		179267E82734D85D004EA5E7 /* FlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowCoordinator.swift; sourceTree = "<group>"; };
+		1792694E2743332B004EA5E7 /* PatronCreationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatronCreationInfo.swift; sourceTree = "<group>"; };
 		17B17A95272B9F5400314AF6 /* PasswordValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidator.swift; sourceTree = "<group>"; };
 		17B17A99272BAE2000314AF6 /* PasswordValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidationTests.swift; sourceTree = "<group>"; };
 		2D6F7C381D90FB3A000B906A /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = ../NYPLCardCreatorExample/InfoPlist.strings; sourceTree = "<group>"; };
@@ -246,7 +248,7 @@
 				146E47C720DD746300C8F97F /* AddressViewController.swift */,
 				146E47C420DD746300C8F97F /* ConfirmValidAddressViewController.swift */,
 				146E47C220DD746300C8F97F /* AlternativeAddressesViewController.swift */,
-				146E47C920DD746300C8F97F /* NameAndEmailViewController.swift */,
+				146E47C920DD746300C8F97F /* UserPersonalInfoViewController.swift */,
 				146E47BC20DD746300C8F97F /* UsernameAndPasswordViewController.swift */,
 				146E47C320DD746300C8F97F /* UserSummaryViewController.swift */,
 				146E47C520DD746300C8F97F /* UserCredentialsViewController.swift */,
@@ -284,6 +286,7 @@
 				146E47C620DD746300C8F97F /* ValidateAddressResponse.swift */,
 				146E47B820DD746300C8F97F /* ValidateUsernameResponse.swift */,
 				17B17A95272B9F5400314AF6 /* PasswordValidator.swift */,
+				1792694E2743332B004EA5E7 /* PatronCreationInfo.swift */,
 			);
 			path = BusinessLogic;
 			sourceTree = "<group>";
@@ -479,7 +482,7 @@
 				17B17A96272B9F5400314AF6 /* PasswordValidator.swift in Sources */,
 				14E61C7320DD7C6200124E2B /* FormTableViewController.swift in Sources */,
 				1754097326FE7FD900B8E077 /* NYPLColor.swift in Sources */,
-				14E61C7C20DD7C6200124E2B /* NameAndEmailViewController.swift in Sources */,
+				14E61C7C20DD7C6200124E2B /* UserPersonalInfoViewController.swift in Sources */,
 				179267E92734D85D004EA5E7 /* FlowCoordinator.swift in Sources */,
 				14E61C7420DD7C6200124E2B /* PlacemarkQuery.swift in Sources */,
 				73935214246CD0C200ACC0AB /* FlowCoordinator+Juvenile.swift in Sources */,
@@ -490,6 +493,7 @@
 				14E61C7E20DD7C6200124E2B /* CardCreatorConfiguration.swift in Sources */,
 				7353354D246DBB8D000C2874 /* ResultErrors.swift in Sources */,
 				14E61C6E20DD7C6200124E2B /* ValidateUsernameResponse.swift in Sources */,
+				1792694F2743332C004EA5E7 /* PatronCreationInfo.swift in Sources */,
 				14E61C7B20DD7C6200124E2B /* AddressStep.swift in Sources */,
 				14E61C6920DD7C6200124E2B /* Address.swift in Sources */,
 				14E61C7D20DD7C6200124E2B /* AlternativeAddressesViewController.swift in Sources */,

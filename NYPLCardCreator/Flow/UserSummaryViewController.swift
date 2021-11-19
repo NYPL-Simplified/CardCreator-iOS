@@ -22,38 +22,24 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
   private let cardType: CardType
   private let fullNameCell: SummaryCell
   private let emailCell: SummaryCell
+  private let birthdateCell: SummaryCell
   private let usernameCell: SummaryCell
   private let passwordCell: SummaryCell
   
-  private let homeAddress: Address
-  private let schoolOrWorkAddress: Address?
-  private let fullName: String
-  private let email: String
-  private let username: String
-  private let password: String
+  private let patronInfo: PatronCreationInfo
 
   init(
     configuration: CardCreatorConfiguration,
     authToken: ISSOToken,
-    homeAddress: Address,
-    schoolOrWorkAddress: Address?,
-    cardType: CardType,
-    fullName: String,
-    email: String,
-    username: String,
-    password: String)
+    patronInfo: PatronCreationInfo,
+    cardType: CardType)
   {
     self.configuration = configuration
     self.authToken = authToken
     self.session = AuthenticatingSession(configuration: configuration)
 
-    self.homeAddress = homeAddress
-    self.schoolOrWorkAddress = schoolOrWorkAddress
+    self.patronInfo = patronInfo
     self.cardType = cardType
-    self.fullName = fullName
-    self.email = email
-    self.username = username
-    self.password = password
     
     self.headerLabel = UILabel()
     
@@ -66,19 +52,21 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
       comment: "Title of the section for the user's possible work or school address"),
                                              style: .default, reuseIdentifier: nil)
   
-    self.homeAddressCell.address = self.homeAddress
-    if let address = self.schoolOrWorkAddress {
+    self.homeAddressCell.address = self.patronInfo.homeAddress
+    if let address = self.patronInfo.workAddress {
       self.altAddressCell.address = address
     }
     
     self.fullNameCell = SummaryCell(section: NSLocalizedString("Full Name", comment: "Title of the section for the user's full name"),
-                                    cellText: self.fullName)
+                                    cellText: self.patronInfo.name)
     self.emailCell = SummaryCell(section: NSLocalizedString("Email", comment: "Title of the section for the user's email"),
-                                 cellText: self.email)
+                                 cellText: self.patronInfo.email)
+    self.birthdateCell = SummaryCell(section: NSLocalizedString("Birthdate", comment: "Title of the section for the user's birthdate"),
+                                     cellText: self.patronInfo.birthdate)
     self.usernameCell = SummaryCell(section: NSLocalizedString("Username", comment: "Title of the section for the user's chosen username"),
-                                    cellText: self.username)
+                                    cellText: self.patronInfo.username)
     self.passwordCell = SummaryCell(section: NSLocalizedString("Password", comment: "Title of the section for the user's chosen password"),
-                               cellText: self.password)
+                                    cellText: self.patronInfo.password)
 
     if configuration.isJuvenile {
       self.cells = [
@@ -91,12 +79,13 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
         self.homeAddressCell,
         self.fullNameCell,
         self.emailCell,
+        self.birthdateCell,
         self.usernameCell,
         self.passwordCell
       ]
     }
 
-    if (self.schoolOrWorkAddress != nil) {
+    if (self.patronInfo.workAddress != nil) {
       self.cells.insert(self.altAddressCell, at: 1)
     }
     
@@ -208,9 +197,9 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
 
   @objc private func createJuvenilePatron() {
     let info = JuvenileCreationInfo(parentBarcode: configuration.juvenileParentBarcode,
-                                    name: fullName,
-                                    username: username,
-                                    pin: password)
+                                    name: patronInfo.name,
+                                    username: patronInfo.username,
+                                    pin: patronInfo.password)
     configuration.juvenileCreationHandler?(info, self)
   }
 
@@ -227,9 +216,9 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
       case .success(let juvenileBarcode):
         self.navigationController?.pushViewController(
           UserCredentialsViewController(configuration: self.configuration,
-                                        username: self.username,
+                                        username: self.patronInfo.username,
                                         barcode: juvenileBarcode,
-                                        pin: self.password,
+                                        pin: self.patronInfo.password,
                                         cardType: self.cardType),
           animated: true)
       case .fail(let error):
@@ -248,25 +237,13 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
         NSLocalizedString(
           "Creating Card",
           comment: "A title telling the user their card is currently being created"))
-    var request = URLRequest.init(url: self.configuration.endpointURL.appendingPathComponent("create_patron"))
-    let schoolOrWorkAddressOrNull: AnyObject = {
-      if let schoolOrWorkAddress = self.schoolOrWorkAddress {
-        return schoolOrWorkAddress.JSONObject() as AnyObject
-      } else {
-        return NSNull()
-      }
-    }()
-    let JSONObject: [String: AnyObject] = [
-      "name": self.fullName as AnyObject,
-      "email": self.email as AnyObject,
-      "address": self.homeAddress.JSONObject() as AnyObject,
-      "username": self.username as AnyObject,
-      "pin": self.password as AnyObject,
-      "work_or_school_address": schoolOrWorkAddressOrNull
-    ]
-    request.httpBody = try! JSONSerialization.data(withJSONObject: JSONObject, options: [.prettyPrinted])
+    var request = URLRequest.init(url: self.configuration.endpointURL.appendingPathComponent("patrons"))
+
+    request.httpBody = try! JSONSerialization.data(withJSONObject: patronInfo.JSONObject(), options: [.prettyPrinted])
     request.httpMethod = "POST"
-    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.setValue("application/json", forHTTPHeaderField: "Accept")
+    request.setValue("\(authToken.tokenType) \(authToken.accessToken)", forHTTPHeaderField: "Authorization")
     request.timeoutInterval = self.configuration.requestTimeoutInterval
     let task = session.dataTaskWithRequest(request) { [weak self] data, response, error in
       OperationQueue.main.addOperation {
@@ -289,7 +266,7 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
     }
 
     guard let httpResponse = response as? HTTPURLResponse,
-      httpResponse.statusCode == 200,
+      httpResponse.statusCode == 200 || httpResponse.statusCode == 400,
       let data = data,
       let JSONObject = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject] else {
 
@@ -302,24 +279,32 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
           comment: "An alert message explaining an error and telling the user to try again later"))
         return
     }
+    
+    if httpResponse.statusCode == 400 {
+      showErrorAlert(JSONObject["detail"] as? String)
+      return
+    }
 
     let barcode = JSONObject["barcode"] as? String
 
     self.navigationController?.pushViewController(
       UserCredentialsViewController(configuration: self.configuration,
-                                    username: self.username,
+                                    username: self.patronInfo.username,
                                     barcode: barcode,
-                                    pin: self.password,
+                                    pin: self.patronInfo.password,
                                     cardType: self.cardType),
       animated: true)
   }
 
   // MARK: - Private helpers
 
-  private func showErrorAlert(_ message: String) {
+  private func showErrorAlert(_ message: String? = nil) {
+    let alertMessage = message ?? NSLocalizedString(
+      "A server error occurred during card creation. Please try again later.",
+      comment: "An alert message explaining an error and telling the user to try again later")
     let alertController = UIAlertController(
       title: NSLocalizedString("Error", comment: "The title for an error alert"),
-      message: message,
+      message: alertMessage,
       preferredStyle: .alert)
     alertController.addAction(UIAlertAction(
       title: NSLocalizedString("OK", comment: ""),

@@ -3,11 +3,11 @@ import XCTest
 
 class PasswordValidationTests: XCTestCase {
   func testPasswordCharacterCount() throws {
-    XCTAssertNil(PasswordValidator.validate(password: "12345678"), "Password is valid")
-    XCTAssertEqual(PasswordValidator.validate(password: "1234567"), .invalidCount)
+    XCTAssertNil(PasswordValidator.validate(password: "1234"), "Password is valid")
+    XCTAssertEqual(PasswordValidator.validate(password: "123"), .invalidCount)
     
     let stringWithMaxCharacters = "abcdefghijklmnopqrstuvwxyz123456"
-    XCTAssertNil(PasswordValidator.validate(password: "12345678"), "Password character count is valid")
+    XCTAssertNil(PasswordValidator.validate(password: stringWithMaxCharacters), "Password character count is valid")
     
     XCTAssertEqual(PasswordValidator.validate(password: stringWithMaxCharacters + "a"), .invalidCount)
   }

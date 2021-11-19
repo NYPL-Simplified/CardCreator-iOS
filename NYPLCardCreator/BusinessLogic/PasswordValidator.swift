@@ -9,9 +9,9 @@ enum PasswordValidationError {
   func errorMessage() -> String {
     switch self {
     case .invalidCount:
-      return NSLocalizedString("Password must be between 8 - 32 characters", comment: "The error message for the invalid password")
+      return NSLocalizedString("Password must be between 4 - 32 characters", comment: "The error message for the invalid password")
     case .invalidCharacter:
-      return NSLocalizedString("Password must be a combination of letters, numbers and the following symbols: ~ ! ? @ # $ % ^ & * ( ) ", comment: "The error message for the invalid password")
+      return NSLocalizedString("Password can only contain letters, numbers or the following symbols ~ ! ? @ # $ % ^ & * ( ) ", comment: "The error message for the invalid password")
     case .repeatingCharacter:
       return NSLocalizedString("Password cannot consecutively repeat a character 3 or more times", comment: "The error message for the invalid password")
     case .repeatingPattern:
@@ -22,14 +22,14 @@ enum PasswordValidationError {
 
 class PasswordValidator {
   /// Below are the rules for the password
-  /// 1. Password must be between 8 - 32 characters
+  /// 1. Password must be between 4 - 32 characters
   /// 2. Password can be a combination of numbers, uppercase / lowercase letters and the following symbols [~ ! ? @ # $ % ^ & * ( )]
   /// 3. Password cannot consecutively repeat a character 3 or more times, eg. aaa3ka2l
   /// 4. Password cannot consecutively repeat (2 or more times) a pattern of any 2, 3, or 4-character string. eg. 12341234
   static func validate(password: String?) -> PasswordValidationError? {
     // Rule 1
     guard let password = password,
-          password.count >= 8 && password.count <= 32 else {
+          password.count >= 4 && password.count <= 32 else {
       return .invalidCount
     }
     

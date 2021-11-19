@@ -13,6 +13,7 @@ final class UsernameAndPasswordViewController: FormTableViewController {
   private let cardType: CardType
   private let fullName: String
   private let email: String
+  private let birthdate: String?
   
   private let session: AuthenticatingSession
   
@@ -23,7 +24,8 @@ final class UsernameAndPasswordViewController: FormTableViewController {
     schoolOrWorkAddress: Address?,
     cardType: CardType,
     fullName: String,
-    email: String)
+    email: String,
+    birthdate: String?)
   {
     self.configuration = configuration
     self.authToken = authToken
@@ -39,6 +41,7 @@ final class UsernameAndPasswordViewController: FormTableViewController {
     self.cardType = cardType
     self.fullName = fullName
     self.email = email
+    self.birthdate = birthdate
     
     self.session = AuthenticatingSession(configuration: configuration)
     
@@ -81,6 +84,8 @@ final class UsernameAndPasswordViewController: FormTableViewController {
     self.usernameCell.textField.autocorrectionType = .no
     
     self.passwordCell.textField.keyboardType = .alphabet
+    self.passwordCell.textField.autocapitalizationType = .none
+    self.passwordCell.textField.autocorrectionType = .no
     self.passwordCell.textField.inputAccessoryView = self.returnToolbar()
   }
   
@@ -102,13 +107,12 @@ final class UsernameAndPasswordViewController: FormTableViewController {
   // MARK: UITableViewDataSource
   
   func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-    // TODO: Update localized strings
     return NSLocalizedString(
 """
 Username should be 5–25 letters and numbers only.
 Password should be
- • between 8 - 32 characters
- • a combination of letters, numbers and the following symbols ~ ! ? @ # $ % ^ & * ( )
+ • between 4 - 32 characters
+ • any letters, numbers or the following symbols ~ ! ? @ # $ % ^ & * ( )
  • not consecutively repeating a character 3 or more times
  • not consecutively repeating a pattern
 """,
@@ -152,7 +156,10 @@ Password should be
   @objc override func didSelectNext() {
     if let passwordValidationError = PasswordValidator.validate(password: self.passwordCell.textField.text) {
       let errorMessage = passwordValidationError.errorMessage()
-      showErrorAlert(title: NSLocalizedString("Invalid Password", comment: "The title for an error alert"), message: errorMessage)
+      self.showErrorAlert(title: NSLocalizedString(
+                            "Invalid Password",
+                            comment: "The title for an error alert"),
+                          message: errorMessage)
       return
     }
     
@@ -193,7 +200,9 @@ Password should be
           response.statusCode == 200 || response.statusCode == 400,
           let data = data,
           let decodedData = ValidateUsernameResponse.responseWithData(data) else {
-            self.showErrorAlert()
+          self.showErrorAlert(message: NSLocalizedString(
+                                "A server error occurred during address validation. Please try again later.",
+                                comment: "An alert message explaining an error and telling the user to try again later"))
             return
         }
 
@@ -226,44 +235,26 @@ Password should be
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         return
     }
-    self.navigationItem.rightBarButtonItem?.isEnabled = (usernameTextCount >= configuration.usernameMinLength && passwordTextCount >= 8 && passwordTextCount <= 32)
+    self.navigationItem.rightBarButtonItem?.isEnabled = (usernameTextCount >= configuration.usernameMinLength
+                                                          && passwordTextCount >= 4
+                                                          && passwordTextCount <= 32)
   }
   
   private func moveToFinalReview() {
     self.view.endEditing(false)
+    let patronInfo = PatronCreationInfo(name: self.fullName,
+                                        email: self.email,
+                                        birthdate: birthdate,
+                                        username: self.usernameCell.textField.text!,
+                                        password: self.passwordCell.textField.text!,
+                                        homeAddress: self.homeAddress,
+                                        workAddress: self.schoolOrWorkAddress)
     self.navigationController?.pushViewController(
       UserSummaryViewController(
         configuration: self.configuration,
         authToken: self.authToken,
-        homeAddress: self.homeAddress,
-        schoolOrWorkAddress: self.schoolOrWorkAddress,
-        cardType: self.cardType,
-        fullName: self.fullName,
-        email: self.email,
-        username: self.usernameCell.textField.text!,
-        password: self.passwordCell.textField.text!),
+        patronInfo: patronInfo,
+        cardType: self.cardType),
       animated: true)
-  }
-
-  /// - parameter title: If missing, defaults to generic error title.
-  /// - parameter message: If missing, defaults to server error message.
-  private func showErrorAlert(title: String? = nil, message: String? = nil) {
-    let alertTitle = title ?? NSLocalizedString(
-      "Error",
-      comment: "The title for an error alert")
-
-    let alertMessage = message ?? NSLocalizedString(
-      "A server error occurred during username validation. Please try again later.",
-      comment: "An alert message explaining an error and telling the user to try again later")
-
-    let alertController = UIAlertController(
-      title: alertTitle,
-      message: alertMessage,
-      preferredStyle: .alert)
-    alertController.addAction(UIAlertAction(
-      title: NSLocalizedString("OK", comment: ""),
-      style: .default,
-      handler: nil))
-    self.present(alertController, animated: true, completion: nil)
   }
 }
