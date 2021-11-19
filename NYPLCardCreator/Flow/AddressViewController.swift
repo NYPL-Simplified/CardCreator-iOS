@@ -307,6 +307,7 @@ final class AddressViewController: FormTableViewController {
         }
         // While responses with status code 400 are mostly errors, we need to handle the error
         // on a case by case basis (eg. alternate addresses) in the ValidateAddressResponse class
+        // API: https://github.com/NYPL/dgx-patron-creator-service/wiki/API-V0.3
         if (response as! HTTPURLResponse).statusCode != 200 &&
             (response as! HTTPURLResponse).statusCode != 400 ||
             data == nil {

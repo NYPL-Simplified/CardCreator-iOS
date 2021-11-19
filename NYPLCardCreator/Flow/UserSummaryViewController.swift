@@ -265,18 +265,13 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
       return
     }
 
+    // Response with status 400 contains informative error message for alert
+    // API: https://github.com/NYPL/dgx-patron-creator-service/wiki/API-V0.3
     guard let httpResponse = response as? HTTPURLResponse,
       httpResponse.statusCode == 200 || httpResponse.statusCode == 400,
       let data = data,
       let JSONObject = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject] else {
-
-        var errMsg = ""
-        if let code = (response as? HTTPURLResponse)?.statusCode {
-          errMsg = "\nError code: \(code)"
-        }
-        showErrorAlert(NSLocalizedString(
-          "A server error occurred during card creation. Please try again later.\(errMsg)",
-          comment: "An alert message explaining an error and telling the user to try again later"))
+        showErrorAlert()
         return
     }
     

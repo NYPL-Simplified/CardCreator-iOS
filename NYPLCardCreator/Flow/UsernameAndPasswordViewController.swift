@@ -196,6 +196,8 @@ Password should be
           return
         }
 
+        // Response with status 400 contains informative error message for alert
+        // API: https://github.com/NYPL/dgx-patron-creator-service/wiki/API-V0.3
         guard let response = response as? HTTPURLResponse,
           response.statusCode == 200 || response.statusCode == 400,
           let data = data,
