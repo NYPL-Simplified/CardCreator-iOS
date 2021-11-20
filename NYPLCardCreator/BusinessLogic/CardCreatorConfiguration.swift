@@ -208,6 +208,7 @@ final class UserInfo {
   var middleName: String?
   var lastName: String?
   var email: String?
+  var birthdate: Date?
   
   var username: String?
 }

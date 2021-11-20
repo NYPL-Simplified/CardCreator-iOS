@@ -114,13 +114,13 @@ enum AddressStep {
       fallthrough
     case .standard:
       let (homeAddress, schoolOrWorkAddress) = self.pairWithAppendedAddress(address)
-      let nameAndEmailViewController = NameAndEmailViewController(
+      let userInfoViewController = UserPersonalInfoViewController(
         configuration: configuration,
         authToken: authToken,
         homeAddress: homeAddress,
         schoolOrWorkAddress: schoolOrWorkAddress,
         cardType: cardType)
-      viewController.navigationController?.pushViewController(nameAndEmailViewController, animated: true)
+      viewController.navigationController?.pushViewController(userInfoViewController, animated: true)
     case .juvenile:
       break
     }

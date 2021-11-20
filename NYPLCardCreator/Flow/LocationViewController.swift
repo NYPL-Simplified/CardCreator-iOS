@@ -91,7 +91,7 @@ final class LocationViewController: UIViewController {
   @objc private func didSelectNext() {
     let vc: UIViewController
     if configuration.isJuvenile {
-      vc = NameAndEmailViewController(juvenileConfiguration: configuration, authToken: authToken)
+      vc = UserPersonalInfoViewController(juvenileConfiguration: configuration, authToken: authToken)
     } else {
       vc = AddressViewController(configuration: self.configuration,
                                  authToken: authToken,

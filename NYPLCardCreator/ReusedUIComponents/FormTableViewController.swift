@@ -83,4 +83,26 @@ class FormTableViewController: TableViewController, UITextFieldDelegate {
   @objc func didSelectNext() {
     
   }
+  
+  /// - parameter title: If missing, defaults to generic error title.
+  /// - parameter message: If missing, defaults to generic error message.
+  func showErrorAlert(title: String? = nil, message: String? = nil) {
+    let alertTitle = title ?? NSLocalizedString(
+      "Error",
+      comment: "The title for an error alert")
+
+    let alertMessage = message ?? NSLocalizedString(
+      "An error occurred. Please try again later.",
+      comment: "An alert message explaining an error and telling the user to try again later")
+
+    let alertController = UIAlertController(
+      title: alertTitle,
+      message: alertMessage,
+      preferredStyle: .alert)
+    alertController.addAction(UIAlertAction(
+      title: NSLocalizedString("OK", comment: ""),
+      style: .default,
+      handler: nil))
+    self.present(alertController, animated: true, completion: nil)
+  }
 }
