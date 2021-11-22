@@ -178,16 +178,23 @@ final class UserPersonalInfoViewController: FormTableViewController {
     self.view.endEditing(false)
     
     guard let firstName = firstNameCell.textField.text,
-      let lastName = lastNameCell.textField.text,
-      let birthdate = birthdate else {
+      let lastName = lastNameCell.textField.text else {
         return
     }
     
-    guard is13OrOlder(birthdate) else {
-      showErrorAlert(message: NSLocalizedString(
-                      "You must be 13 years of age or older to sign up for a library card.",
-                      comment: "A message to inform user about the invalid birthdate"))
-      return
+    var birthdateString: String? = nil
+    
+    if !configuration.isJuvenile {
+      guard let birthdate = birthdate,
+            is13OrOlder(birthdate) else
+      {
+        showErrorAlert(message: NSLocalizedString(
+                        "You must be 13 years of age or older to sign up for a library card.",
+                        comment: "A message to inform user about the invalid birthdate"))
+        return
+      }
+      
+      birthdateString = dateFormatter.string(from: birthdate)
     }
 
     let middleInitial = middleInitialCell.textField.text
@@ -204,7 +211,7 @@ final class UserPersonalInfoViewController: FormTableViewController {
         cardType: self.cardType,
         fullName: fullName,
         email: self.emailCell.textField.text!,
-        birthdate: dateFormatter.string(from: birthdate)),
+        birthdate: birthdateString),
       animated: true)
   }
   
