@@ -286,7 +286,7 @@ final class AddressViewController: FormTableViewController {
         NSLocalizedString(
           "Validating Address",
           comment: "A title telling the user their address is currently being validated"))
-    var request = URLRequest.init(url: self.configuration.endpointURL.appendingPathComponent("validations/address"))
+    var request = URLRequest.init(url: self.configuration.platformAPIInfo.baseURL.appendingPathComponent("validations/address"))
     
     let JSONObject: [String: AnyObject] = [
       "address": self.currentAddress()!.JSONObject() as AnyObject

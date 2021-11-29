@@ -175,7 +175,7 @@ Password should be
         NSLocalizedString(
           "Validating Name",
           comment: "A title telling the user their full name is currently being validated"))
-    var request = URLRequest.init(url: self.configuration.endpointURL.appendingPathComponent("validations/username"))
+    var request = URLRequest.init(url: self.configuration.platformAPIInfo.baseURL.appendingPathComponent("validations/username"))
     let JSONObject: [String: String] = ["username": self.usernameCell.textField.text!]
     request.httpBody = try! JSONSerialization.data(withJSONObject: JSONObject, options: [.prettyPrinted])
     request.httpMethod = "POST"

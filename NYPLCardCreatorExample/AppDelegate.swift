@@ -27,8 +27,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     // because the clientID and clientSecret are only accessible from SimplyE,
     // and there are no test ID and secret.
     let configuration = CardCreatorConfiguration(
-      endpointURL: URL(string: "https://platform.nypl.org/api/v0.3/")!,
-      endpointVersion: "v1",
       endpointUsername: "test_key",
       endpointPassword: "test_secret",
       platformAPIInfo: platformAPIInfo,

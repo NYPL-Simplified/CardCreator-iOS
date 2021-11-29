@@ -237,7 +237,7 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
         NSLocalizedString(
           "Creating Card",
           comment: "A title telling the user their card is currently being created"))
-    var request = URLRequest.init(url: self.configuration.endpointURL.appendingPathComponent("patrons"))
+    var request = URLRequest.init(url: self.configuration.platformAPIInfo.baseURL.appendingPathComponent("patrons"))
 
     request.httpBody = try! JSONSerialization.data(withJSONObject: patronInfo.JSONObject(), options: [.prettyPrinted])
     request.httpMethod = "POST"

@@ -13,8 +13,6 @@ class CardCreatorConfigurationTests: XCTestCase {
   func testJuvenileFullNameCreation() throws {
     // preconditions
     let juvenileConfig = CardCreatorConfiguration(
-      endpointURL: URL(string: "https://example.com")!,
-      endpointVersion: "1",
       endpointUsername: "test",
       endpointPassword: "password",
       platformAPIInfo: NYPLPlatformAPIInfo(
@@ -48,8 +46,6 @@ class CardCreatorConfigurationTests: XCTestCase {
   func testRegularFullNameCreation() throws {
     // preconditions
     let config = CardCreatorConfiguration(
-      endpointURL: URL(string: "https://example.com")!,
-      endpointVersion: "1",
       endpointUsername: "test",
       endpointPassword: "password",
       platformAPIInfo: NYPLPlatformAPIInfo(

@@ -28,11 +28,6 @@ public final class NYPLPlatformAPIInfo: NSObject {
 /// A `CardCreatorConfiguration` instance is used by applications to set
 /// up a new card registration flow.
 public final class CardCreatorConfiguration: NSObject {
-  /// The base URL for all API requests, e.g. the base URL for
-  /// "http://qa.patrons.librarysimplified.org/v1/validate/username" is
-  /// "http://qa.patrons.librarysimplified.org/v1".
-  public let endpointURL: URL
-
   /// The username to be provided via basic authentication to the API endpoint.
   public let endpointUsername: String
 
@@ -40,7 +35,7 @@ public final class CardCreatorConfiguration: NSObject {
   public let endpointPassword: String
 
   /// Necessary for both regular and Juvenile flow.
-  /// - Note: At some point in the future this will also include `endpointURL`,
+  /// - Note: At some point in the future this will also include
   /// `endpointUsername`, `endpointPassword`.
   let platformAPIInfo: NYPLPlatformAPIInfo
 
@@ -72,10 +67,6 @@ public final class CardCreatorConfiguration: NSObject {
   /// juvenile card creation.
   /// 
   /// - Parameters:
-  ///   - endpointURL: The base URL for the API endpoints used by the regular
-  ///   card creation flow.
-  ///   - endpointVersion: Version of the API used by the regular
-  ///   card creation flow.
   ///   - endpointUsername: Username for authenticating on the API used by the
   ///   regular card creation flow.
   ///   - endpointPassword: Password for authenticating on the API used by the
@@ -87,8 +78,6 @@ public final class CardCreatorConfiguration: NSObject {
   ///   - completionHandler: Completion block that will be called on the main
   ///   thread at the end of both registration flows.
   @objc public init(
-    endpointURL: URL,
-    endpointVersion: String,
     endpointUsername: String,
     endpointPassword: String,
     platformAPIInfo: NYPLPlatformAPIInfo,
@@ -96,7 +85,6 @@ public final class CardCreatorConfiguration: NSObject {
     requestTimeoutInterval: TimeInterval,
     completionHandler: @escaping (_ username: String, _ PIN: String, _ userInitiated: Bool) -> Void = { _, _, _ in })
   {
-    self.endpointURL = endpointURL.appendingPathComponent(endpointVersion)
     self.endpointUsername = endpointUsername
     self.endpointPassword = endpointPassword
     self.juvenileParentBarcode = juvenileParentBarcode
