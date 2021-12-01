@@ -63,6 +63,15 @@ public final class CardCreatorConfiguration: NSObject {
   /// The minimum length of the username field.
   let usernameMinLength: Int = 5
 
+  /// The maximum length of the username field.
+  let usernameMaxLength: Int = 25
+
+  /// The minimum length of the password field.
+  let passwordMinLength: Int = 8
+
+  /// The maximum length of the password field.
+  let passwordMaxLength: Int = 32
+
   /// The designated initialier. This can be used for both regular and
   /// juvenile card creation.
   /// 

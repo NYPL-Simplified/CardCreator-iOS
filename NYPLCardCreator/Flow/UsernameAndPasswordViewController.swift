@@ -16,6 +16,7 @@ final class UsernameAndPasswordViewController: FormTableViewController {
   private let birthdate: String?
   
   private let session: AuthenticatingSession
+  private let passwordValidator: PasswordValidator
   
   init(
     configuration: CardCreatorConfiguration,
@@ -44,7 +45,8 @@ final class UsernameAndPasswordViewController: FormTableViewController {
     self.birthdate = birthdate
     
     self.session = AuthenticatingSession(configuration: configuration)
-    
+    self.passwordValidator = PasswordValidator(configuration: configuration)
+
     super.init(
       cells: [
         self.usernameCell,
@@ -109,9 +111,9 @@ final class UsernameAndPasswordViewController: FormTableViewController {
   func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
     return NSLocalizedString(
 """
-Username should be 5–25 letters and numbers only.
+Username should be \(configuration.usernameMinLength)–\(configuration.usernameMaxLength) letters and numbers only.
 Password should be
- • between 4 - 32 characters
+ • between \(configuration.passwordMinLength) - \(configuration.passwordMaxLength) characters
  • any letters, numbers or the following symbols ~ ! ? @ # $ % ^ & * ( )
  • not consecutively repeating a character 3 or more times
  • not consecutively repeating a pattern
@@ -133,17 +135,17 @@ Password should be
       if let _ = string.rangeOfCharacter(from: CharacterSet.alphanumerics.inverted) {
         return false
       } else if let text = textField.text {
-        return text.count - range.length + string.count <= 25
+        return text.count - range.length + string.count <= configuration.usernameMaxLength
       } else {
-        return string.count <= 25
+        return string.count <= configuration.usernameMaxLength
       }
     }
     
     if textField == self.passwordCell.textField {
       if let text = textField.text {
-        return text.count - range.length + string.count <= 32
+        return text.count - range.length + string.count <= configuration.passwordMaxLength
       } else {
-        return string.count <= 32
+        return string.count <= configuration.passwordMaxLength
       }
     }
 
@@ -154,8 +156,8 @@ Password should be
   // MARK: -
   
   @objc override func didSelectNext() {
-    if let passwordValidationError = PasswordValidator.validate(password: self.passwordCell.textField.text) {
-      let errorMessage = passwordValidationError.errorMessage()
+    if let passwordValidationError = passwordValidator.validate(password: self.passwordCell.textField.text) {
+      let errorMessage = passwordValidationError.errorMessage(for: configuration)
       self.showErrorAlert(title: NSLocalizedString(
                             "Invalid Password",
                             comment: "The title for an error alert"),
@@ -175,7 +177,7 @@ Password should be
         NSLocalizedString(
           "Validating Name",
           comment: "A title telling the user their full name is currently being validated"))
-    var request = URLRequest.init(url: self.configuration.platformAPIInfo.baseURL.appendingPathComponent("validations/username"))
+    var request = URLRequest(url: configuration.platformAPIInfo.baseURL.appendingPathComponent("validations/username"))
     let JSONObject: [String: String] = ["username": self.usernameCell.textField.text!]
     request.httpBody = try! JSONSerialization.data(withJSONObject: JSONObject, options: [.prettyPrinted])
     request.httpMethod = "POST"
@@ -220,7 +222,7 @@ Password should be
           self.showErrorAlert(
             title: NSLocalizedString("Username Invalid", comment: "The title for an error alert"),
             message: NSLocalizedString(
-              "Usernames must be 5–25 letters and numbers only. Please revise your username.",
+              "Usernames must be \(self.configuration.usernameMinLength)–\(self.configuration.usernameMaxLength) letters and numbers only. Please revise your username.",
               comment: "An alert message explaining an error and telling the user to try again"))
         case .availableUsername:
           self.moveToFinalReview()
@@ -238,8 +240,8 @@ Password should be
         return
     }
     self.navigationItem.rightBarButtonItem?.isEnabled = (usernameTextCount >= configuration.usernameMinLength
-                                                          && passwordTextCount >= 4
-                                                          && passwordTextCount <= 32)
+                                                          && passwordTextCount >= configuration.passwordMinLength
+                                                          && passwordTextCount <= configuration.passwordMaxLength)
   }
   
   private func moveToFinalReview() {
