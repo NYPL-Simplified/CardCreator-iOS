@@ -222,7 +222,7 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
                                         cardType: self.cardType),
           animated: true)
       case .fail(let error):
-        self.showErrorAlert(error.localizedDescription)
+        self.showErrorAlertEnablingNavigation(message: error.localizedDescription)
       }
     }
   }
@@ -260,23 +260,34 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
     self.navigationController?.view.isUserInteractionEnabled = true
     self.navigationItem.titleView = nil
 
-    if let error = error {
-      showErrorAlert(error.localizedDescription)
+    // if we don't have an HTTP response nor usable data, display error message
+    guard
+      let httpResponse = response as? HTTPURLResponse,
+      httpResponse.statusCode == 200 || httpResponse.statusCode == 400,
+      let data = data,
+      let JSONObject = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject]
+    else {
+      showErrorAlertEnablingNavigation(message: error?.localizedDescription)
+      return
+    }
+    
+    // Responses with status 400 contain informative error messages from API:
+    // https://github.com/NYPL/dgx-patron-creator-service/wiki/API-V0.3#error-responses-2
+    if httpResponse.statusCode == 400 {
+      let msg = JSONObject["detail"] as? String ?? error?.localizedDescription
+      showErrorAlertEnablingNavigation(title: JSONObject["title"] as? String,
+                                       message: msg)
       return
     }
 
-    // Response with status 400 contains informative error message for alert
-    // API: https://github.com/NYPL/dgx-patron-creator-service/wiki/API-V0.3
-    guard let httpResponse = response as? HTTPURLResponse,
-      httpResponse.statusCode == 200 || httpResponse.statusCode == 400,
-      let data = data,
-      let JSONObject = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject] else {
-        showErrorAlert()
-        return
+    // if we have any other error, display it
+    if let error = error {
+      showErrorAlertEnablingNavigation(message: error.localizedDescription)
+      return
     }
-    
-    if httpResponse.statusCode == 400 {
-      showErrorAlert(JSONObject["detail"] as? String)
+
+    guard httpResponse.statusCode == 200 else {
+      showErrorAlertEnablingNavigation()
       return
     }
 
@@ -293,19 +304,9 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
 
   // MARK: - Private helpers
 
-  private func showErrorAlert(_ message: String? = nil) {
-    let alertMessage = message ?? NSLocalizedString(
-      "A server error occurred during card creation. Please try again later.",
-      comment: "An alert message explaining an error and telling the user to try again later")
-    let alertController = UIAlertController(
-      title: NSLocalizedString("Error", comment: "The title for an error alert"),
-      message: alertMessage,
-      preferredStyle: .alert)
-    alertController.addAction(UIAlertAction(
-      title: NSLocalizedString("OK", comment: ""),
-      style: .default,
-      handler: nil))
-    self.present(alertController, animated: true, completion: nil)
+  private func showErrorAlertEnablingNavigation(title: String? = nil,
+                                                message: String? = nil) {
+    self.showErrorAlert(title: title, message: message)
     self.navigationItem.rightBarButtonItem?.isEnabled = true
   }
 }

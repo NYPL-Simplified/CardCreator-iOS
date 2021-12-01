@@ -51,6 +51,7 @@
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
+		731AC7172758344D0036A05E /* UIViewController+Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731AC7162758344D0036A05E /* UIViewController+Alerts.swift */; };
 		7353354D246DBB8D000C2874 /* ResultErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7353354C246DBB8D000C2874 /* ResultErrors.swift */; };
 		735F6379247DDDB6008858C4 /* JuvenileCreationResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 735F6378247DDDB6008858C4 /* JuvenileCreationResponseBody.swift */; };
 		736D97A52559EB1300843709 /* CardCreatorConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736D97A42559EB1300843709 /* CardCreatorConfigurationTests.swift */; };
@@ -144,6 +145,7 @@
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../NYPLCardCreatorExample/AppDelegate.swift; sourceTree = "<group>"; };
 		607FACDC1AFB9204008FA782 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ../NYPLCardCreatorExample/Images.xcassets; sourceTree = "<group>"; };
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		731AC7162758344D0036A05E /* UIViewController+Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alerts.swift"; sourceTree = "<group>"; };
 		7353354C246DBB8D000C2874 /* ResultErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultErrors.swift; sourceTree = "<group>"; };
 		735F6378247DDDB6008858C4 /* JuvenileCreationResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuvenileCreationResponseBody.swift; sourceTree = "<group>"; };
 		736D97A42559EB1300843709 /* CardCreatorConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCreatorConfigurationTests.swift; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 				146E47C820DD746300C8F97F /* SummaryAddressCell.swift */,
 				146E47B320DD746300C8F97F /* SummaryCell.swift */,
 				146E47BF20DD746300C8F97F /* TableViewController.swift */,
+				731AC7162758344D0036A05E /* UIViewController+Alerts.swift */,
 			);
 			path = ReusedUIComponents;
 			sourceTree = "<group>";
@@ -483,6 +486,7 @@
 				14E61C7320DD7C6200124E2B /* FormTableViewController.swift in Sources */,
 				1754097326FE7FD900B8E077 /* NYPLColor.swift in Sources */,
 				14E61C7C20DD7C6200124E2B /* UserPersonalInfoViewController.swift in Sources */,
+				731AC7172758344D0036A05E /* UIViewController+Alerts.swift in Sources */,
 				179267E92734D85D004EA5E7 /* FlowCoordinator.swift in Sources */,
 				14E61C7420DD7C6200124E2B /* PlacemarkQuery.swift in Sources */,
 				73935214246CD0C200ACC0AB /* FlowCoordinator+Juvenile.swift in Sources */,
