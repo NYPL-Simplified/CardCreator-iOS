@@ -6,10 +6,10 @@ enum PasswordValidationError {
   case repeatingCharacter
   case repeatingPattern
   
-  func errorMessage() -> String {
+  func errorMessage(for configuration: CardCreatorConfiguration) -> String {
     switch self {
     case .invalidCount:
-      return NSLocalizedString("Password must be between 4 - 32 characters", comment: "The error message for the invalid password")
+      return NSLocalizedString("Password must be between \(configuration.passwordMinLength) - \(configuration.passwordMaxLength) characters", comment: "The error message for the invalid password")
     case .invalidCharacter:
       return NSLocalizedString("Password can only contain letters, numbers or the following symbols ~ ! ? @ # $ % ^ & * ( ) ", comment: "The error message for the invalid password")
     case .repeatingCharacter:
@@ -21,15 +21,24 @@ enum PasswordValidationError {
 }
 
 class PasswordValidator {
-  /// Below are the rules for the password
-  /// 1. Password must be between 4 - 32 characters
+  private let configuration: CardCreatorConfiguration
+
+  init(configuration: CardCreatorConfiguration) {
+    self.configuration = configuration
+  }
+
+  /// Below are the rules for the password:
+  /// 1. Password must be between 8 - 32 characters
   /// 2. Password can be a combination of numbers, uppercase / lowercase letters and the following symbols [~ ! ? @ # $ % ^ & * ( )]
   /// 3. Password cannot consecutively repeat a character 3 or more times, eg. aaa3ka2l
   /// 4. Password cannot consecutively repeat (2 or more times) a pattern of any 2, 3, or 4-character string. eg. 12341234
-  static func validate(password: String?) -> PasswordValidationError? {
+  ///
+  /// Reference:
+  /// https://docs.google.com/document/d/1a4nSKPYTXlQ7XlJQu-r8aEdfvl7ZLn0dulW6amEjAJQ/edit#
+  func validate(password: String?) -> PasswordValidationError? {
     // Rule 1
     guard let password = password,
-          password.count >= 4 && password.count <= 32 else {
+          password.count >= configuration.passwordMinLength && password.count <= configuration.passwordMaxLength else {
       return .invalidCount
     }
     
