@@ -17,8 +17,38 @@ struct PlatformAPIError: Decodable {
   /// Error type
   let type: String?
 
-  /// User-friendly error message
-  let message: String
+  /// A subject for what went wrong.
+  let title: String?
+
+  /// User-friendly error message, usually a succint summary.
+  let detail: String?
+
+  /// Legacy user-friendly error message
+  let message: String?
+
+  /// This contains more specific and informative error causes.
+  let error: [String: String]?
+
+  /// Collates `detail` and `error` values into one string, after sorting the
+  /// `error` key-value pairs by key.
+  var fullErrorDetails: String {
+    let errorHash = error ?? [:]
+
+    let sortedHash = errorHash.sorted { kvPair1, kvPair2 in
+      kvPair1.key.lowercased() < kvPair2.key.lowercased()
+    }
+
+    let msg = sortedHash.reduce(detail ?? message ?? "") { partialResult, val in
+      partialResult + "\n" + val.value
+    }
+
+    if msg.isEmpty {
+      return NSLocalizedString("An error occurred. Please try again later.",
+                               comment: "A fallback error message")
+    }
+
+    return msg
+  }
 
   static func fromData(_ data: Data) -> PlatformAPIError? {
     let decoder = JSONDecoder()

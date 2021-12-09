@@ -263,7 +263,6 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
     // if we don't have an HTTP response nor usable data, display error message
     guard
       let httpResponse = response as? HTTPURLResponse,
-      httpResponse.statusCode == 200 || httpResponse.statusCode == 400,
       let data = data,
       let JSONObject = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject]
     else {
@@ -271,11 +270,13 @@ final class UserSummaryViewController: TableViewController, JuvenileCardCreation
       return
     }
     
-    // Responses with status 400 contain informative error messages from API:
+    // Error responses contain informative error messages from API:
     // https://github.com/NYPL/dgx-patron-creator-service/wiki/API-V0.3#error-responses-2
-    if httpResponse.statusCode == 400 {
-      let msg = JSONObject["detail"] as? String ?? error?.localizedDescription
-      showErrorAlertEnablingNavigation(title: JSONObject["title"] as? String,
+    // https://platformdocs.nypl.org/#/patrons/patrons_creatorV03
+    if httpResponse.statusCode < 200 || httpResponse.statusCode > 299 {
+      let platformError = PlatformAPIError.fromData(data)
+      let msg = platformError?.fullErrorDetails ?? error?.localizedDescription
+      showErrorAlertEnablingNavigation(title: platformError?.title,
                                        message: msg)
       return
     }

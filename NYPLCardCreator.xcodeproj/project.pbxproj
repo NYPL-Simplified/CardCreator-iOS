@@ -55,6 +55,7 @@
 		7353354D246DBB8D000C2874 /* ResultErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7353354C246DBB8D000C2874 /* ResultErrors.swift */; };
 		735F6379247DDDB6008858C4 /* JuvenileCreationResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 735F6378247DDDB6008858C4 /* JuvenileCreationResponseBody.swift */; };
 		736D97A52559EB1300843709 /* CardCreatorConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736D97A42559EB1300843709 /* CardCreatorConfigurationTests.swift */; };
+		736F6ACD27628D1900BD6A0B /* PlatformAPIErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736F6ACC27628D1900BD6A0B /* PlatformAPIErrorTests.swift */; };
 		738401032474974000236B0D /* ISSOToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738401022474974000236B0D /* ISSOToken.swift */; };
 		73935214246CD0C200ACC0AB /* FlowCoordinator+Juvenile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73935213246CD0C200ACC0AB /* FlowCoordinator+Juvenile.swift */; };
 		73D15456247C96C700ACD04E /* JuvenileCreationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D15455247C96C700ACD04E /* JuvenileCreationInfo.swift */; };
@@ -149,6 +150,7 @@
 		7353354C246DBB8D000C2874 /* ResultErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultErrors.swift; sourceTree = "<group>"; };
 		735F6378247DDDB6008858C4 /* JuvenileCreationResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuvenileCreationResponseBody.swift; sourceTree = "<group>"; };
 		736D97A42559EB1300843709 /* CardCreatorConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCreatorConfigurationTests.swift; sourceTree = "<group>"; };
+		736F6ACC27628D1900BD6A0B /* PlatformAPIErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformAPIErrorTests.swift; sourceTree = "<group>"; };
 		738401022474974000236B0D /* ISSOToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISSOToken.swift; sourceTree = "<group>"; };
 		73935213246CD0C200ACC0AB /* FlowCoordinator+Juvenile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FlowCoordinator+Juvenile.swift"; sourceTree = "<group>"; };
 		73D15455247C96C700ACD04E /* JuvenileCreationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuvenileCreationInfo.swift; sourceTree = "<group>"; };
@@ -311,9 +313,10 @@
 			isa = PBXGroup;
 			children = (
 				73EEE7E3247F274E00A06D14 /* Info.plist */,
-				73EEE7EC247F290700A06D14 /* JuvenileCreationResponseBodyTests.swift */,
 				736D97A42559EB1300843709 /* CardCreatorConfigurationTests.swift */,
+				73EEE7EC247F290700A06D14 /* JuvenileCreationResponseBodyTests.swift */,
 				17B17A99272BAE2000314AF6 /* PasswordValidationTests.swift */,
+				736F6ACC27628D1900BD6A0B /* PlatformAPIErrorTests.swift */,
 			);
 			path = NYPLCardCreatorTests;
 			sourceTree = "<group>";
@@ -534,6 +537,7 @@
 				17B17A9A272BAE2000314AF6 /* PasswordValidationTests.swift in Sources */,
 				73EEE7ED247F290700A06D14 /* JuvenileCreationResponseBodyTests.swift in Sources */,
 				736D97A52559EB1300843709 /* CardCreatorConfigurationTests.swift in Sources */,
+				736F6ACD27628D1900BD6A0B /* PlatformAPIErrorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

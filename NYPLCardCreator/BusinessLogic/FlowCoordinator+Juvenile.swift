@@ -172,7 +172,7 @@ public extension FlowCoordinator {
         // NB: the server will return product-approved yet non-localized
         // messages, but because of time constraints we are not going to
         // localize those
-        userInfo[NSLocalizedDescriptionKey] = responseError.message
+        userInfo[NSLocalizedDescriptionKey] = responseError.fullErrorDetails
         completion(NSError(domain: ErrorDomain,
                            code: ErrorCode.ineligibleForJuvenileCardCreation.rawValue,
                            userInfo: userInfo))
@@ -241,7 +241,7 @@ public extension FlowCoordinator {
         completion(.fail(NSError(domain: ErrorDomain,
                                  code: ErrorCode.createJuvenileAccountFail.rawValue,
                                  userInfo: [
-                                  NSLocalizedDescriptionKey: error.message,
+                                  NSLocalizedDescriptionKey: error.fullErrorDetails,
                                   "requestURL": urlStr,
                                   "response": response])))
         return
