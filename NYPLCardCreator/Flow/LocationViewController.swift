@@ -10,9 +10,13 @@ final class LocationViewController: UIViewController {
   private let resultLabel = UILabel()
   private var placemarkQuery: PlacemarkQuery? = nil
   private var viewDidAppearPreviously: Bool = false
+  private let authToken: ISSOToken
 
-  init(configuration: CardCreatorConfiguration) {
+  init(configuration: CardCreatorConfiguration,
+       authToken: ISSOToken)
+  {
     self.configuration = configuration
+    self.authToken = authToken
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -87,9 +91,10 @@ final class LocationViewController: UIViewController {
   @objc private func didSelectNext() {
     let vc: UIViewController
     if configuration.isJuvenile {
-      vc = NameAndEmailViewController(juvenileConfiguration: configuration)
+      vc = UserPersonalInfoViewController(juvenileConfiguration: configuration, authToken: authToken)
     } else {
       vc = AddressViewController(configuration: self.configuration,
+                                 authToken: authToken,
                                  addressStep: .home)
     }
 

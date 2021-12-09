@@ -2,7 +2,7 @@
 ///
 /// The exact implications of a particular card type on the registration flow are
 /// somewhat subtle. Consult the API documentation for more information.
-enum CardType {
+enum CardType: String {
   case none
   case temporary
   case standard

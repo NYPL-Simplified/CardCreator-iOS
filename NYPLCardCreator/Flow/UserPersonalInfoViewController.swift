@@ -1,31 +1,42 @@
 import UIKit
 
-final class NameAndEmailViewController: FormTableViewController {
+final class UserPersonalInfoViewController: FormTableViewController {
   
   private let configuration: CardCreatorConfiguration
+  private let authToken: ISSOToken
   
   private let cardType: CardType
   private let firstNameCell: LabelledTextViewCell
   private let middleInitialCell: LabelledTextViewCell
   private let lastNameCell: LabelledTextViewCell
   private let emailCell: LabelledTextViewCell
+  private let birthdateCell: LabelledTextViewCell
   private let homeAddress: Address
   private let schoolOrWorkAddress: Address?
+  private var birthdate: Date?
+  
+  private let dateFormatter: DateFormatter
+  private let datePicker: UIDatePicker
 
-  convenience init(juvenileConfiguration: CardCreatorConfiguration) {
+  convenience init(juvenileConfiguration: CardCreatorConfiguration,
+                   authToken: ISSOToken)
+  {
     // providing a fake home address because it will be ignored anyway for
     // juvenile flows
     self.init(configuration: juvenileConfiguration,
-              homeAddress: Address(street1: "", street2: "", city: "", region: "", zip: ""),
+              authToken: authToken,
+              homeAddress: Address(street1: "", street2: "", city: "", region: "", zip: "", isResidential: false, hasBeenValidated: false),
               schoolOrWorkAddress: nil,
               cardType: .juvenile)
   }
 
   init(configuration: CardCreatorConfiguration,
+       authToken: ISSOToken,
        homeAddress: Address,
        schoolOrWorkAddress: Address?,
        cardType: CardType) {
     self.configuration = configuration
+    self.authToken = authToken
 
     let requiredPlaceholder = NSLocalizedString("Required", comment: "A placeholder for a required text field")
     let optionalPlaceholder = NSLocalizedString("Optional", comment: "A placeholder for a required text field")
@@ -46,6 +57,10 @@ final class NameAndEmailViewController: FormTableViewController {
       title: NSLocalizedString("Email", comment: "A text field title for a user's email address"),
       placeholder: requiredPlaceholder)
     
+    self.birthdateCell = LabelledTextViewCell(
+      title: NSLocalizedString("Birthdate", comment: "A text field title for a user's birthdate"),
+      placeholder: requiredPlaceholder)
+    
     self.homeAddress = homeAddress
     self.schoolOrWorkAddress = schoolOrWorkAddress
     self.cardType = cardType
@@ -61,13 +76,28 @@ final class NameAndEmailViewController: FormTableViewController {
         self.firstNameCell,
         self.middleInitialCell,
         self.lastNameCell,
-        self.emailCell
+        self.emailCell,
+        self.birthdateCell
       ]
     }
+    
+    self.datePicker = UIDatePicker()
+    datePicker.minimumDate = Calendar.current.date(from: DateComponents(year: 1900, month: 1, day: 1))
+    datePicker.maximumDate = Calendar.current.date(byAdding: .year, value: -13, to: Date())
+    datePicker.datePickerMode = .date
+    
+    if #available(iOS 13.4, *) {
+      datePicker.preferredDatePickerStyle = .wheels
+    }
+    
+    self.dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "MM-dd-yyyy"
+    
     super.init(cells: cells)
     
     self.navigationItem.rightBarButtonItem?.isEnabled = false
     
+    datePicker.addTarget(self, action: #selector(datePickerDidChange), for: .valueChanged)
     self.prepareTableViewCells()
     self.checkToPrefillForm()
   }
@@ -103,6 +133,9 @@ final class NameAndEmailViewController: FormTableViewController {
     self.emailCell.textField.keyboardType = .emailAddress
     self.emailCell.textField.autocapitalizationType = .none
     self.emailCell.textField.autocorrectionType = .no
+    
+    self.birthdateCell.textField.inputView = datePicker
+    self.birthdateCell.textField.inputAccessoryView = self.returnToolbar()
 
     if #available(iOS 10.0, *) {
       self.firstNameCell.textField.textContentType     = .givenName
@@ -121,6 +154,10 @@ final class NameAndEmailViewController: FormTableViewController {
       self.emailCell.textField.text = user.email
       textFieldDidChange()
     }
+    if let birthdate = user.birthdate {
+      self.birthdateCell.textField.text = dateFormatter.string(from: birthdate)
+      textFieldDidChange()
+    }
   }
   
   // MARK: -
@@ -133,15 +170,31 @@ final class NameAndEmailViewController: FormTableViewController {
       user.middleName = self.middleInitialCell.textField.text
       user.lastName = self.lastNameCell.textField.text
       user.email = self.emailCell.textField.text
+      user.birthdate = self.birthdate
     }
   }
   
   @objc override func didSelectNext() {
     self.view.endEditing(false)
-
+    
     guard let firstName = firstNameCell.textField.text,
       let lastName = lastNameCell.textField.text else {
         return
+    }
+    
+    var birthdateString: String? = nil
+    
+    if !configuration.isJuvenile {
+      guard let birthdate = birthdate,
+            is13OrOlder(birthdate) else
+      {
+        showErrorAlert(message: NSLocalizedString(
+                        "You must be 13 years of age or older to sign up for a library card.",
+                        comment: "A message to inform user about the invalid birthdate"))
+        return
+      }
+      
+      birthdateString = dateFormatter.string(from: birthdate)
     }
 
     let middleInitial = middleInitialCell.textField.text
@@ -150,13 +203,15 @@ final class NameAndEmailViewController: FormTableViewController {
                                           lastName: lastName)
 
     self.navigationController?.pushViewController(
-      UsernameAndPINViewController(
+      UsernameAndPasswordViewController(
         configuration: self.configuration,
+        authToken: authToken,
         homeAddress: self.homeAddress,
         schoolOrWorkAddress: self.schoolOrWorkAddress,
         cardType: self.cardType,
         fullName: fullName,
-        email: self.emailCell.textField.text!),
+        email: self.emailCell.textField.text!,
+        birthdate: birthdateString),
       animated: true)
   }
   
@@ -175,10 +230,36 @@ final class NameAndEmailViewController: FormTableViewController {
   }
   
   @objc private func textFieldDidChange() {
-    if namesAreValid() && (emailIsValid() || configuration.isJuvenile) {
+    // Update birthdate if user enter birthdate with physical keyboard
+    birthdate = dateFormatter.date(from: self.birthdateCell.textField.text ?? "")
+    
+    updateNextButton()
+  }
+  
+  @objc private func datePickerDidChange() {
+    birthdate = datePicker.date
+    birthdateCell.textField.text = dateFormatter.string(from: datePicker.date)
+    updateNextButton()
+  }
+  
+  private func updateNextButton() {
+    if (birthdate != nil || configuration.isJuvenile) &&
+        namesAreValid() &&
+        (emailIsValid() || configuration.isJuvenile) {
       self.navigationItem.rightBarButtonItem?.isEnabled = true
     } else {
       self.navigationItem.rightBarButtonItem?.isEnabled = false
     }
+  }
+  
+  // MARK: - Helper
+  
+  private func is13OrOlder(_ birthdate: Date) -> Bool {
+    // Add 13 year to the birthdate and use timeIntervalSinceNow to determine user's age
+    guard let date = Calendar.current.date(byAdding: .year, value: 13, to: birthdate) else {
+      return false
+    }
+    
+    return date.timeIntervalSinceNow <= 0
   }
 }
