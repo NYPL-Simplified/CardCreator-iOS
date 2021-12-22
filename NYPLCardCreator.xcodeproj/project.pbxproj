@@ -35,7 +35,6 @@
 		14E61C8020DD7C6200124E2B /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47BF20DD746300C8F97F /* TableViewController.swift */; };
 		14E61C8120DD7C6200124E2B /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47B720DD746300C8F97F /* LocationViewController.swift */; };
 		14E61C8220DD7C6200124E2B /* LabelledTextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47BB20DD746300C8F97F /* LabelledTextViewCell.swift */; };
-		1744DF5A264237EA00CBAAA8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		1754096E26FE7F3400B8E077 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1754096D26FE7F3400B8E077 /* Colors.xcassets */; };
 		1754096F26FE7F3400B8E077 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1754096D26FE7F3400B8E077 /* Colors.xcassets */; };
 		1754097326FE7FD900B8E077 /* NYPLColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1754097226FE7FD900B8E077 /* NYPLColor.swift */; };
@@ -60,6 +59,7 @@
 		73935214246CD0C200ACC0AB /* FlowCoordinator+Juvenile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73935213246CD0C200ACC0AB /* FlowCoordinator+Juvenile.swift */; };
 		73D15456247C96C700ACD04E /* JuvenileCreationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D15455247C96C700ACD04E /* JuvenileCreationInfo.swift */; };
 		73D15458247CA58000ACD04E /* PlatformAPIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D15457247CA58000ACD04E /* PlatformAPIError.swift */; };
+		73ECE4522773992A00FDB132 /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 73ECE4512773992A00FDB132 /* Icons.xcassets */; };
 		73EEE7E4247F274E00A06D14 /* NYPLCardCreator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14E61C5C20DD7C4800124E2B /* NYPLCardCreator.framework */; };
 		73EEE7ED247F290700A06D14 /* JuvenileCreationResponseBodyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EEE7EC247F290700A06D14 /* JuvenileCreationResponseBodyTests.swift */; };
 /* End PBXBuildFile section */
@@ -78,13 +78,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 14E61C5B20DD7C4800124E2B;
 			remoteInfo = NYPLCardCreator;
-		};
-		73EEE7EA247F276F00A06D14 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 607FACC81AFB9204008FA782 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 607FACCF1AFB9204008FA782;
-			remoteInfo = NYPLCardCreator_Example;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -155,6 +148,9 @@
 		73935213246CD0C200ACC0AB /* FlowCoordinator+Juvenile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FlowCoordinator+Juvenile.swift"; sourceTree = "<group>"; };
 		73D15455247C96C700ACD04E /* JuvenileCreationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuvenileCreationInfo.swift; sourceTree = "<group>"; };
 		73D15457247CA58000ACD04E /* PlatformAPIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformAPIError.swift; sourceTree = "<group>"; };
+		73ECE44E2773970700FDB132 /* Cartfile.resolved */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cartfile.resolved; sourceTree = SOURCE_ROOT; };
+		73ECE44F2773970700FDB132 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = SOURCE_ROOT; };
+		73ECE4512773992A00FDB132 /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
 		73EEE7DF247F274E00A06D14 /* NYPLCardCreatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NYPLCardCreatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		73EEE7E3247F274E00A06D14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		73EEE7EC247F290700A06D14 /* JuvenileCreationResponseBodyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JuvenileCreationResponseBodyTests.swift; sourceTree = "<group>"; };
@@ -192,11 +188,12 @@
 		14E61C5D20DD7C4800124E2B /* NYPLCardCreator */ = {
 			isa = PBXGroup;
 			children = (
-				14E61C5F20DD7C4800124E2B /* Info.plist */,
 				7382032924731A7E00BCFA89 /* Flow */,
 				7382032A24731A8D00BCFA89 /* ReusedUIComponents */,
 				7382032B24731A9800BCFA89 /* BusinessLogic */,
 				7382032C24731AA000BCFA89 /* Helpers */,
+				73ECE450277398CC00FDB132 /* Resources */,
+				73A871572772870D003BB4D4 /* Supporting Files */,
 			);
 			path = NYPLCardCreator;
 			sourceTree = "<group>";
@@ -229,7 +226,6 @@
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
-				1754096D26FE7F3400B8E077 /* Colors.xcassets */,
 			);
 			name = NYPLCardCreatorExample;
 			path = NYPLCardCreator;
@@ -299,7 +295,6 @@
 		7382032C24731AA000BCFA89 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				14E61C5E20DD7C4800124E2B /* NYPLCardCreator.h */,
 				146E47B420DD746300C8F97F /* Address.swift */,
 				146E47B220DD746300C8F97F /* AuthenticatingSession.swift */,
 				146E47BD20DD746300C8F97F /* CardType.swift */,
@@ -307,6 +302,26 @@
 				1754097226FE7FD900B8E077 /* NYPLColor.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		73A871572772870D003BB4D4 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				14E61C5F20DD7C4800124E2B /* Info.plist */,
+				14E61C5E20DD7C4800124E2B /* NYPLCardCreator.h */,
+				73ECE44F2773970700FDB132 /* Cartfile */,
+				73ECE44E2773970700FDB132 /* Cartfile.resolved */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		73ECE450277398CC00FDB132 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1754096D26FE7F3400B8E077 /* Colors.xcassets */,
+				73ECE4512773992A00FDB132 /* Icons.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		73EEE7E0247F274E00A06D14 /* NYPLCardCreatorTests */ = {
@@ -387,13 +402,11 @@
 			buildPhases = (
 				73EEE7DB247F274E00A06D14 /* Sources */,
 				73EEE7DC247F274E00A06D14 /* Frameworks */,
-				73EEE7DD247F274E00A06D14 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				73EEE7E6247F274E00A06D14 /* PBXTargetDependency */,
-				73EEE7EB247F276F00A06D14 /* PBXTargetDependency */,
 			);
 			name = NYPLCardCreatorTests;
 			productName = NYPLCardCreatorTests;
@@ -423,7 +436,6 @@
 					73EEE7DE247F274E00A06D14 = {
 						CreatedOnToolsVersion = 11.4;
 						LastSwiftMigration = 1140;
-						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
 				};
 			};
@@ -452,7 +464,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1744DF5A264237EA00CBAAA8 /* Images.xcassets in Resources */,
+				73ECE4522773992A00FDB132 /* Icons.xcassets in Resources */,
 				1754096E26FE7F3400B8E077 /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -465,13 +477,6 @@
 				1754096F26FE7F3400B8E077 /* Colors.xcassets in Resources */,
 				2D6F7C391D90FB3A000B906A /* InfoPlist.strings in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		73EEE7DD247F274E00A06D14 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -553,11 +558,6 @@
 			isa = PBXTargetDependency;
 			target = 14E61C5B20DD7C4800124E2B /* NYPLCardCreator */;
 			targetProxy = 73EEE7E5247F274E00A06D14 /* PBXContainerItemProxy */;
-		};
-		73EEE7EB247F276F00A06D14 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 607FACCF1AFB9204008FA782 /* NYPLCardCreator_Example */;
-			targetProxy = 73EEE7EA247F276F00A06D14 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -816,7 +816,6 @@
 		73EEE7E8247F274E00A06D14 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -836,14 +835,12 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NYPLCardCreator_Example.app/NYPLCardCreator_Example";
 			};
 			name = Debug;
 		};
 		73EEE7E9247F274E00A06D14 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -861,7 +858,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.nypl.labs.NYPLCardCreatorTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NYPLCardCreator_Example.app/NYPLCardCreator_Example";
 			};
 			name = Release;
 		};
