@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		14E61C6020DD7C4800124E2B /* NYPLCardCreator.h in Headers */ = {isa = PBXBuildFile; fileRef = 14E61C5E20DD7C4800124E2B /* NYPLCardCreator.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		14E61C6320DD7C4800124E2B /* NYPLCardCreator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14E61C5C20DD7C4800124E2B /* NYPLCardCreator.framework */; };
-		14E61C6420DD7C4800124E2B /* NYPLCardCreator.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 14E61C5C20DD7C4800124E2B /* NYPLCardCreator.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		14E61C6920DD7C6200124E2B /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47B420DD746300C8F97F /* Address.swift */; };
 		14E61C6B20DD7C6200124E2B /* ConfirmValidAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47C420DD746300C8F97F /* ConfirmValidAddressViewController.swift */; };
 		14E61C6C20DD7C6200124E2B /* ActivityTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47B020DD746300C8F97F /* ActivityTitleView.swift */; };
@@ -36,20 +34,12 @@
 		14E61C8120DD7C6200124E2B /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47B720DD746300C8F97F /* LocationViewController.swift */; };
 		14E61C8220DD7C6200124E2B /* LabelledTextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146E47BB20DD746300C8F97F /* LabelledTextViewCell.swift */; };
 		1754096E26FE7F3400B8E077 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1754096D26FE7F3400B8E077 /* Colors.xcassets */; };
-		1754096F26FE7F3400B8E077 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1754096D26FE7F3400B8E077 /* Colors.xcassets */; };
 		1754097326FE7FD900B8E077 /* NYPLColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1754097226FE7FD900B8E077 /* NYPLColor.swift */; };
-		1754097426FE7FD900B8E077 /* NYPLColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1754097226FE7FD900B8E077 /* NYPLColor.swift */; };
 		1760C2CA2646096C0087C28C /* PureLayout.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 176F5BCD2644D28D002CBA0E /* PureLayout.xcframework */; };
-		176F5BCE2644D28D002CBA0E /* PureLayout.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 176F5BCD2644D28D002CBA0E /* PureLayout.xcframework */; };
-		176F5BCF2644D28D002CBA0E /* PureLayout.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 176F5BCD2644D28D002CBA0E /* PureLayout.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		179267E92734D85D004EA5E7 /* FlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179267E82734D85D004EA5E7 /* FlowCoordinator.swift */; };
 		1792694F2743332C004EA5E7 /* PatronCreationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1792694E2743332B004EA5E7 /* PatronCreationInfo.swift */; };
 		17B17A96272B9F5400314AF6 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B17A95272B9F5400314AF6 /* PasswordValidator.swift */; };
 		17B17A9A272BAE2000314AF6 /* PasswordValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B17A99272BAE2000314AF6 /* PasswordValidationTests.swift */; };
-		2D6F7C391D90FB3A000B906A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D6F7C381D90FB3A000B906A /* InfoPlist.strings */; };
-		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
-		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
-		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		731AC7172758344D0036A05E /* UIViewController+Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731AC7162758344D0036A05E /* UIViewController+Alerts.swift */; };
 		7353354D246DBB8D000C2874 /* ResultErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7353354C246DBB8D000C2874 /* ResultErrors.swift */; };
 		735F6379247DDDB6008858C4 /* JuvenileCreationResponseBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 735F6378247DDDB6008858C4 /* JuvenileCreationResponseBody.swift */; };
@@ -65,13 +55,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		14E61C6120DD7C4800124E2B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 607FACC81AFB9204008FA782 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 14E61C5B20DD7C4800124E2B;
-			remoteInfo = NYPLCardCreator;
-		};
 		73EEE7E5247F274E00A06D14 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 607FACC81AFB9204008FA782 /* Project object */;
@@ -80,21 +63,6 @@
 			remoteInfo = NYPLCardCreator;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		14E61C6820DD7C4800124E2B /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				14E61C6420DD7C4800124E2B /* NYPLCardCreator.framework in Embed Frameworks */,
-				176F5BCF2644D28D002CBA0E /* PureLayout.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		146E47B020DD746300C8F97F /* ActivityTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTitleView.swift; sourceTree = "<group>"; };
@@ -133,12 +101,6 @@
 		1792694E2743332B004EA5E7 /* PatronCreationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatronCreationInfo.swift; sourceTree = "<group>"; };
 		17B17A95272B9F5400314AF6 /* PasswordValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidator.swift; sourceTree = "<group>"; };
 		17B17A99272BAE2000314AF6 /* PasswordValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidationTests.swift; sourceTree = "<group>"; };
-		2D6F7C381D90FB3A000B906A /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = ../NYPLCardCreatorExample/InfoPlist.strings; sourceTree = "<group>"; };
-		607FACD01AFB9204008FA782 /* NYPLCardCreator_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NYPLCardCreator_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../NYPLCardCreatorExample/Info.plist; sourceTree = "<group>"; };
-		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../NYPLCardCreatorExample/AppDelegate.swift; sourceTree = "<group>"; };
-		607FACDC1AFB9204008FA782 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ../NYPLCardCreatorExample/Images.xcassets; sourceTree = "<group>"; };
-		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		731AC7162758344D0036A05E /* UIViewController+Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alerts.swift"; sourceTree = "<group>"; };
 		7353354C246DBB8D000C2874 /* ResultErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultErrors.swift; sourceTree = "<group>"; };
 		735F6378247DDDB6008858C4 /* JuvenileCreationResponseBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuvenileCreationResponseBody.swift; sourceTree = "<group>"; };
@@ -148,7 +110,7 @@
 		73935213246CD0C200ACC0AB /* FlowCoordinator+Juvenile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FlowCoordinator+Juvenile.swift"; sourceTree = "<group>"; };
 		73D15455247C96C700ACD04E /* JuvenileCreationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JuvenileCreationInfo.swift; sourceTree = "<group>"; };
 		73D15457247CA58000ACD04E /* PlatformAPIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformAPIError.swift; sourceTree = "<group>"; };
-		73ECE44E2773970700FDB132 /* Cartfile.resolved */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cartfile.resolved; sourceTree = SOURCE_ROOT; };
+		73ECE44E2773970700FDB132 /* Cartfile.resolved */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile.resolved; sourceTree = SOURCE_ROOT; };
 		73ECE44F2773970700FDB132 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = SOURCE_ROOT; };
 		73ECE4512773992A00FDB132 /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
 		73EEE7DF247F274E00A06D14 /* NYPLCardCreatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NYPLCardCreatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -162,15 +124,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1760C2CA2646096C0087C28C /* PureLayout.xcframework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		607FACCD1AFB9204008FA782 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				14E61C6320DD7C4800124E2B /* NYPLCardCreator.framework in Frameworks */,
-				176F5BCE2644D28D002CBA0E /* PureLayout.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,7 +155,6 @@
 			isa = PBXGroup;
 			children = (
 				14E61C5D20DD7C4800124E2B /* NYPLCardCreator */,
-				607FACD21AFB9204008FA782 /* NYPLCardCreatorExample */,
 				73EEE7E0247F274E00A06D14 /* NYPLCardCreatorTests */,
 				607FACD11AFB9204008FA782 /* Products */,
 				9042A7DBE0CDD8162AA0E597 /* Frameworks */,
@@ -212,32 +164,10 @@
 		607FACD11AFB9204008FA782 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				607FACD01AFB9204008FA782 /* NYPLCardCreator_Example.app */,
 				14E61C5C20DD7C4800124E2B /* NYPLCardCreator.framework */,
 				73EEE7DF247F274E00A06D14 /* NYPLCardCreatorTests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		607FACD21AFB9204008FA782 /* NYPLCardCreatorExample */ = {
-			isa = PBXGroup;
-			children = (
-				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
-				607FACDC1AFB9204008FA782 /* Images.xcassets */,
-				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
-				607FACD31AFB9204008FA782 /* Supporting Files */,
-			);
-			name = NYPLCardCreatorExample;
-			path = NYPLCardCreator;
-			sourceTree = "<group>";
-		};
-		607FACD31AFB9204008FA782 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				607FACD41AFB9204008FA782 /* Info.plist */,
-				2D6F7C381D90FB3A000B906A /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		7382032924731A7E00BCFA89 /* Flow */ = {
@@ -377,25 +307,6 @@
 			productReference = 14E61C5C20DD7C4800124E2B /* NYPLCardCreator.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		607FACCF1AFB9204008FA782 /* NYPLCardCreator_Example */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "NYPLCardCreator_Example" */;
-			buildPhases = (
-				607FACCC1AFB9204008FA782 /* Sources */,
-				607FACCD1AFB9204008FA782 /* Frameworks */,
-				607FACCE1AFB9204008FA782 /* Resources */,
-				14E61C6820DD7C4800124E2B /* Embed Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				14E61C6220DD7C4800124E2B /* PBXTargetDependency */,
-			);
-			name = NYPLCardCreator_Example;
-			productName = NYPLCardCreator;
-			productReference = 607FACD01AFB9204008FA782 /* NYPLCardCreator_Example.app */;
-			productType = "com.apple.product-type.application";
-		};
 		73EEE7DE247F274E00A06D14 /* NYPLCardCreatorTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 73EEE7E7247F274E00A06D14 /* Build configuration list for PBXNativeTarget "NYPLCardCreatorTests" */;
@@ -428,11 +339,6 @@
 						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 					};
-					607FACCF1AFB9204008FA782 = {
-						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = 7262U6ST2R;
-						LastSwiftMigration = 0940;
-					};
 					73EEE7DE247F274E00A06D14 = {
 						CreatedOnToolsVersion = 11.4;
 						LastSwiftMigration = 1140;
@@ -453,7 +359,6 @@
 			projectRoot = "";
 			targets = (
 				14E61C5B20DD7C4800124E2B /* NYPLCardCreator */,
-				607FACCF1AFB9204008FA782 /* NYPLCardCreator_Example */,
 				73EEE7DE247F274E00A06D14 /* NYPLCardCreatorTests */,
 			);
 		};
@@ -466,17 +371,6 @@
 			files = (
 				73ECE4522773992A00FDB132 /* Icons.xcassets in Resources */,
 				1754096E26FE7F3400B8E077 /* Colors.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		607FACCE1AFB9204008FA782 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
-				1754096F26FE7F3400B8E077 /* Colors.xcassets in Resources */,
-				2D6F7C391D90FB3A000B906A /* InfoPlist.strings in Resources */,
-				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,15 +420,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		607FACCC1AFB9204008FA782 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1754097426FE7FD900B8E077 /* NYPLColor.swift in Sources */,
-				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		73EEE7DB247F274E00A06D14 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -549,29 +434,12 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		14E61C6220DD7C4800124E2B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 14E61C5B20DD7C4800124E2B /* NYPLCardCreator */;
-			targetProxy = 14E61C6120DD7C4800124E2B /* PBXContainerItemProxy */;
-		};
 		73EEE7E6247F274E00A06D14 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 14E61C5B20DD7C4800124E2B /* NYPLCardCreator */;
 			targetProxy = 73EEE7E5247F274E00A06D14 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		607FACDE1AFB9204008FA782 /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				607FACDF1AFB9204008FA782 /* Base */,
-			);
-			name = LaunchScreen.xib;
-			path = ../NYPLCardCreatorExample;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		14E61C6520DD7C4800124E2B /* Debug */ = {
@@ -767,52 +635,6 @@
 			};
 			name = Release;
 		};
-		607FACF01AFB9204008FA782 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 7262U6ST2R;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/",
-				);
-				INFOPLIST_FILE = "$(SRCROOT)/NYPLCardCreatorExample/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.nypl.demo.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		607FACF11AFB9204008FA782 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 7262U6ST2R;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/",
-				);
-				INFOPLIST_FILE = "$(SRCROOT)/NYPLCardCreatorExample/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.nypl.demo.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 		73EEE7E8247F274E00A06D14 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -878,15 +700,6 @@
 			buildConfigurations = (
 				607FACED1AFB9204008FA782 /* Debug */,
 				607FACEE1AFB9204008FA782 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "NYPLCardCreator_Example" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				607FACF01AFB9204008FA782 /* Debug */,
-				607FACF11AFB9204008FA782 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
