@@ -6,7 +6,7 @@
 //  Copyright © 2021 NYPL Labs. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 extension UIViewController {
   /// - parameter title: If missing, defaults to generic error title.
