@@ -1,18 +1,17 @@
-# NYPLCardCreator
+# Overview
 
-## Example
+NYPLCardCreator provides a native iOS implementation of the tool used to create NYPL library cards. 
 
-To run the example project, clone the repo and run `pod install` from the "Example" directory first.
+# Build
 
-## Installation
+The recommended way to build this project is via the Swift Package Manager. 
 
-NYPLCardCreator is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+With a bit of work, it should still be possible to build it using the provided Xcode project and Carthage, but that's no longer supported.
 
-```ruby
-pod "NYPLCardCreator", :git => "https://github.com/NYPL-Simplified/CardCreator-iOS.git"
-```
+# Dependencies
 
-## License
+- [NYPLUtilities](https://github.com/NYPL-Simplified/iOS-Utilities)
 
-NYPLCardCreator is available under the Apache License, Version 2.0. See the LICENSE file for more info.
+# License
+
+NYPLCardCreator is available under the Apache License, Version 2.0. See the [LICENSE](LICENSE) file for more info.
