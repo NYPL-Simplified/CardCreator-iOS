@@ -3,7 +3,7 @@
 //  NYPLCardCreator
 //
 //  Created by Winnie Quinn on 6/22/18.
-//  Copyright © 2018 NYPL Labs. All rights reserved.
+//  Copyright © 2018 NYPL. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

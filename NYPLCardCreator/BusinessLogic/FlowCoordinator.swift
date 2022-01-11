@@ -3,7 +3,7 @@
 //  NYPLCardCreator
 //
 //  Created by Ernest Fan on 2021-11-04.
-//  Copyright © 2021 NYPL Labs. All rights reserved.
+//  Copyright © 2021 NYPL. All rights reserved.
 //
 
 import UIKit

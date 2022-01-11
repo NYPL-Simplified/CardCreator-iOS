@@ -332,7 +332,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1140;
 				LastUpgradeCheck = 1310;
-				ORGANIZATIONNAME = "NYPL Labs";
+				ORGANIZATIONNAME = NYPL;
 				TargetAttributes = {
 					14E61C5B20DD7C4800124E2B = {
 						CreatedOnToolsVersion = 9.4;

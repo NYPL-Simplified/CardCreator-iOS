@@ -3,7 +3,7 @@
 //  NYPLCardCreatorTests
 //
 //  Created by Ettore Pasquini on 5/27/20.
-//  Copyright © 2020 NYPL Labs. All rights reserved.
+//  Copyright © 2020 NYPL. All rights reserved.
 //
 
 import XCTest
