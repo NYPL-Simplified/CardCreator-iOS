@@ -263,7 +263,7 @@ final class IntroductionViewController: UIViewController, UITableViewDelegate, U
   }
   
   private func setCheckmark(_ state: Bool, forCell cell: UITableViewCell?) {
-    let bundle = Bundle(for: type(of: self))
+    let bundle = Bundle.module
     if (state == true) {
       let image = UIImage(named: "CheckboxOn", in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
       let imageView = UIImageView(image: image)
