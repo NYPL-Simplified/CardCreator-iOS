@@ -252,7 +252,8 @@ Password should be
                                         username: self.usernameCell.textField.text!,
                                         password: self.passwordCell.textField.text!,
                                         homeAddress: self.homeAddress,
-                                        workAddress: self.schoolOrWorkAddress)
+                                        workAddress: self.schoolOrWorkAddress,
+                                        location: self.configuration.user.location ?? "")
     self.navigationController?.pushViewController(
       UserSummaryViewController(
         configuration: self.configuration,

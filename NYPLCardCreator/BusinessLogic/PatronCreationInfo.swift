@@ -11,6 +11,7 @@ struct PatronCreationInfo {
   var homeAddress: Address
   var workAddress: Address?
   var birthdate: String?
+  var location: String
   
   init(name: String,
        email: String,
@@ -18,7 +19,8 @@ struct PatronCreationInfo {
        username: String,
        password: String,
        homeAddress: Address,
-       workAddress: Address?)
+       workAddress: Address?,
+       location:String)
   {
     self.name = name
     self.email = email
@@ -27,6 +29,7 @@ struct PatronCreationInfo {
     self.password = password
     self.homeAddress = homeAddress
     self.workAddress = workAddress
+    self.location = location
   }
   
   func JSONObject() -> [String: AnyObject] {
@@ -49,7 +52,8 @@ struct PatronCreationInfo {
       "policyType": "simplye" as AnyObject,
       "ageGate": true as AnyObject,
       "acceptTerms": true as AnyObject,
-      "birthdate": self.birthdate as AnyObject
+      "birthdate": self.birthdate as AnyObject,
+      "location": self.location as AnyObject
     ]
   }
 }

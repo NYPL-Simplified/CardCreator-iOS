@@ -1,4 +1,5 @@
 import UIKit
+import CoreLocation
 
 /// The second step in the card registration flow.
 final class LocationViewController: UIViewController {
@@ -115,7 +116,9 @@ final class LocationViewController: UIViewController {
           comment: "A label title informing the user that their location could not be determined")
         self.present(alertController, animated: true, completion: nil)
       case let .placemark(placemark):
+        let location = placemark.getLocationString()
         if placemark.administrativeArea == "NY" {
+          self.configuration.user.location = location
           self.navigationItem.rightBarButtonItem?.isEnabled = true
           self.resultLabel.text = NSLocalizedString(
             "We have successfully determined that you are in New York!",

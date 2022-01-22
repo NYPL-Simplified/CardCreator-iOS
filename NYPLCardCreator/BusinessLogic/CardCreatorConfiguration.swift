@@ -206,6 +206,7 @@ final class UserInfo {
   var lastName: String?
   var email: String?
   var birthdate: Date?
+  var location: String?
   
   var username: String?
 }
