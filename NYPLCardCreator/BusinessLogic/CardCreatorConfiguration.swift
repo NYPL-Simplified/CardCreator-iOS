@@ -206,6 +206,11 @@ final class UserInfo {
   var lastName: String?
   var email: String?
   var birthdate: Date?
+  /// A string to determine user location for patron creation request
+  /// eg. nyc for user within new york city,
+  ///    nys for user within new york state,
+  ///    us for user within us but outside new york state,
+  ///    otherwise an empty string
   var location: String?
   
   var username: String?

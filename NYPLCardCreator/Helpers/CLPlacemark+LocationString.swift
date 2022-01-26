@@ -16,7 +16,8 @@ extension CLPlacemark {
       return ""
     }
     
-    guard administrativeArea == "NY" else {
+    guard let state = administrativeArea?.lowercased(),
+          state == "ny" || state == "new york" else {
       return "us"
     }
     
