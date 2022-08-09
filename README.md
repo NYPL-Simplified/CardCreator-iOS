@@ -4,6 +4,10 @@
 
 NYPLCardCreator provides a native iOS implementation of the tool used to create NYPL library cards. 
 
+# Unit Testing
+
+`./scripts/run-unittests.sh`
+
 # Dependencies
 
 - [NYPLUtilities](https://github.com/NYPL-Simplified/iOS-Utilities)
