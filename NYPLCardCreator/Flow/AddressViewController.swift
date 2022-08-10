@@ -120,13 +120,11 @@ final class AddressViewController: FormTableViewController {
                                      action: #selector(zipTextFieldDidChange),
                                      for: .allEditingEvents)
 
-    if #available(iOS 10.0, *) {
-      self.street1Cell.textField.textContentType = .streetAddressLine1
-      self.street2Cell.textField.textContentType = .streetAddressLine2
-      self.cityCell.textField.textContentType    = .addressCity
-      self.regionCell.textField.textContentType  = .addressState
-      self.zipCell.textField.textContentType     = .postalCode
-    }
+    self.street1Cell.textField.textContentType = .streetAddressLine1
+    self.street2Cell.textField.textContentType = .streetAddressLine2
+    self.cityCell.textField.textContentType    = .addressCity
+    self.regionCell.textField.textContentType  = .addressState
+    self.zipCell.textField.textContentType     = .postalCode
   }
   
   func checkToPrefillForm() {
