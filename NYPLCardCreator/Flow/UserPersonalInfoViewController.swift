@@ -137,12 +137,10 @@ final class UserPersonalInfoViewController: FormTableViewController {
     self.birthdateCell.textField.inputView = datePicker
     self.birthdateCell.textField.inputAccessoryView = self.returnToolbar()
 
-    if #available(iOS 10.0, *) {
-      self.firstNameCell.textField.textContentType     = .givenName
-      self.middleInitialCell.textField.textContentType = .middleName
-      self.lastNameCell.textField.textContentType      = .familyName
-      self.emailCell.textField.textContentType         = .emailAddress
-    }
+    self.firstNameCell.textField.textContentType     = .givenName
+    self.middleInitialCell.textField.textContentType = .middleName
+    self.lastNameCell.textField.textContentType      = .familyName
+    self.emailCell.textField.textContentType         = .emailAddress
   }
   
   func checkToPrefillForm() {
